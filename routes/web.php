@@ -21,15 +21,15 @@ Route::get('/products', [ProductController::class, 'index'])
 
 /*
 |--------------------------------------------------------------------------
-| Auth Routes (Dashboard / Profile)
+| Authenticated Routes
 |--------------------------------------------------------------------------
 */
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth'])->group(function () {
 
-Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -37,8 +37,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Cart
-    Route::post('/add-to-cart/{id}', [CartController::class, 'add'])->name('cart.add');
-    Route::get('/cart', [CartController::class, 'view'])->name('cart.view');
+    Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+    Route::get('/cart', [CartController::class, 'view'])->name('cart.index');
     Route::post('/cart/increase/{id}', [CartController::class, 'increase'])->name('cart.increase');
     Route::post('/cart/decrease/{id}', [CartController::class, 'decrease'])->name('cart.decrease');
 
@@ -46,20 +46,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
     Route::post('/order/place', [OrderController::class, 'place'])->name('order.place');
 
-    // User orders
     Route::get('/my-orders', [OrderController::class, 'myOrders'])->name('orders.my');
 });
 
 /*
 |--------------------------------------------------------------------------
-| Admin Routes (simple)
+| Auth Routes
 |--------------------------------------------------------------------------
 */
-
-Route::get('/admin/orders', [OrderController::class, 'index'])
-    ->name('admin.orders');
-
-Route::post('/order/{id}/deliver', [OrderController::class, 'deliver'])
-    ->name('order.deliver');
-
 require __DIR__.'/auth.php';
