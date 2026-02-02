@@ -31,5 +31,31 @@ public function myOrders()
 
     return view('orders.my', compact('orders'));
 }
+public function place()
+{
+    $cart = session()->get('cart', []);
+
+    if (empty($cart)) {
+        return redirect()->route('cart.view');
+    }
+
+    // Save order (simple version)
+    foreach ($cart as $item) {
+        \DB::table('orders')->insert([
+            'user_id' => auth()->id(),
+            'product_name' => $item['name'],
+            'price' => $item['price'],
+            'quantity' => $item['quantity'],
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+    }
+
+    // Clear cart
+    session()->forget('cart');
+
+    return view('checkout.success');
+}
+
 
 }

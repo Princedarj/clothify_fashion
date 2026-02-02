@@ -58,6 +58,22 @@
         </tr>
     </tfoot>
 </table>
+<div class="flex justify-end gap-4 mt-6">
+
+    <!-- Go to Cart (refresh page) -->
+    <a href="{{ route('cart.view') }}"
+       class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+        🛒 Go to Cart
+    </a>
+
+    <!-- Checkout -->
+    <a href="{{ route('checkout') }}"
+       class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+        ✅ Checkout
+    </a>
+
+</div>
+
 <div class="mt-4 flex justify-end">
     <a href="{{ route('checkout') }}"
        class="px-4 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">

@@ -1,3 +1,12 @@
+@php
+    $cart = session()->get('cart', []);
+    $cartCount = 0;
+
+    foreach ($cart as $item) {
+        $cartCount += $item['quantity'];
+    }
+@endphp
+
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -19,13 +28,19 @@
         {{ __('Dashboard') }}
     </x-nav-link>
 
-    <x-nav-link :href="route('products')" :active="request()->routeIs('products')">
+    <x-nav-link :href="route('products.index')" :active="request()->routeIs('products')">
         {{ __('Products') }}
     </x-nav-link>
 
-    <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
-        {{ __('Cart 🛒') }}
-    </x-nav-link>
+    <x-nav-link :href="route('cart.view')" :active="request()->routeIs('cart.view')">
+    🛒 Cart
+    @if($cartCount > 0)
+        <span class="ml-1 bg-red-600 text-white text-xs px-2 py-0.5 rounded-full">
+            {{ $cartCount }}
+        </span>
+    @endif
+</x-nav-link>
+
     <!-- Checkout Button -->
     <a href="{{ route('checkout') }}"
        class="bg-indigo-600 text-white px-3 py-1 rounded text-sm hover:bg-indigo-700">

@@ -1,79 +1,67 @@
 <x-app-layout>
-    <div class="max-w-5xl mx-auto py-10 px-4">
-        <h2 class="text-2xl font-bold mb-6">Checkout 💳</h2>
+    <div class="py-12 max-w-4xl mx-auto">
 
-        <form method="POST" action="{{ route('order.place') }}">
-            @csrf
+        <h2 class="text-2xl font-bold mb-6">Checkout 🧾</h2>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Delivery Address -->
+        <div class="border p-4 rounded mb-6">
+            <h3 class="font-semibold mb-2">Delivery Address 📍</h3>
 
-                <!-- LEFT: DELIVERY DETAILS -->
-                <div class="border rounded p-4">
-                    <h3 class="font-semibold text-lg mb-4">Delivery Details</h3>
+            <p class="text-gray-700">
+                <strong>{{ Auth::user()->name }}</strong><br>
+                {{ Auth::user()->email }}<br>
+                Address will be delivered to registered address.
+            </p>
+        </div>
 
-                    <div class="mb-3">
-                        <label class="text-sm">Full Name</label>
-                        <input type="text" name="name" required
-                            class="w-full mt-1 border rounded px-3 py-2">
-                    </div>
+        <!-- Order Summary -->
+        <div class="border p-4 rounded">
+            <h3 class="font-semibold mb-4">Order Summary</h3>
 
-                    <div class="mb-3">
-                        <label class="text-sm">Phone</label>
-                        <input type="text" name="phone" required
-                            class="w-full mt-1 border rounded px-3 py-2">
-                    </div>
+            <table class="w-full border text-center">
+                <thead>
+                    <tr class="bg-gray-100 border">
+                        <th class="p-2">Product</th>
+                        <th class="p-2">Price</th>
+                        <th class="p-2">Qty</th>
+                        <th class="p-2">Total</th>
+                    </tr>
+                </thead>
 
-                    <div>
-                        <label class="text-sm">Address</label>
-                        <textarea name="address" rows="3" required
-                            class="w-full mt-1 border rounded px-3 py-2"></textarea>
-                    </div>
-                </div>
+                <tbody>
+                    @php $grandTotal = 0; @endphp
 
-                <!-- RIGHT: ORDER SUMMARY -->
-                <div class="border rounded p-4">
-                    <h3 class="font-semibold text-lg mb-4">Order Summary</h3>
+                    @foreach($cart as $item)
+                        @php
+                            $total = $item['price'] * $item['quantity'];
+                            $grandTotal += $total;
+                        @endphp
 
-                    <table class="w-full text-sm border">
-                        <thead class="bg-gray-100">
-                            <tr>
-                                <th class="p-2 text-left">Item</th>
-                                <th class="p-2">Qty</th>
-                                <th class="p-2 text-right">Price</th>
-                            </tr>
-                        </thead>
+                        <tr class="border">
+                            <td class="p-2">{{ $item['name'] }}</td>
+                            <td class="p-2">₹ {{ $item['price'] }}</td>
+                            <td class="p-2">{{ $item['quantity'] }}</td>
+                            <td class="p-2">₹ {{ $total }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
 
-                        <tbody>
-                            @php $total = 0; @endphp
+                <tfoot>
+                    <tr class="bg-gray-100 font-bold border">
+                        <td colspan="3" class="p-2 text-right">Grand Total</td>
+                        <td class="p-2">₹ {{ $grandTotal }}</td>
+                    </tr>
+                </tfoot>
+            </table>
 
-                            @foreach($cart as $item)
-                                @php
-                                    $sub = $item['price'] * $item['quantity'];
-                                    $total += $sub;
-                                @endphp
-                                <tr class="border-t">
-                                    <td class="p-2">{{ $item['name'] }}</td>
-                                    <td class="p-2 text-center">{{ $item['quantity'] }}</td>
-                                    <td class="p-2 text-right">₹ {{ $sub }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
+            <!-- Place Order Button -->
+            <form method="POST" action="{{ route('order.place') }}" class="text-right mt-6">
+                @csrf
+                <button class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
+                    🚀 Place Order
+                </button>
+            </form>
 
-                        <tfoot class="bg-gray-100 font-bold">
-                            <tr>
-                                <td colspan="2" class="p-2 text-right">Total</td>
-                                <td class="p-2 text-right">₹ {{ $total }}</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-
-                    <button
-                        class="mt-4 w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700">
-                        Place Order
-                    </button>
-                </div>
-
-            </div>
-        </form>
+        </div>
     </div>
 </x-app-layout>

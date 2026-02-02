@@ -1,10 +1,17 @@
 <x-app-layout>
-    <div class="py-10 text-center">
-        <h2 class="text-2xl font-bold text-green-600">Order Placed Successfully 🎉</h2>
-        <p class="mt-2">Thank you for shopping with us.</p>
+    <div class="py-12 max-w-xl mx-auto text-center">
+        <h2 class="text-2xl font-bold text-green-600 mb-4">
+            🎉 Order Placed Successfully!
+        </h2>
 
-        <a href="{{ route('products') }}" class="mt-4 inline-block text-blue-600 underline">
-            Continue Shopping
+        <p class="text-gray-700 mb-6">
+            Thank you for shopping with <strong>Clothify Fashion</strong> 👕  
+            Your order will be delivered in 3–5 days.
+        </p>
+
+        <a href="{{ route('products.index') }}"
+           class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
+            Continue Shopping 🛍️
         </a>
     </div>
 </x-app-layout>
