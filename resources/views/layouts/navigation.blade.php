@@ -26,6 +26,11 @@
     <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
         {{ __('Cart 🛒') }}
     </x-nav-link>
+    <!-- Checkout Button -->
+    <a href="{{ route('checkout') }}"
+       class="bg-indigo-600 text-white px-3 py-1 rounded text-sm hover:bg-indigo-700">
+        Checkout
+    </a>
 </div>
 
 
