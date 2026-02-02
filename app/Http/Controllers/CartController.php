@@ -75,8 +75,10 @@ public function decrease($id)
 public function checkout()
 {
     $cart = session()->get('cart', []);
+
     return view('checkout', compact('cart'));
 }
+
 
 
 }

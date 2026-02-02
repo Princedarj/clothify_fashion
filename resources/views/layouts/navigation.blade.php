@@ -18,9 +18,8 @@
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
                     </a>
                 </div>
-    <x-nav-link :href="route('orders.my')" :active="request()->routeIs('orders.my')">
-    My Orders
-</x-nav-link>
+    
+
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
@@ -32,7 +31,7 @@
         {{ __('Products') }}
     </x-nav-link>
 
-    <x-nav-link :href="route('cart.view')" :active="request()->routeIs('cart.view')">
+    <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
     🛒 Cart
     @if($cartCount > 0)
         <span class="ml-1 bg-red-600 text-white text-xs px-2 py-0.5 rounded-full">
@@ -41,11 +40,7 @@
     @endif
 </x-nav-link>
 
-    <!-- Checkout Button -->
-    <a href="{{ route('checkout') }}"
-       class="bg-indigo-600 text-white px-3 py-1 rounded text-sm hover:bg-indigo-700">
-        Checkout
-    </a>
+    
 </div>
 
 

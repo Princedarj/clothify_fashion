@@ -55,10 +55,14 @@
                                 </button>
                             </div>
 
-                            <button
-                                class="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded">
-                                Add to Cart 🛒
-                            </button>
+                           <div class="mt-4 flex gap-2">
+    <button
+        type="submit"
+        class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded">
+        Add to Cart 🛒
+    </button>
+</div>
+
                         </form>
 
                     </div>

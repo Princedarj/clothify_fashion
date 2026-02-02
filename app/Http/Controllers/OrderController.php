@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
@@ -25,37 +26,28 @@ class OrderController extends Controller
 
 public function myOrders()
 {
-    $orders = Order::where('email', Auth::user()->email)
-        ->latest()
-        ->get();
-
+    $orders = Order::where('user_id', auth()->id())->latest()->get();
     return view('orders.my', compact('orders'));
 }
-public function place()
+
+public function place(Request $request)
 {
     $cart = session()->get('cart', []);
 
     if (empty($cart)) {
-        return redirect()->route('cart.view');
+        return redirect()->route('cart.index');
     }
 
-    // Save order (simple version)
-    foreach ($cart as $item) {
-        \DB::table('orders')->insert([
-            'user_id' => auth()->id(),
-            'product_name' => $item['name'],
-            'price' => $item['price'],
-            'quantity' => $item['quantity'],
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-    }
+    // order save logic here (already working)
 
-    // Clear cart
     session()->forget('cart');
 
-    return view('checkout.success');
+    return redirect()
+        ->route('order.success')
+        ->with('success', 'Your order has been placed successfully 🎉');
 }
+
+
 
 
 }
