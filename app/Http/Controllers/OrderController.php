@@ -46,8 +46,4 @@ public function place(Request $request)
         ->route('order.success')
         ->with('success', 'Your order has been placed successfully 🎉');
 }
-
-
-
-
 }
