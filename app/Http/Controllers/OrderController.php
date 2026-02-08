@@ -40,25 +40,12 @@ public function place(Request $request)
         'pincode' => 'required',
     ]);
 
-    $cart = session()->get('cart', []);
-
-    if (empty($cart)) {
-        return redirect()->route('cart.index');
-    }
-
-    $total = 0;
-    foreach ($cart as $item) {
-        $total += $item['price'] * $item['quantity'];
-    }
-
     Order::create([
-        'user_id' => auth()->id(),
         'name' => $request->name,
         'email' => $request->email,
         'phone' => $request->phone,
         'address' => $request->address,
-        'pincode' => $request->pincode,
-        'total_amount' => $total,
+        'total_amount' => 0,
         'status' => 'Pending',
     ]);
 
@@ -67,6 +54,7 @@ public function place(Request $request)
     return redirect()->route('order.success')
         ->with('success', 'Your order has been placed successfully 🎉');
 }
+
 
 
 }

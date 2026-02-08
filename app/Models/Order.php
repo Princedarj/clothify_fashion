@@ -6,15 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-   protected $fillable = [
-    'user_id',
+protected $fillable = [
     'name',
     'email',
     'phone',
     'address',
-    'pincode',
     'total_amount',
-    'status'
+    'status',
 ];
+
 
 }

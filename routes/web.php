@@ -42,19 +42,18 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/cart/increase/{id}', [CartController::class, 'increase'])->name('cart.increase');
     Route::post('/cart/decrease/{id}', [CartController::class, 'decrease'])->name('cart.decrease');
 
-    // Checkout & Orders
+    // Checkout
     Route::get('/checkout', [CartController::class, 'checkout'])
-    ->middleware('auth')
-    ->name('checkout');
+        ->name('checkout');
 
+    // Place Order
     Route::post('/order/place', [OrderController::class, 'place'])
-    ->middleware('auth')
-    ->name('order.place');
-    
-    Route::get('/order-success', function () {
-    return view('checkout.success');
-    })->name('order.success');
+        ->name('order.place');
 
+    // Order Success
+    Route::get('/order-success', function () {
+        return view('orders.success');
+    })->name('order.success');
 
 });
 

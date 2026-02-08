@@ -1,67 +1,46 @@
 <x-app-layout>
-    <div class="py-12 max-w-4xl mx-auto">
 
-        <h2 class="text-2xl font-bold mb-6">Checkout 🧾</h2>
+    <div class="max-w-3xl mx-auto bg-white p-6 rounded shadow">
+        <h2 class="text-2xl font-bold mb-4">Checkout</h2>
 
-        <!-- Delivery Address -->
-        <div class="border p-4 rounded mb-6">
-            <h3 class="font-semibold mb-2">Delivery Address 📍</h3>
+        @if(session('success'))
+            <div class="bg-green-100 text-green-800 p-3 mb-4 rounded">
+                {{ session('success') }}
+            </div>
+        @endif
 
-            <p class="text-gray-700">
-                <strong>{{ Auth::user()->name }}</strong><br>
-                {{ Auth::user()->email }}<br>
-                Address will be delivered to registered address.
-            </p>
-        </div>
+        <form method="POST" action="{{ route('order.place') }}">
+            @csrf
 
-        <!-- Order Summary -->
-        <div class="border p-4 rounded">
-            <h3 class="font-semibold mb-4">Order Summary</h3>
+            <div class="mb-3">
+                <label>Name</label>
+                <input type="text" name="name" class="w-full border p-2" required>
+            </div>
 
-            <table class="w-full border text-center">
-                <thead>
-                    <tr class="bg-gray-100 border">
-                        <th class="p-2">Product</th>
-                        <th class="p-2">Price</th>
-                        <th class="p-2">Qty</th>
-                        <th class="p-2">Total</th>
-                    </tr>
-                </thead>
+            <div class="mb-3">
+                <label>Email</label>
+                <input type="email" name="email" class="w-full border p-2" required>
+            </div>
 
-                <tbody>
-                    @php $grandTotal = 0; @endphp
+            <div class="mb-3">
+                <label>Phone</label>
+                <input type="text" name="phone" class="w-full border p-2" required>
+            </div>
 
-                    @foreach($cart as $item)
-                        @php
-                            $total = $item['price'] * $item['quantity'];
-                            $grandTotal += $total;
-                        @endphp
+            <div class="mb-3">
+                <label>Address</label>
+                <textarea name="address" class="w-full border p-2" required></textarea>
+            </div>
 
-                        <tr class="border">
-                            <td class="p-2">{{ $item['name'] }}</td>
-                            <td class="p-2">₹ {{ $item['price'] }}</td>
-                            <td class="p-2">{{ $item['quantity'] }}</td>
-                            <td class="p-2">₹ {{ $total }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
+            <div class="mb-3">
+                <label>Pincode</label>
+                <input type="text" name="pincode" class="w-full border p-2" required>
+            </div>
 
-                <tfoot>
-                    <tr class="bg-gray-100 font-bold border">
-                        <td colspan="3" class="p-2 text-right">Grand Total</td>
-                        <td class="p-2">₹ {{ $grandTotal }}</td>
-                    </tr>
-                </tfoot>
-            </table>
-
-            <!-- Place Order Button -->
-            <form method="POST" action="{{ route('order.place') }}"><br>
-                @csrf
-                <button class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
-                    🚀 Place Order
-                </button>
-            </form>
-
-        </div>
+            <button class="bg-blue-600 text-white px-6 py-2 rounded">
+                Place Order
+            </button>
+        </form>
     </div>
+
 </x-app-layout>
