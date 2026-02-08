@@ -38,25 +38,19 @@ public function place(Request $request)
         return redirect()->route('cart.index');
     }
 
-    $total = 0;
-    foreach ($cart as $item) {
-        $total += $item['price'] * $item['quantity'];
-    }
-
     Order::create([
+        'user_id' => auth()->id(),
         'name' => Auth::user()->name,
         'email' => Auth::user()->email,
-        'phone' => Auth::user()->phone ?? 'N/A',
-        'address' => Auth::user()->address ?? 'N/A',
-        'total_amount' => $total,
+        'phone' => '9999999999',
+        'address' => 'Test Address',
+        'total_amount' => 1000,
         'status' => 'Pending',
     ]);
 
     session()->forget('cart');
 
-    return redirect()
-        ->route('order.success')
-        ->with('success', 'Your order has been placed successfully 🎉');
+    return back()->with('success', 'Order saved test ✅');
 }
 
 }
