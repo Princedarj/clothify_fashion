@@ -50,9 +50,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/order/place', [OrderController::class, 'place'])
     ->middleware('auth')
     ->name('order.place');
+    
     Route::get('/order-success', function () {
     return view('checkout.success');
-})->name('order.success');
+    })->name('order.success');
 
 
 });
