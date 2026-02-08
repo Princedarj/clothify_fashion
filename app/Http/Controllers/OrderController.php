@@ -38,7 +38,19 @@ public function place(Request $request)
         return redirect()->route('cart.index');
     }
 
-    // order save logic here (already working)
+    $total = 0;
+    foreach ($cart as $item) {
+        $total += $item['price'] * $item['quantity'];
+    }
+
+    Order::create([
+        'name' => Auth::user()->name,
+        'email' => Auth::user()->email,
+        'phone' => Auth::user()->phone ?? 'N/A',
+        'address' => Auth::user()->address ?? 'N/A',
+        'total_amount' => $total,
+        'status' => 'Pending',
+    ]);
 
     session()->forget('cart');
 
@@ -46,4 +58,5 @@ public function place(Request $request)
         ->route('order.success')
         ->with('success', 'Your order has been placed successfully 🎉');
 }
+
 }
