@@ -16,16 +16,15 @@
             </thead>
 
             <tbody>
-                @foreach($orders as $order)
-                <tr class="border">
-                    <td class="p-2">#{{ $order->id }}</td>
-                    <td class="p-2">₹ {{ $order->total_amount }}</td>
-                    <td class="p-2 font-semibold">
-                        {{ $order->status }}
-                    </td>
-                    <td class="p-2">{{ $order->address }}</td>
-                </tr>
-                @endforeach
+                @foreach($order->items as $item)
+<tr>
+    <td>{{ $item->product_name }}</td>
+    <td>₹{{ $item->price }}</td>
+    <td>{{ $item->quantity }}</td>
+    <td>₹{{ $item->total }}</td>
+</tr>
+@endforeach
+
             </tbody>
         </table>
         @endif
