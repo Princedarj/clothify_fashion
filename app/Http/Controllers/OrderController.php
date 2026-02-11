@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Models\OrderItem;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class OrderController extends Controller
 {
@@ -25,7 +27,7 @@ class OrderController extends Controller
 
 public function myOrders()
 {
-    $orders = Order::where('email', auth()->user()->email)
+    $orders = Order::where('user_id', auth()->user()->id)
         ->with('items')
         ->latest()
         ->get();
@@ -47,6 +49,7 @@ public function place(Request $request)
 
     $cart = session()->get('cart', []);
 
+
     if (empty($cart)) {
         return redirect()->route('cart.index');
     }
@@ -59,10 +62,12 @@ public function place(Request $request)
 
     // ✅ Create order
     $order = Order::create([
+        'user_id' => Auth::id(),
         'name'         => $request->name,
         'email'        => $request->email,
         'phone'        => $request->phone,
         'address'      => $request->address,
+        'pincode'      => $request->pincode,
         'total_amount' => $totalAmount,
         'status'       => 'Pending',
     ]);
@@ -80,8 +85,50 @@ public function place(Request $request)
 
     session()->forget('cart');
 
-    return redirect()->route('order.success')
-        ->with('success', 'Your order has been placed successfully 🎉');
+    return redirect()->route('order.success', $order->id);
+
 }
+
+
+public function show($id)
+{
+    $order = Order::with('items')->findOrFail($id);
+
+    return view('admin.order-details', compact('order'));
+}
+
+public function invoice($id)
+{
+    $order = Order::with('items')->findOrFail($id);
+
+    $pdf = Pdf::loadView('admin.invoice', compact('order'));
+
+    return $pdf->download('invoice-order-'.$order->id.'.pdf');
+}
+
+
+
+public function userInvoice($id)
+{
+    $order = Order::with('items')
+        ->where('id', $id)
+        ->where('user_id', Auth::id()) // 🔐 security check
+        ->firstOrFail();
+
+    $pdf = Pdf::loadView('admin.invoice', compact('order'));
+
+    return $pdf->download('invoice-order-'.$order->id.'.pdf');
+}
+
+
+public function success($id)
+{
+    $order = Order::where('id', $id)
+        ->where('user_id', Auth::id())
+        ->firstOrFail();
+
+    return view('orders.success', compact('order'));
+}
+
 
 }

@@ -12,20 +12,29 @@
                     <th class="p-2">Total</th>
                     <th class="p-2">Status</th>
                     <th class="p-2">Address</th>
+                    <th class="p-2">Invoice</th>
                 </tr>
             </thead>
 
             <tbody>
-                @foreach($order->items as $item)
+@foreach($orders as $order)
 <tr>
-    <td>{{ $item->product_name }}</td>
-    <td>₹{{ $item->price }}</td>
-    <td>{{ $item->quantity }}</td>
-    <td>₹{{ $item->total }}</td>
+    <td class="p-2">{{ $order->id }}</td>
+    <td class="p-2">₹{{ $order->total_amount }}</td>
+    <td class="p-2">{{ $order->status }}</td>
+    <td class="p-2">{{ $order->address }}</td>
+
+    <td class="p-2">
+        <a href="{{ route('user.orders.invoice', $order->id) }}"
+           class="bg-blue-600 text-white px-3 py-1 rounded text-xs">
+            Download Invoice
+        </a>
+    </td>
 </tr>
 @endforeach
+</tbody>
 
-            </tbody>
+
         </table>
         @endif
     </div>

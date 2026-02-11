@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 
+
 /*
 |--------------------------------------------------------------------------
 | Public Routes
@@ -54,9 +55,44 @@ Route::middleware(['auth'])->group(function () {
     ->name('orders.my');
 
     // Order Success
-    Route::get('/order-success', function () {
-        return view('orders.success');
-    })->name('order.success');
+    Route::get('/order-success/{id}', [OrderController::class, 'success'])
+    ->name('order.success');
+
+
+    // Admin Routes
+    Route::middleware(['auth'])->group(function () {
+
+    Route::get('/admin/orders/{id}', [OrderController::class, 'show'])
+        ->name('admin.orders.show');
+
+    Route::post('/admin/orders/{id}/deliver', [OrderController::class, 'deliver'])
+        ->name('order.deliver');
+    });
+
+    //invoice
+
+    Route::get('/admin/orders/{id}/invoice', [OrderController::class, 'invoice'])
+    ->name('admin.orders.invoice')
+    ->middleware('auth');
+
+    Route::middleware(['auth'])->group(function () {
+
+    Route::get('/my-orders/{id}/invoice', [OrderController::class, 'userInvoice'])
+        ->name('user.orders.invoice');
+
+});
+
+    
+
+
+
+
+
+
+    Route::get('/destroy-session', function () {
+    session()->flush();
+    return "Session Destroyed!";
+});
 
 });
 

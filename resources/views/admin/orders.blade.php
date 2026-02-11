@@ -23,18 +23,28 @@
                     <td class="p-2">₹ {{ $order->total_amount }}</td>
                     <td class="p-2 font-semibold">{{ $order->status }}</td>
 
-                    <td class="p-2">
-                        @if($order->status != 'Delivered')
-                        <form method="POST" action="{{ route('order.deliver', $order->id) }}">
-                            @csrf
-                            <button class="bg-green-600 text-white px-3 py-1 rounded text-xs">
-                                Mark Delivered
-                            </button>
-                        </form>
-                        @else
-                            <span class="text-green-600 font-bold">Delivered</span>
-                        @endif
-                    </td>
+                    <td class="p-2 space-y-2">
+
+    <!-- ✅ View Button -->
+    <a href="{{ route('admin.orders.show', $order->id) }}"
+       class="bg-blue-600 text-white px-3 py-1 rounded text-xs inline-block">
+        View
+    </a>
+
+    <!-- ✅ Deliver Button -->
+    @if($order->status != 'Delivered')
+        <form method="POST" action="{{ route('order.deliver', $order->id) }}">
+            @csrf
+            <button class="bg-green-600 text-white px-3 py-1 rounded text-xs">
+                Mark Delivered
+            </button>
+        </form>
+    @else
+        <span class="text-green-600 font-bold text-xs">Delivered</span>
+    @endif
+
+</td>
+
                 </tr>
                 @endforeach
             </tbody>
