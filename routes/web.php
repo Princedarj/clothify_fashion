@@ -6,7 +6,6 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 
-
 /*
 |--------------------------------------------------------------------------
 | Public Routes
@@ -20,14 +19,16 @@ Route::get('/', function () {
 Route::get('/products', [ProductController::class, 'index'])
     ->name('products.index');
 
+
 /*
 |--------------------------------------------------------------------------
-| Authenticated Routes
+| Authenticated User Routes
 |--------------------------------------------------------------------------
 */
 
 Route::middleware(['auth'])->group(function () {
 
+    // Dashboard
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
@@ -44,61 +45,55 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/cart/decrease/{id}', [CartController::class, 'decrease'])->name('cart.decrease');
 
     // Checkout
-    Route::get('/checkout', [CartController::class, 'checkout'])
-        ->name('checkout');
+    Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
 
     // Place Order
-    Route::post('/order/place', [OrderController::class, 'place'])
-        ->name('order.place');
-
-    Route::get('/my-orders', [OrderController::class, 'myOrders'])
-    ->name('orders.my');
+    Route::post('/order/place', [OrderController::class, 'place'])->name('order.place');
 
     // Order Success
     Route::get('/order-success/{id}', [OrderController::class, 'success'])
-    ->name('order.success');
+        ->name('order.success');
 
-
-    // Admin Routes
-    Route::middleware(['auth'])->group(function () {
-
-    Route::get('/admin/orders/{id}', [OrderController::class, 'show'])
-        ->name('admin.orders.show');
-
-    Route::post('/admin/orders/{id}/deliver', [OrderController::class, 'deliver'])
-        ->name('order.deliver');
-    });
-
-    //invoice
-
-    Route::get('/admin/orders/{id}/invoice', [OrderController::class, 'invoice'])
-    ->name('admin.orders.invoice')
-    ->middleware('auth');
-
-    Route::middleware(['auth'])->group(function () {
+    // My Orders
+    Route::get('/my-orders', [OrderController::class, 'myOrders'])
+        ->name('orders.my');
 
     Route::get('/my-orders/{id}/invoice', [OrderController::class, 'userInvoice'])
         ->name('user.orders.invoice');
 
 });
 
-    
 
+/*
+|--------------------------------------------------------------------------
+| Admin Routes (Protected by admin middleware)
+|--------------------------------------------------------------------------
+*/
 
+Route::middleware(['auth', 'admin'])->group(function () {
 
+    Route::get('/admin/dashboard', [OrderController::class, 'adminDashboard'])
+        ->name('admin.dashboard');
 
+    Route::get('/admin/orders/{id}', [OrderController::class, 'show'])
+        ->name('admin.orders.show');
 
+    Route::post('/admin/orders/{id}/deliver', [OrderController::class, 'deliver'])
+        ->name('order.deliver');
 
-    Route::get('/destroy-session', function () {
-    session()->flush();
-    return "Session Destroyed!";
+    Route::get('/admin/orders/{id}/invoice', [OrderController::class, 'invoice'])
+        ->name('admin.orders.invoice');
+
+    Route::get('/admin/orders', [OrderController::class, 'adminOrders'])
+        ->name('admin.orders');
+
 });
 
-});
 
 /*
 |--------------------------------------------------------------------------
 | Auth Routes
 |--------------------------------------------------------------------------
 */
+
 require __DIR__.'/auth.php';

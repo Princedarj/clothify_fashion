@@ -21,33 +21,50 @@
                     <td class="p-2">{{ $order->name }}</td>
                     <td class="p-2">{{ $order->address }}</td>
                     <td class="p-2">₹ {{ $order->total_amount }}</td>
-                    <td class="p-2 font-semibold">{{ $order->status }}</td>
+                    <td class="p-2">
+                        <span class="px-2 py-1 rounded text-white text-xs
+                            @if($order->status == 'Delivered') bg-green-500
+                            @elseif($order->status == 'Pending') bg-yellow-500
+                            @else bg-gray-500
+                            @endif">
+                            {{ $order->status }}
+                        </span>
+                    </td>
+
 
                     <td class="p-2 space-y-2">
 
-    <!-- ✅ View Button -->
-    <a href="{{ route('admin.orders.show', $order->id) }}"
-       class="bg-blue-600 text-white px-3 py-1 rounded text-xs inline-block">
-        View
-    </a>
+                        <a href="{{ route('admin.orders.show', $order->id) }}"
+                        class="bg-blue-600 text-white px-3 py-1 rounded text-xs inline-block">
+                            View
+                        </a>
 
-    <!-- ✅ Deliver Button -->
-    @if($order->status != 'Delivered')
-        <form method="POST" action="{{ route('order.deliver', $order->id) }}">
-            @csrf
-            <button class="bg-green-600 text-white px-3 py-1 rounded text-xs">
-                Mark Delivered
-            </button>
-        </form>
-    @else
-        <span class="text-green-600 font-bold text-xs">Delivered</span>
-    @endif
+                        <a href="{{ route('admin.orders.invoice', $order->id) }}"
+                        class="bg-purple-600 text-white px-3 py-1 rounded text-xs inline-block">
+                            Invoice
+                        </a>
 
-</td>
+                        @if($order->status != 'Delivered')
+                            <form method="POST" action="{{ route('order.deliver', $order->id) }}">
+                                @csrf
+                                <button class="bg-green-600 text-white px-3 py-1 rounded text-xs">
+                                    Mark Delivered
+                                </button>
+                            </form>
+                        @else
+                            <span class="text-green-600 font-bold text-xs">Delivered</span>
+                        @endif
+
+                    </td>
+
 
                 </tr>
                 @endforeach
             </tbody>
         </table>
+        <div class="mt-4">
+            {{ $orders->links() }}
+        </div>
+
     </div>
 </x-app-layout>

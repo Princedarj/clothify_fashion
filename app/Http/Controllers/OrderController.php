@@ -6,6 +6,8 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Models\OrderItem;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 
 class OrderController extends Controller
@@ -129,6 +131,45 @@ public function success($id)
 
     return view('orders.success', compact('order'));
 }
+
+
+public function adminDashboard()
+{
+    $totalOrders = Order::count();
+
+    $totalRevenue = Order::where('status', 'Delivered')
+        ->sum('total_amount');
+
+    $totalUsers = \App\Models\User::count();
+
+    $pendingOrders = Order::where('status', 'Pending')->count();
+
+    // Monthly revenue data
+    $monthlySales = Order::select(
+            DB::raw("MONTH(created_at) as month"),
+            DB::raw("SUM(total_amount) as total")
+        )
+        ->where('status', 'Delivered')
+        ->groupBy(DB::raw("MONTH(created_at)"))
+        ->pluck('total', 'month');
+
+    return view('admin.dashboard', compact(
+        'totalOrders',
+        'totalRevenue',
+        'totalUsers',
+        'pendingOrders',
+        'monthlySales'
+    ));
+}
+
+public function adminOrders()
+{
+    $orders = Order::latest()->paginate(10);
+
+    return view('admin.orders', compact('orders'));
+}
+
+
 
 
 }
