@@ -8,6 +8,8 @@ use App\Models\OrderItem;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use App\Exports\OrdersExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class OrderController extends Controller
@@ -144,7 +146,6 @@ public function adminDashboard()
 
     $pendingOrders = Order::where('status', 'Pending')->count();
 
-    // Monthly revenue data
     $monthlySales = Order::select(
             DB::raw("MONTH(created_at) as month"),
             DB::raw("SUM(total_amount) as total")
@@ -153,23 +154,62 @@ public function adminDashboard()
         ->groupBy(DB::raw("MONTH(created_at)"))
         ->pluck('total', 'month');
 
+    // ✅ ADD THIS
+    $recentOrders = Order::latest()->take(5)->get();
+
     return view('admin.dashboard', compact(
         'totalOrders',
         'totalRevenue',
         'totalUsers',
         'pendingOrders',
-        'monthlySales'
+        'monthlySales',
+        'recentOrders' // add here
     ));
 }
-
-public function adminOrders()
+public function adminOrders(Request $request)
 {
-    $orders = Order::latest()->paginate(10);
+    $query = Order::query();
+
+    // Search by customer name
+    if ($request->filled('search')) {
+        $query->where('name', 'like', '%' . $request->search . '%');
+    }
+
+    // Filter by status
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    }
+
+    // Filter by date
+    if ($request->filled('date')) {
+        if ($request->date == 'today') {
+            $query->whereDate('created_at', now());
+        } elseif ($request->date == 'month') {
+            $query->whereMonth('created_at', now()->month);
+        }
+    }
+
+    $orders = $query->latest()->paginate(10);
 
     return view('admin.orders', compact('orders'));
+}   
+
+
+public function export(Request $request)
+{
+    $query = Order::query();
+
+    if ($request->filled('search')) {
+        $query->where('name', 'like', '%' . $request->search . '%');
+    }
+
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    }
+
+    $orders = $query->latest()->get();
+
+    return Excel::download(new OrdersExport($orders), 'orders.xlsx');
 }
-
-
-
 
 }

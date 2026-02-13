@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,7 +62,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/my-orders/{id}/invoice', [OrderController::class, 'userInvoice'])
         ->name('user.orders.invoice');
 
-});
+    Route::get('/admin/orders/export', [OrderController::class, 'export'])
+    ->name('admin.orders.export');
+
+
+        });
 
 
 /*
@@ -88,7 +93,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
         ->name('admin.orders');
 
 });
-
 
 /*
 |--------------------------------------------------------------------------

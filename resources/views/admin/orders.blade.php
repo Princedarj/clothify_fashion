@@ -2,6 +2,36 @@
     <div class="py-8 max-w-6xl mx-auto">
         <h2 class="text-xl font-bold mb-4">Admin Orders 📦</h2>
 
+        <form method="GET" class="mb-4 flex gap-4">
+
+            <input type="text" name="search"
+                placeholder="Search customer..."
+                value="{{ request('search') }}"
+                class="border p-2 rounded">
+
+            <select name="status" class="border p-2 rounded">
+                <option value="">All Status</option>
+                <option value="Pending" {{ request('status') == 'Pending' ? 'selected' : '' }}>Pending</option>
+                <option value="Delivered" {{ request('status') == 'Delivered' ? 'selected' : '' }}>Delivered</option>
+            </select>
+
+            <select name="date" class="border p-2 rounded">
+                <option value="">All Dates</option>
+                <option value="today" {{ request('date') == 'today' ? 'selected' : '' }}>Today</option>
+                <option value="month" {{ request('date') == 'month' ? 'selected' : '' }}>This Month</option>
+            </select>
+
+            <button class="bg-black text-white px-4 py-2 rounded">
+                Filter
+            </button>
+            
+            <a href="{{ route('admin.orders.export', request()->query()) }}"
+                class="bg-green-600 text-white px-4 py-2 rounded">
+                Export Excel
+            </a>
+
+        </form>
+
         <table class="w-full border text-center text-sm">
             <thead class="bg-gray-100">
                 <tr>
