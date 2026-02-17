@@ -65,35 +65,49 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/orders/export', [OrderController::class, 'export'])
     ->name('admin.orders.export');
 
+    Route::get('/admin/orders/{id}', [OrderController::class, 'show'])
+    ->name('admin.orders.show');
+
 
         });
 
-
 /*
 |--------------------------------------------------------------------------
-| Admin Routes (Protected by admin middleware)
+| Admin Routes
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'admin'])->group(function () {
+Route::middleware(['auth', 'admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
 
-    Route::get('/admin/dashboard', [OrderController::class, 'adminDashboard'])
-        ->name('admin.dashboard');
+        Route::get('/dashboard', [AdminController::class, 'dashboard'])
+            ->name('dashboard');
 
-    Route::get('/admin/orders/{id}', [OrderController::class, 'show'])
-        ->name('admin.orders.show');
+        Route::get('/orders', [AdminController::class, 'orders'])
+            ->name('orders');
 
-    Route::post('/admin/orders/{id}/deliver', [OrderController::class, 'deliver'])
-        ->name('order.deliver');
+        Route::get('/users', [AdminController::class, 'users'])
+            ->name('users');
 
-    Route::get('/admin/orders/{id}/invoice', [OrderController::class, 'invoice'])
-        ->name('admin.orders.invoice');
+        Route::resource('products', ProductController::class);
 
-    Route::get('/admin/orders', [OrderController::class, 'adminOrders'])
-        ->name('admin.orders');
+        Route::post('/orders/{id}/deliver', [OrderController::class, 'deliver'])
+            ->name('orders.deliver');
 
+    });
+
+
+Route::get('/admin/orders', [AdminController::class, 'orders'])
+    ->name('admin.orders');
+Route::get('/admin/users', [AdminController::class, 'users'])
+    ->name('admin.users');
+
+Route::middleware(['auth'])->group(function () {
+
+  
 });
-
 /*
 |--------------------------------------------------------------------------
 | Auth Routes

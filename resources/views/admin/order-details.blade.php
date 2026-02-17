@@ -19,16 +19,16 @@
                 <span class="px-3 py-1 rounded 
                     {{ $order->status == 'Delivered' ? 'bg-green-200 text-green-800' : 'bg-yellow-200 text-yellow-800' }}">
                     <span class="px-3 py-1 rounded-full text-sm font-semibold
-    {{ $order->status == 'Delivered' 
-        ? 'bg-green-100 text-green-700' 
-        : 'bg-yellow-100 text-yellow-700' }}">
-    {{ $order->status }}
-</span>
+                        {{ $order->status == 'Delivered' 
+                            ? 'bg-green-100 text-green-700' 
+                            : 'bg-yellow-100 text-yellow-700' }}">
+                        {{ $order->status }}
+                    </span>
 
                 </span>
             </p>
             @if($order->status != 'Delivered')
-    <form method="POST" action="{{ route('order.deliver', $order->id) }}" class="mt-4">
+    <form method="POST" action="{{ route('admin.orders.deliver', $order->id) }}" class="mt-4">
         @csrf
         <button class="bg-green-600 text-white px-4 py-2 rounded">
             Mark as Delivered

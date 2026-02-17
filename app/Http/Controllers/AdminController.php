@@ -12,7 +12,7 @@ class AdminController extends Controller
     {
         $totalOrders = Order::count();
         $totalUsers = User::count();
-        $totalRevenue = Order::sum('amount');
+        $totalRevenue = Order::sum('total_amount');
         $pendingOrders = Order::where('status', 'Pending')->count();
 
         // Monthly Revenue (group by month)
@@ -24,12 +24,30 @@ class AdminController extends Controller
             ->orderBy('month')
             ->pluck('total', 'month');
 
-        return view('admin.dashboard', compact(
-            'totalOrders',
-            'totalUsers',
-            'totalRevenue',
-            'pendingOrders',
-            'monthlySales'
-        ));
+        // Recent Orders
+        $recentOrders = Order::latest()->take(5)->get();
+
+       return view('admin.dashboard', compact(
+                    'recentOrders',
+                    'totalOrders',
+                    'totalRevenue',
+                    'totalUsers',
+                    'pendingOrders',
+                    'monthlySales',
+                ));
     }
+    
+
+    public function orders()
+    {
+        $orders = Order::with('user')->latest()->paginate(10);
+        return view('admin.orders', compact('orders'));
+    }
+
+ 
+public function users()
+{
+    $users = User::latest()->paginate(10);
+    return view('admin.users', compact('users'));
+}
 }                                                   

@@ -34,8 +34,12 @@
                    📦 Orders
                 </a>
 
-                <a href="#" class="block px-4 py-2 rounded hover:bg-gray-700">
-                   👕 Products
+                <a href="{{ route('admin.products.index') }}"
+                    class="block px-4 py-2 rounded 
+                    {{ request()->is('admin/products*') 
+                        ? 'bg-gray-700 text-white' 
+                        : 'hover:bg-gray-700' }}">
+                    👕 Products
                 </a>
 
                 <a href="#" class="block px-4 py-2 rounded hover:bg-gray-700">

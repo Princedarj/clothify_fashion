@@ -14,12 +14,17 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
 {
+
+// ✅ ADMIN VIEW ALL ORDERS
     public function index()
     {
         $orders = Order::latest()->get();
         return view('admin.orders', compact('orders'));
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////
+
+    // ✅ ADMIN MARK ORDER AS DELIVERED
     public function deliver($id)
     {
         $order = Order::findOrFail($id);
@@ -29,6 +34,9 @@ class OrderController extends Controller
         return back();
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////
+
+    // ✅ USER VIEW MY ORDERS
 public function myOrders()
 {
     $orders = Order::where('user_id', auth()->user()->id)
@@ -39,8 +47,9 @@ public function myOrders()
     return view('orders.my', compact('orders'));
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-
+/// ✅ PLACE ORDER
 public function place(Request $request)
 {
     $request->validate([
@@ -93,7 +102,9 @@ public function place(Request $request)
 
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 
+// ✅ ADMIN VIEW ORDER DETAILS
 public function show($id)
 {
     $order = Order::with('items')->findOrFail($id);
@@ -101,6 +112,9 @@ public function show($id)
     return view('admin.order-details', compact('order'));
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+// ✅ ADMIN INVOICE DOWNLOAD
 public function invoice($id)
 {
     $order = Order::with('items')->findOrFail($id);
@@ -110,8 +124,9 @@ public function invoice($id)
     return $pdf->download('invoice-order-'.$order->id.'.pdf');
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////
 
-
+/// ✅ USER INVOICE DOWNLOAD
 public function userInvoice($id)
 {
     $order = Order::with('items')
@@ -124,7 +139,9 @@ public function userInvoice($id)
     return $pdf->download('invoice-order-'.$order->id.'.pdf');
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 
+// ✅ ORDER SUCCESS PAGE
 public function success($id)
 {
     $order = Order::where('id', $id)
@@ -134,7 +151,9 @@ public function success($id)
     return view('orders.success', compact('order'));
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////
 
+// ✅ ADMIN DASHBOARD WITH STATS & RECENT ORDERS
 public function adminDashboard()
 {
     $totalOrders = Order::count();
@@ -166,6 +185,10 @@ public function adminDashboard()
         'recentOrders' // add here
     ));
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// ✅ ADMIN ORDERS WITH SEARCH & FILTER
 public function adminOrders(Request $request)
 {
     $query = Order::query();
@@ -194,7 +217,9 @@ public function adminOrders(Request $request)
     return view('admin.orders', compact('orders'));
 }   
 
+//////////////////////////////////////////////////////////////////////////////////////////////
 
+// ✅ EXPORT ORDERS TO EXCEL
 public function export(Request $request)
 {
     $query = Order::query();
@@ -211,5 +236,6 @@ public function export(Request $request)
 
     return Excel::download(new OrdersExport($orders), 'orders.xlsx');
 }
+
 
 }
