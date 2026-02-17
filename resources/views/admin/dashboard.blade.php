@@ -4,25 +4,29 @@
 
 <h2 class="text-2xl font-bold mb-6">Admin Dashboard 📊</h2>
 
-<div class="grid grid-cols-4 gap-6">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
 
+    <!-- Total Orders -->
     <div class="bg-blue-500 text-white p-6 rounded shadow">
-        <h3>Total Orders</h3>
+        <h3 class="text-lg">Total Orders</h3>
         <p class="text-3xl font-bold">{{ $totalOrders }}</p>
     </div>
 
+    <!-- Total Revenue -->
     <div class="bg-green-500 text-white p-6 rounded shadow">
-        <h3>Total Revenue</h3>
+        <h3 class="text-lg">Total Revenue</h3>
         <p class="text-3xl font-bold">₹{{ $totalRevenue }}</p>
     </div>
 
+    <!-- Total Users -->
     <div class="bg-purple-500 text-white p-6 rounded shadow">
-        <h3>Total Users</h3>
+        <h3 class="text-lg">Total Users</h3>
         <p class="text-3xl font-bold">{{ $totalUsers }}</p>
     </div>
 
+    <!-- Pending Orders -->
     <div class="bg-red-500 text-white p-6 rounded shadow">
-        <h3>Pending Orders</h3>
+        <h3 class="text-lg">Pending Orders</h3>
         <p class="text-3xl font-bold">{{ $pendingOrders }}</p>
     </div>
 
