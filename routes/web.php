@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\AdminProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,6 +69,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/orders/{id}', [OrderController::class, 'show'])
     ->name('admin.orders.show');
 
+    // Products
+    Route::get('/products', [ProductController::class, 'index'])
+    ->name('products.index');
 
         });
 
@@ -76,7 +80,6 @@ Route::middleware(['auth'])->group(function () {
 | Admin Routes
 |--------------------------------------------------------------------------
 */
-
 Route::middleware(['auth', 'admin'])
     ->prefix('admin')
     ->name('admin.')
@@ -91,18 +94,19 @@ Route::middleware(['auth', 'admin'])
         Route::get('/users', [AdminController::class, 'users'])
             ->name('users');
 
-        Route::resource('products', ProductController::class);
+        Route::resource('products', AdminProductController::class);
 
         Route::post('/orders/{id}/deliver', [OrderController::class, 'deliver'])
             ->name('orders.deliver');
 
+        Route::get('/products', [AdminProductController::class, 'index'])->name('products.index');
+
+        Route::get('/products/{id}/edit', [AdminProductController::class, 'edit'])->name('products.edit');
+
+        Route::put('/products/{id}', [AdminProductController::class, 'update'])->name('products.update');
+
     });
 
-
-Route::get('/admin/orders', [AdminController::class, 'orders'])
-    ->name('admin.orders');
-Route::get('/admin/users', [AdminController::class, 'users'])
-    ->name('admin.users');
 
 Route::middleware(['auth'])->group(function () {
 

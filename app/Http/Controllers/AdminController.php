@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\User;
+use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
@@ -12,6 +13,7 @@ class AdminController extends Controller
     {
         $totalOrders = Order::count();
         $totalUsers = User::count();
+        $totalproducts = Product::count();
         $totalRevenue = Order::sum('total_amount');
         $pendingOrders = Order::where('status', 'Pending')->count();
 

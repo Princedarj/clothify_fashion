@@ -12,7 +12,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::latest()->get();
-        return view('admin.products.index', compact('products'));
+        return view('products.index', compact('products'));
     }
 
     ///////////////////////////////////////////////////////////////////////////////////
@@ -43,7 +43,7 @@ class ProductController extends Controller
                 $imageName = time() . '.' . $request->image->extension();
                 $request->image->move(public_path('uploads/products'), $imageName);
             }
-
+            
             // Save to Database
             Product::create([
                 'name' => $request->name,
@@ -80,5 +80,14 @@ class ProductController extends Controller
     {
         $product->delete();
         return redirect()->route('admin.products.index');
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+
+    // ✅ PUBLIC VIEW SINGLE PRODUCT
+   public function show($id)
+    {
+        $product = Product::findOrFail($id);
+        return view('products.show', compact('product'));
     }
 }
