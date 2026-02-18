@@ -2,92 +2,87 @@
 
 @section('content')
 
-<div class="container py-4">
+<div class="max-w-3xl mx-auto bg-white shadow-lg rounded-xl p-8">
 
-    <div class="card shadow-lg border-0 rounded-4">
-        <div class="card-header bg-dark text-white rounded-top-4">
-            <h4 class="mb-0">🛍 Add New Product</h4>
+    <h2 class="text-2xl font-bold mb-6 text-gray-800 flex items-center gap-2">
+        📦 Add New Product
+    </h2>
+
+    <form action="{{ route('admin.products.store') }}" 
+          method="POST" 
+          enctype="multipart/form-data"
+          class="space-y-6">
+
+        @csrf
+
+        <!-- Product Name -->
+        <div>
+            <label class="block mb-2 font-semibold text-gray-700">
+                Product Name
+            </label>
+            <input type="text" 
+                   name="name" 
+                   placeholder="Enter product name"
+                   class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                   required>
         </div>
 
-        <div class="card-body p-4">
+        <!-- Price -->
+        <div>
+            <label class="block mb-2 font-semibold text-gray-700">
+                Price (₹)
+            </label>
+            <input type="number" 
+                   name="price" 
+                   placeholder="Enter price"
+                   class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-500 focus:outline-none"
+                   required>
+        </div>
 
-            {{-- Validation Errors --}}
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+        <!-- Description -->
+        <div>
+            <label class="block mb-2 font-semibold text-gray-700">
+                Description
+            </label>
+            <textarea name="description"
+                      rows="4"
+                      placeholder="Enter product description"
+                      class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                      required></textarea>
+        </div>
 
-            <form action="{{ route('admin.products.store') }}"
-                  method="POST"
-                  enctype="multipart/form-data">
+        <!-- Image Upload -->
+        <div>
+            <label class="block mb-2 font-semibold text-gray-700">
+                Product Image
+            </label>
+            <input type="file" 
+                   name="image"
+                   accept=".jpg,.jpeg,.png,.pdf"
+                   class="w-full border border-gray-300 rounded-lg p-3 bg-gray-50"
+                   required>
 
-                @csrf
+            <p class="text-sm text-gray-500 mt-2">
+                Allowed formats: JPG, JPEG, PNG, PDF (Max 2MB)
+            </p>
+        </div>
 
-                {{-- Product Name --}}
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Product Name</label>
-                    <input type="text"
-                           name="name"
-                           class="form-control form-control-lg"
-                           placeholder="Enter product name"
-                           required>
-                </div>
+        <!-- Buttons -->
+        <div class="flex justify-between items-center pt-4">
 
-                {{-- Price --}}
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Price (₹)</label>
-                    <input type="number"
-                           name="price"
-                           step="0.01"
-                           class="form-control form-control-lg"
-                           placeholder="Enter price"
-                           required>
-                </div>
+            <a href="{{ route('admin.products.index') }}"
+               class="px-6 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition">
+               ← Back
+            </a>
 
-                {{-- Description --}}
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Description</label>
-                    <textarea name="description"
-                              rows="4"
-                              class="form-control"
-                              placeholder="Enter product description"></textarea>
-                </div>
-
-                {{-- Image --}}
-                <div class="mb-4">
-                    <label class="form-label fw-bold">Product Image</label>
-                    <input type="file"
-                           name="image"
-                           class="form-control"
-                           accept=".jpg,.jpeg,.png,.pdf">
-                    <small class="text-muted">
-                        Allowed formats: JPG, JPEG, PNG, PDF (Max 2MB)
-                    </small>
-                </div>
-
-                {{-- Buttons --}}
-                <div class="d-flex justify-content-between">
-                    <a href="{{ route('admin.products.index') }}"
-                       class="btn btn-outline-secondary px-4">
-                        ← Back
-                    </a>
-
-                    <button type="submit"
-                            class="btn btn-success px-4">
-                        💾 Save Product
-                    </button>
-                </div>
-
-            </form>
+            <button type="submit"
+                    class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow">
+                💾 Save Product
+            </button>
 
         </div>
-    </div>
 
+    </form>
 </div>
 
 @endsection
