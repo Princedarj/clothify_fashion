@@ -42,9 +42,14 @@
                     👕 Products
                 </a>
 
-                <a href="#" class="block px-4 py-2 rounded hover:bg-gray-700">
-                   👥 Users
+                <a href="{{ route('admin.users.index') }}"
+                    class="block px-4 py-2 rounded 
+                    {{ request()->is('admin/users*') 
+                        ? 'bg-gray-700 text-white' 
+                        : 'hover:bg-gray-700' }}">
+                    👥 Users
                 </a>
+
 
             </nav>
         </div>

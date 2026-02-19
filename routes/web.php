@@ -105,6 +105,9 @@ Route::middleware(['auth', 'admin'])
 
         Route::put('/products/{id}', [AdminProductController::class, 'update'])->name('products.update');
 
+        Route::get('/users', [App\Http\Controllers\Admin\UserController::class, 'index'])
+        ->name('users.index');
+
     });
 
 
