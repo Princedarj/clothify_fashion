@@ -16,6 +16,24 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
+        <!-- Phone -->
+        <div class="mt-4">
+            <x-input-label for="phone" :value="__('Phone')" />
+            <x-text-input id="phone" class="block mt-1 w-full"
+                type="text"
+                name="phone"
+                :value="old('phone')" />
+        </div>
+
+        <!-- City -->
+        <div class="mt-4">
+            <x-input-label for="city" :value="__('City')" />
+            <x-text-input id="city" class="block mt-1 w-full"
+                type="text"
+                name="city"
+                :value="old('city')" />
+        </div>
+
         <!-- Preferred Language -->
         <div class="mt-4">
             <x-input-label for="language" :value="__('Preferred Language')" />

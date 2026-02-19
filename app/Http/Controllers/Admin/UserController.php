@@ -9,9 +9,11 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::withCount('orders')->get();
+        $users = User::where('role', 'user')
+            ->withCount('orders')
+            ->get();
 
-        $totalUsers = User::count();
+        $totalUsers = User::where('role', 'user')->count();
 
         return view('admin.users.index', compact('users', 'totalUsers'));
     }

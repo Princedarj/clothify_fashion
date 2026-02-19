@@ -22,6 +22,8 @@ class User extends Authenticatable
         'email',
         'password',
         'language',
+        'phone',
+        'city',
     ];
 
     /**
@@ -51,5 +53,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Models\Order::class);
     }
+
+    public function scopeUsers($query)
+    {
+        return $query->where('role', 'user');
+    }
+
 
 }
