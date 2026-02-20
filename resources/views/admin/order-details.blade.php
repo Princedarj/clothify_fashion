@@ -27,23 +27,25 @@
 
                 </span>
             </p>
-            @if($order->status != 'Delivered')
-    <form method="POST" action="{{ route('admin.orders.deliver', $order->id) }}" class="mt-4">
-        @csrf
-        <button class="bg-green-600 text-white px-4 py-2 rounded">
-            Mark as Delivered
-        </button>
-        <td class="p-2">
-    <a href="{{ route('user.orders.invoice', $order->id) }}"
-       class="bg-blue-600 text-white px-3 py-1 rounded text-xs">
-        Download Invoice
-    </a>
-</td>
+            <div class="mt-4 flex gap-3">
+                {{-- Mark as Delivered --}}
+                @if($order->status !== 'Delivered')
+                    <form method="POST" action="{{ route('admin.orders.deliver', $order->id) }}">
+                        @csrf
+                        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded">
+                            Mark as Delivered
+                        </button>
+                    </form>
+                @endif
 
-
-    </form>
-@endif
-
+                {{-- Invoice Button (ALWAYS SHOW except cancelled) --}}
+                @if($order->status !== 'cancelled')
+                    <a href="{{ route('admin.invoice', $order->id) }}"
+                        class="bg-blue-600 text-white px-4 py-2 rounded">
+                        Download Invoice
+                    </a>
+                @endif
+            </div>
         </div>
 
         <div class="bg-white shadow rounded p-6">

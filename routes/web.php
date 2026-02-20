@@ -98,6 +98,9 @@ Route::middleware(['auth', 'admin'])
 
         Route::post('/orders/{id}/deliver', [OrderController::class, 'deliver'])
             ->name('orders.deliver');
+        
+        Route::get('/orders/{id}/invoice', [OrderController::class, 'invoice'])
+            ->name('invoice');
 
         Route::get('/products', [AdminProductController::class, 'index'])->name('products.index');
 
