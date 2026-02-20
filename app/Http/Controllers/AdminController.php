@@ -12,7 +12,7 @@ class AdminController extends Controller
     public function dashboard()
     {
         $totalOrders = Order::count();
-        $totalUsers = User::count();
+        $totalUsers = User::where('role', 'user')->count();
         $totalproducts = Product::count();
         $totalRevenue = Order::sum('total_amount');
         $pendingOrders = Order::where('status', 'Pending')->count();
@@ -49,7 +49,7 @@ class AdminController extends Controller
  
 public function users()
 {
-    $users = User::latest()->paginate(10);
+    $users = User::where('role', 'user')->count();
     return view('admin.users', compact('users'));
 }
 }                                                   
