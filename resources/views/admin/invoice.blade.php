@@ -32,6 +32,7 @@
 
     .logo {
         width: 120px;
+        border-radius: 60px;
     }
 
     .invoice-details {
@@ -100,7 +101,7 @@
 <!-- Header -->
 <div class="header">
     <div>
-        <img src="{{ public_path('images/logo.png') }}" class="logo">
+        <img src="{{ public_path('uploads/Image/clothify.png') }}" class="logo">
         <p><strong>Clothify Fashions</strong><br>
         123 Fashion Street<br>
         Mumbai, India<br>
