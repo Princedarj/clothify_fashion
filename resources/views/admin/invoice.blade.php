@@ -1,151 +1,176 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>Invoice</title>
+<meta charset="utf-8">
+<title>Invoice</title>
 
-    <style>
-        body {
-            font-family: DejaVu Sans, sans-serif;
-            color: #1f2937;
-            font-size: 14px;
-            margin: 40px;
-        }
+<style>
+    body {
+        font-family: DejaVu Sans, sans-serif;
+        font-size: 14px;
+        color: #1f2937;
+        margin: 40px;
+        position: relative;
+    }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #e5e7eb;
-            padding-bottom: 15px;
-        }
+    .watermark {
+        position: fixed;
+        top: 40%;
+        left: 25%;
+        font-size: 100px;
+        color: rgba(34,197,94,0.15);
+        transform: rotate(-30deg);
+        z-index: -1;
+    }
 
-        .logo {
-            width: 120px;
-        }
+    .header {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 2px solid #e5e7eb;
+        padding-bottom: 15px;
+    }
 
-        .invoice-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: #111827;
-        }
+    .logo {
+        width: 120px;
+    }
 
-        .section {
-            margin-top: 25px;
-        }
+    .invoice-details {
+        text-align: right;
+    }
 
-        .section h3 {
-            font-size: 16px;
-            margin-bottom: 8px;
-            color: #374151;
-        }
+    .section {
+        margin-top: 25px;
+    }
 
-        .info p {
-            margin: 3px 0;
-        }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
+    table th {
+        background: #111827;
+        color: white;
+        padding: 10px;
+        text-align: left;
+    }
 
-        table th {
-            background-color: #111827;
-            color: #ffffff;
-            padding: 10px;
-            text-align: left;
-            font-weight: 600;
-        }
+    table td {
+        padding: 10px;
+        border-bottom: 1px solid #e5e7eb;
+    }
 
-        table td {
-            padding: 10px;
-            border-bottom: 1px solid #e5e7eb;
-        }
+    .text-right {
+        text-align: right;
+    }
 
-        .text-right {
-            text-align: right;
-        }
+    .totals {
+        margin-top: 20px;
+        width: 40%;
+        float: right;
+    }
 
-        .total-box {
-            margin-top: 20px;
-            text-align: right;
-            font-size: 16px;
-            font-weight: bold;
-            color: #111827;
-        }
+    .totals td {
+        padding: 6px 10px;
+    }
 
-        .footer {
-            margin-top: 50px;
-            text-align: center;
-            font-size: 12px;
-            color: #6b7280;
-        }
-    </style>
+    .grand-total {
+        font-weight: bold;
+        font-size: 16px;
+        border-top: 2px solid #111827;
+    }
+
+    .footer {
+        margin-top: 80px;
+        text-align: center;
+        font-size: 12px;
+        color: #6b7280;
+        border-top: 1px solid #e5e7eb;
+        padding-top: 10px;
+    }
+</style>
 </head>
+
 <body>
 
-    <!-- Header -->
-    <div class="header">
-        <div>
-            <img src="{{ public_path('uploads/Image/Clothify.png') }}" class="logo">
-        </div>
+@if($order->status == 'Delivered')
+<div class="watermark">PAID</div>
+@endif
 
-        <div>
-            <div class="invoice-title">INVOICE</div>
-            <div>Order #{{ $order->id }}</div>
-            <div>{{ $order->created_at->format('d M Y') }}</div>
-        </div>
+<!-- Header -->
+<div class="header">
+    <div>
+        <img src="{{ public_path('images/logo.png') }}" class="logo">
+        <p><strong>Clothify Fashions</strong><br>
+        123 Fashion Street<br>
+        Mumbai, India<br>
+        support@clothify.com</p>
     </div>
 
-    <!-- Customer Info -->
-    <div class="section">
-        <h3>Billing Details</h3>
-        <div class="info">
-            <p><strong>Name:</strong> {{ $order->name }}</p>
-            <p><strong>Email:</strong> {{ $order->email }}</p>
-            <p><strong>Phone:</strong> {{ $order->phone }}</p>
-            <p><strong>Address:</strong> {{ $order->address }}</p>
-            <p><strong>Status:</strong> {{ $order->status }}</p>
-        </div>
+    <div class="invoice-details">
+        <h2>INVOICE</h2>
+        <p><strong>Invoice No:</strong> INV-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</p>
+        <p><strong>Date:</strong> {{ $order->created_at->format('d M Y') }}</p>
+        <p><strong>Status:</strong> {{ $order->status }}</p>
     </div>
+</div>
 
-    <!-- Product Table -->
-    <div class="section">
-        <h3>Order Summary</h3>
+<!-- Billing Info -->
+<div class="section">
+    <h3>Billing To:</h3>
+    <p><strong>{{ $order->name }}</strong><br>
+    {{ $order->address }}<br>
+    {{ $order->email }}<br>
+    {{ $order->phone }}</p>
+</div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th class="text-right">Price</th>
-                    <th class="text-right">Qty</th>
-                    <th class="text-right">Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($order->items as $item)
-                    <tr>
-                        <td>{{ $item->product_name }}</td>
-                        <td class="text-right">₹{{ number_format($item->price, 2) }}</td>
-                        <td class="text-right">{{ $item->quantity }}</td>
-                        <td class="text-right">₹{{ number_format($item->total, 2) }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
+<!-- Products Table -->
+<div class="section">
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th class="text-right">Price</th>
+                <th class="text-right">Qty</th>
+                <th class="text-right">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($order->items as $item)
+            <tr>
+                <td>{{ $item->product_name }}</td>
+                <td class="text-right">₹{{ number_format($item->price, 2) }}</td>
+                <td class="text-right">{{ $item->quantity }}</td>
+                <td class="text-right">₹{{ number_format($item->total, 2) }}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
 
-    <!-- Grand Total -->
-    <div class="total-box">
-        Grand Total: ₹{{ number_format($order->total_amount, 2) }}
-    </div>
+<!-- Totals -->
+<table class="totals">
+    <tr>
+        <td>Subtotal:</td>
+        <td class="text-right">₹{{ number_format($subtotal, 2) }}</td>
+    </tr>
+    <tr>
+        <td>GST (18%):</td>
+        <td class="text-right">₹{{ number_format($tax, 2) }}</td>
+    </tr>
+    <tr class="grand-total">
+        <td>Grand Total:</td>
+        <td class="text-right">₹{{ number_format($grandTotal, 2) }}</td>
+    </tr>
+</table>
 
-    <!-- Footer -->
-    <div class="footer">
-        Thank you for shopping with <strong>Clothify Fashions</strong> ❤️<br>
-        www.clothify.com
-    </div>
+<div style="clear: both;"></div>
+
+<!-- Footer -->
+<div class="footer">
+    Thank you for shopping with <strong>Clothify Fashions</strong> ❤️ <br>
+    This is a computer generated invoice and does not require signature.
+</div>
 
 </body>
 </html>

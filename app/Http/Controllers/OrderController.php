@@ -119,9 +119,18 @@ public function invoice($id)
 {
     $order = Order::with('items')->findOrFail($id);
 
-    $pdf = Pdf::loadView('admin.invoice', compact('order'));
+    $subtotal = $order->items->sum('total');
+    $tax = $subtotal * 0.18; // 18% GST
+    $grandTotal = $subtotal + $tax;
 
-    return $pdf->download('invoice-order-'.$order->id.'.pdf');
+    $pdf = Pdf::loadView('admin.invoice', compact(
+        'order',
+        'subtotal',
+        'tax',
+        'grandTotal'
+    ));
+
+    return $pdf->download('invoice-'.$order->id.'.pdf');
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
