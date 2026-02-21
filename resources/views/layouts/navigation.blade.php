@@ -123,7 +123,7 @@
                 <div class="font-medium text-base text-gray-800">{{ Auth::user()->name ?? 'Guest' }}</div>
                 @auth
     <div class="font-medium text-sm text-gray-500">
-        {{ Auth::user()->email }}
+        {{ Auth::user()->email ?? '' }}
     </div>
 @endauth
 

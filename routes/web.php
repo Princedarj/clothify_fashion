@@ -69,6 +69,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/orders/{id}', [OrderController::class, 'show'])
     ->name('admin.orders.show');
 
+    Route::get('/admin/orders',[OrderController::class, 'orders'])
+        ->name('admin.orders');
+
     // Products
     Route::get('/products', [ProductController::class, 'index'])
     ->name('products.index');
