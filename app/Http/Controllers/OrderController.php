@@ -18,7 +18,11 @@ class OrderController extends Controller
 // ✅ ADMIN VIEW ALL ORDERS
     public function index()
     {
-        $orders = Order::latest()->get();
+        $orders = \App\Models\Order::query()
+            ->reorder()
+            ->orderBy('id', 'asc')
+            ->paginate(10);
+
         return view('admin.orders', compact('orders'));
     }
 
@@ -27,6 +31,8 @@ class OrderController extends Controller
     // ✅ ADMIN MARK ORDER AS DELIVERED
     public function deliver($id)
     {
+        dd('INDEX METHOD ACTIVE');
+
         $order = Order::findOrFail($id);
         $order->status = 'Delivered';
         $order->save();
@@ -221,7 +227,10 @@ public function adminOrders(Request $request)
         }
     }
 
-    $orders = $query->latest()->paginate(10);
+    $orders = Order::query()
+    ->reorder()
+    ->orderBy('id', 'asc')
+    ->paginate(10);
 
     return view('admin.orders', compact('orders'));
 }   

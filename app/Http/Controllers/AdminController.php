@@ -41,10 +41,11 @@ class AdminController extends Controller
     
 
     public function orders()
-    {
-        $orders = Order::with('user')->latest()->paginate(10);
-        return view('admin.orders', compact('orders'));
-    }
+{
+    $orders = Order::orderBy('id', 'asc')->paginate(10);
+
+    return view('admin.orders', compact('orders'));
+}
 
  
 public function users()
