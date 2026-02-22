@@ -153,15 +153,15 @@
 <table class="totals">
     <tr>
         <td>Subtotal:</td>
-        <td class="text-right">₹{{ number_format($subtotal, 2) }}</td>
+        <td class="text-right">₹{{ number_format($order->subtotal, 2) }}</td>
     </tr>
     <tr>
         <td>GST (18%):</td>
-        <td class="text-right">₹{{ number_format($tax, 2) }}</td>
+        <td class="text-right">₹{{ number_format($order->tax, 2) }}</td>
     </tr>
     <tr class="grand-total">
         <td>Grand Total:</td>
-        <td class="text-right">₹{{ number_format($grandTotal, 2) }}</td>
+        <td class="text-right">₹{{ number_format($order->total_amount, 2) }}</td>
     </tr>
 </table>
 

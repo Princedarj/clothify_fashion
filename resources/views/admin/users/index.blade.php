@@ -14,7 +14,7 @@
         <table class="w-full border-collapse">
             <thead>
                 <tr class="bg-gray-100 text-left">
-                    <th class="p-3">#</th>
+                    <th class="p-3">User ID</th>
                     <th class="p-3">Name</th>
                     <th class="p-3">Email</th>
                     <th class="p-3">Phone</th>
