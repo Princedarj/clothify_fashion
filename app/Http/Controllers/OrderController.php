@@ -31,7 +31,6 @@ class OrderController extends Controller
     // ✅ ADMIN MARK ORDER AS DELIVERED
     public function deliver($id)
     {
-        dd('INDEX METHOD ACTIVE');
 
         $order = Order::findOrFail($id);
         $order->status = 'Delivered';
