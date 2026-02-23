@@ -34,6 +34,7 @@ class OrderController extends Controller
 
         $order = Order::findOrFail($id);
         $order->status = 'Delivered';
+        $order->delivered_at = now();
         $order->save();
 
         return back();

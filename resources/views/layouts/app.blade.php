@@ -27,9 +27,7 @@
         </header>
     @endisset
 
-    <main class="py-6">
-        {{ $slot }}
-    </main>
+    @yield('content')
 
 </div>
 </body>

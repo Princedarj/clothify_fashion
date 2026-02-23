@@ -11,7 +11,6 @@ use Carbon\Carbon;
 
 class AdminController extends Controller
 {
-    
 
 public function dashboard()
 {
@@ -27,35 +26,61 @@ public function dashboard()
     $totalRevenue = Order::where('status', 'Delivered')
         ->sum('total_amount');
 
+    // ===== DATE RANGES =====
+    $currentMonthStart = Carbon::now()->startOfMonth();
+    $currentMonthEnd   = Carbon::now()->endOfMonth();
+
+    $lastMonthStart = Carbon::now()->subMonth()->startOfMonth();
+    $lastMonthEnd   = Carbon::now()->subMonth()->endOfMonth();
+
     // ===== THIS MONTH REVENUE =====
-    $currentMonthRevenue = Order::where('status', 'Delivered')
-        ->whereMonth('created_at', Carbon::now()->month)
-        ->sum('total_amount');
+$currentMonthRevenue = Order::where('status', 'Delivered')
+    ->whereBetween('created_at', [$currentMonthStart, $currentMonthEnd])
+    ->sum('total_amount');
 
     // ===== LAST MONTH REVENUE =====
     $lastMonthRevenue = Order::where('status', 'Delivered')
-        ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+        ->whereBetween('created_at', [$lastMonthStart, $lastMonthEnd])
         ->sum('total_amount');
 
     // ===== GROWTH PERCENTAGE =====
-    $growthPercentage = 0;
     if ($lastMonthRevenue > 0) {
         $growthPercentage = (($currentMonthRevenue - $lastMonthRevenue) / $lastMonthRevenue) * 100;
+    } elseif ($currentMonthRevenue > 0) {
+        $growthPercentage = 100;   // New revenue after zero month
+    } else {
+        $growthPercentage = 0;
     }
 
-    // ===== LAST 6 MONTH SALES =====
+    $growthPercentage = round($growthPercentage, 2);
+
+    if ($lastMonthRevenue > 0) {
+        $growthPercentage = (($currentMonthRevenue - $lastMonthRevenue) / $lastMonthRevenue) * 100;
+    } else {
+        $growthPercentage = 0;
+    }
+
+    // ===== LAST 6 MONTH SALES (Properly Ordered) =====
     $monthlySales = Order::select(
             DB::raw("DATE_FORMAT(created_at, '%b %Y') as month"),
-            DB::raw("SUM(total_amount) as total")
+            DB::raw("SUM(total_amount) as total"),
+            DB::raw("MIN(created_at) as sort_date")
         )
         ->where('status', 'Delivered')
         ->groupBy('month')
-        ->orderByRaw("MIN(created_at)")
+        ->orderBy('sort_date', 'asc')
         ->take(6)
+        ->get()
+        ->sortBy('sort_date')
         ->pluck('total', 'month');
 
     // ===== RECENT ORDERS =====
-    $recentOrders = Order::with('user')->latest()->take(5)->get();
+    $recentOrders = Order::with('user')
+        ->latest()
+        ->take(5)
+        ->get();
+
+    //dd($currentMonthRevenue, $lastMonthRevenue);
 
     return view('admin.dashboard', compact(
         'totalOrders',

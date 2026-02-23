@@ -16,8 +16,11 @@
             <div>
                 <p class="text-sm uppercase opacity-80">Total Revenue</p>
                 <h3 class="text-2xl font-bold mt-2">₹{{ number_format($totalRevenue) }}</h3>
-                <p class="text-sm mt-2">
-                    {{ number_format($growthPercentage,2) }}% from last month
+                <p class="text-xs mt-2 
+                    {{ $growthPercentage >= 0 ? 'text-green-500' : 'text-red-500' }}">
+                    
+                    {{ $growthPercentage >= 0 ? '▲' : '▼' }}
+                    {{ abs($growthPercentage) }}% from last month
                 </p>
             </div>
             <div class="text-4xl opacity-30">💰</div>
