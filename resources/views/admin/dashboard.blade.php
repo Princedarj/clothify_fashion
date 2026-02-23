@@ -2,99 +2,155 @@
 
 @section('content')
 
-<h2 class="text-2xl font-bold mb-6">Admin Dashboard 📊</h2>
+<div class="mb-8">
+    <h2 class="text-3xl font-bold text-gray-800">Dashboard Overview</h2>
+    <p class="text-gray-500">Clothify Performance Summary</p>
+</div>
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+<!-- KPI CARDS -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-10">
 
-    <!-- Total Orders -->
-    <div class="bg-blue-500 text-white p-6 rounded shadow">
-        <h3 class="text-lg">Total Orders</h3>
-        <p class="text-3xl font-bold">{{ $totalOrders }}</p>
+    <!-- Revenue -->
+    <div class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white p-6 rounded-2xl shadow-xl">
+        <div class="flex justify-between items-center">
+            <div>
+                <p class="text-sm uppercase opacity-80">Total Revenue</p>
+                <h3 class="text-2xl font-bold mt-2">₹{{ number_format($totalRevenue) }}</h3>
+                <p class="text-sm mt-2">
+                    {{ number_format($growthPercentage,2) }}% from last month
+                </p>
+            </div>
+            <div class="text-4xl opacity-30">💰</div>
+        </div>
     </div>
 
-    <!-- Total Revenue -->
-    <div class="bg-green-500 text-white p-6 rounded shadow">
-        <h3 class="text-lg">Total Revenue</h3>
-        <p class="text-3xl font-bold">₹{{ $totalRevenue }}</p>
+    <!-- Orders -->
+    <div class="bg-gradient-to-r from-blue-500 to-cyan-500 text-white p-6 rounded-2xl shadow-xl">
+        <div class="flex justify-between">
+            <div>
+                <p class="text-sm uppercase opacity-80">Total Orders</p>
+                <h3 class="text-2xl font-bold mt-2">{{ $totalOrders }}</h3>
+            </div>
+            <div class="text-4xl opacity-30">🛒</div>
+        </div>
     </div>
 
-    <!-- Total Users -->
-    <div class="bg-purple-500 text-white p-6 rounded shadow">
-        <h3 class="text-lg">Total Users</h3>
-        <p class="text-3xl font-bold">{{ $totalUsers }}</p>
+    <!-- Delivered -->
+    <div class="bg-gradient-to-r from-green-400 to-emerald-600 text-white p-6 rounded-2xl shadow-xl">
+        <div class="flex justify-between">
+            <div>
+                <p class="text-sm uppercase opacity-80">Delivered</p>
+                <h3 class="text-2xl font-bold mt-2">{{ $deliveredOrders }}</h3>
+            </div>
+            <div class="text-4xl opacity-30">✅</div>
+        </div>
     </div>
 
-    <!-- Pending Orders -->
-    <div class="bg-red-500 text-white p-6 rounded shadow">
-        <h3 class="text-lg">Pending Orders</h3>
-        <p class="text-3xl font-bold">{{ $pendingOrders }}</p>
+    <!-- Pending -->
+    <div class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white p-6 rounded-2xl shadow-xl">
+        <div class="flex justify-between">
+            <div>
+                <p class="text-sm uppercase opacity-80">Pending</p>
+                <h3 class="text-2xl font-bold mt-2">{{ $pendingOrders }}</h3>
+            </div>
+            <div class="text-4xl opacity-30">⏳</div>
+        </div>
+    </div>
+
+    <!-- Products -->
+    <div class="bg-gradient-to-r from-pink-500 to-rose-600 text-white p-6 rounded-2xl shadow-xl">
+        <div class="flex justify-between">
+            <div>
+                <p class="text-sm uppercase opacity-80">Products</p>
+                <h3 class="text-2xl font-bold mt-2">{{ $totalProducts }}</h3>
+            </div>
+            <div class="text-4xl opacity-30">👕</div>
+        </div>
     </div>
 
 </div>
 
-<div class="bg-white p-6 rounded shadow mt-8">
-    <h3 class="text-lg font-bold mb-4">Monthly Revenue</h3>
+<!-- CHART SECTION -->
+<div class="bg-gradient-to-r from-white to-gray-50 p-8 rounded-2xl shadow-xl mb-10 border">
+    <h3 class="text-xl font-semibold mb-6 text-gray-700">Sales Analytics</h3>
     <canvas id="salesChart"></canvas>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    const ctx = document.getElementById('salesChart').getContext('2d');
-
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: {!! json_encode(array_keys($monthlySales->toArray())) !!},
-            datasets: [{
-                label: 'Revenue',
-                data: {!! json_encode(array_values($monthlySales->toArray())) !!},
-                borderWidth: 1
-            }]
-        }
-    });
-</script>
-<div class="bg-white p-6 rounded shadow mt-8">
-    <h3 class="text-lg font-bold mb-4">Recent Orders</h3>
+<!-- RECENT ORDERS -->
+<div class="bg-white p-8 rounded-2xl shadow-xl">
+    <h3 class="text-xl font-semibold mb-6 text-gray-700">Recent Orders</h3>
 
     <div class="overflow-x-auto">
-        <table class="w-full border-collapse">
+        <table class="w-full text-sm">
             <thead>
-                <tr class="bg-gray-100 text-left">
-                    <th class="p-3">#</th>
-                    <th class="p-3">Customer</th>
-                    <th class="p-3">Amount</th>
-                    <th class="p-3">Status</th>
-                    <th class="p-3">Date</th>
+                <tr class="bg-gradient-to-r from-gray-100 to-gray-200 text-gray-600 uppercase text-xs">
+                    <th class="p-4 text-left">#</th>
+                    <th class="p-4 text-left">Customer</th>
+                    <th class="p-4 text-left">Amount</th>
+                    <th class="p-4 text-left">Status</th>
+                    <th class="p-4 text-left">Date</th>
                 </tr>
             </thead>
             <tbody>
-                @forelse($recentOrders as $order)
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="p-3">{{ $order->id }}</td>
-                        <td class="p-3">{{ $order->name }}</td>
-                        <td class="p-3">₹{{ $order->total_amount }}</td>
-                        <td class="p-3">
-                            <span class="px-2 py-1 text-sm rounded
-                                {{ $order->status == 'Delivered' 
-                                   ? 'bg-green-100 text-green-700' 
-                                   : 'bg-yellow-100 text-yellow-700' }}">
-                                {{ $order->status }}
+                @foreach($recentOrders as $order)
+                <tr class="border-b hover:bg-gray-50 transition duration-200">
+                    <td class="p-4 font-semibold text-gray-700">{{ $order->id }}</td>
+                    <td class="p-4">{{ $order->name }}</td>
+                    <td class="p-4 font-medium text-gray-800">₹{{ number_format($order->total_amount) }}</td>
+                    <td class="p-4">
+                        @if($order->status == 'Delivered')
+                            <span class="px-3 py-1 text-xs rounded-full bg-green-100 text-green-700">
+                                Delivered
                             </span>
-                        </td>
-                        <td class="p-3">
-                            {{ $order->created_at->format('d M Y') }}
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="5" class="p-3 text-center text-gray-500">
-                            No recent orders
-                        </td>
-                    </tr>
-                @endforelse
+                        @elseif($order->status == 'Pending')
+                            <span class="px-3 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700">
+                                Pending
+                            </span>
+                        @else
+                            <span class="px-3 py-1 text-xs rounded-full bg-red-100 text-red-700">
+                                Cancelled
+                            </span>
+                        @endif
+                    </td>
+                    <td class="p-4 text-gray-500">
+                        {{ $order->created_at->format('d M Y') }}
+                    </td>
+                </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
 </div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('salesChart').getContext('2d');
+
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: {!! json_encode($monthlySales->keys()) !!},
+        datasets: [{
+            label: 'Revenue',
+            data: {!! json_encode($monthlySales->values()) !!},
+            borderColor: '#7c3aed',
+            backgroundColor: 'rgba(124,58,237,0.15)',
+            fill: true,
+            tension: 0.4,
+            borderWidth: 3,
+            pointBackgroundColor: '#7c3aed'
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: true
+            }
+        }
+    }
+});
+</script>
 
 @endsection

@@ -7,38 +7,68 @@ use App\Models\User;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class AdminController extends Controller
 {
-    public function dashboard()
-    {
-        $totalOrders = Order::count();
-        $totalUsers = User::where('role', 'user')->count();
-        $totalproducts = Product::count();
-        $totalRevenue = Order::sum('total_amount');
-        $pendingOrders = Order::where('status', 'Pending')->count();
+    
 
-        // Monthly Revenue (group by month)
-        $monthlySales = Order::select(
-                DB::raw("MONTH(created_at) as month"),
-                DB::raw("SUM(total_amount) as total")
-            )
-            ->groupBy('month')
-            ->orderBy('month')
-            ->pluck('total', 'month');
+public function dashboard()
+{
+    // ===== BASIC COUNTS =====
+    $totalOrders = Order::count();
+    $totalUsers = User::where('role', 'user')->count();
+    $totalProducts = Product::count();
 
-        // Recent Orders
-        $recentOrders = Order::latest()->take(5)->get();
+    $pendingOrders = Order::where('status', 'Pending')->count();
+    $deliveredOrders = Order::where('status', 'Delivered')->count();
 
-       return view('admin.dashboard', compact(
-                    'recentOrders',
-                    'totalOrders',
-                    'totalRevenue',
-                    'totalUsers',
-                    'pendingOrders',
-                    'monthlySales',
-                ));
+    // ===== TOTAL REVENUE (Delivered Only) =====
+    $totalRevenue = Order::where('status', 'Delivered')
+        ->sum('total_amount');
+
+    // ===== THIS MONTH REVENUE =====
+    $currentMonthRevenue = Order::where('status', 'Delivered')
+        ->whereMonth('created_at', Carbon::now()->month)
+        ->sum('total_amount');
+
+    // ===== LAST MONTH REVENUE =====
+    $lastMonthRevenue = Order::where('status', 'Delivered')
+        ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+        ->sum('total_amount');
+
+    // ===== GROWTH PERCENTAGE =====
+    $growthPercentage = 0;
+    if ($lastMonthRevenue > 0) {
+        $growthPercentage = (($currentMonthRevenue - $lastMonthRevenue) / $lastMonthRevenue) * 100;
     }
+
+    // ===== LAST 6 MONTH SALES =====
+    $monthlySales = Order::select(
+            DB::raw("DATE_FORMAT(created_at, '%b %Y') as month"),
+            DB::raw("SUM(total_amount) as total")
+        )
+        ->where('status', 'Delivered')
+        ->groupBy('month')
+        ->orderByRaw("MIN(created_at)")
+        ->take(6)
+        ->pluck('total', 'month');
+
+    // ===== RECENT ORDERS =====
+    $recentOrders = Order::with('user')->latest()->take(5)->get();
+
+    return view('admin.dashboard', compact(
+        'totalOrders',
+        'totalUsers',
+        'totalProducts',
+        'pendingOrders',
+        'deliveredOrders',
+        'totalRevenue',
+        'growthPercentage',
+        'monthlySales',
+        'recentOrders'
+    ));
+}
     
 
     public function orders(Request $request)
