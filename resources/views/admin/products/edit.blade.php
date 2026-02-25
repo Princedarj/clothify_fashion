@@ -16,6 +16,23 @@
                 class="w-full border rounded px-3 py-2">
         </div>
 
+        {{-- Category --}}
+        <div class="mb-4">
+            <label class="block font-semibold mb-2">Category</label>
+
+            <select name="category_id" class="w-full border rounded px-3 py-2">
+                <option value="">Select Category</option>
+
+                @foreach($categories as $category)
+                    <option value="{{ $category->id }}"
+                        {{ $product->category_id == $category->id ? 'selected' : '' }}>
+                        {{ $category->name }}
+                    </option>
+                @endforeach
+
+            </select>
+        </div>
+
         {{-- Price --}}
         <div class="mb-4">
             <label class="block font-semibold mb-2">Price</label>

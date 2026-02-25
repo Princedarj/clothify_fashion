@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Category;
 
 class AdminProductController extends Controller
 {
@@ -19,7 +20,8 @@ class AdminProductController extends Controller
     // 🔹 Show create form
     public function create()
     {
-        return view('admin.products.create');
+        $categories = Category::all();
+        return view('admin.products.create', compact('categories'));
     }
 
     // 🔹 Store new product
@@ -46,9 +48,12 @@ class AdminProductController extends Controller
     }
 
     // 🔹 Show edit form
-    public function edit(Product $product)
+    public function edit($id)
     {
-        return view('admin.products.edit', compact('product'));
+        $product = Product::findOrFail($id);
+        $categories = Category::all();
+
+        return view('admin.products.edit', compact('product', 'categories'));
     }
 
     // 🔹 Update product
@@ -58,7 +63,8 @@ class AdminProductController extends Controller
             'name' => 'required',
             'price' => 'required|numeric',
             'description' => 'nullable',
-            'image' => 'nullable|image'
+            'image' => 'nullable|image',
+            'category_id' => 'required|exists:categories,id'
         ]);
 
         // If new image uploaded
@@ -77,6 +83,7 @@ class AdminProductController extends Controller
             'name' => $request->name,
             'price' => $request->price,
             'description' => $request->description,
+            'category_id' => $request->category_id,
         ]);
 
         return redirect()->route('admin.products.index')

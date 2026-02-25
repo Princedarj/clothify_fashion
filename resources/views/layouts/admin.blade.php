@@ -50,6 +50,14 @@
                     👥 Users
                 </a>
 
+                <a href="{{ route('admin.categories.index') }}"
+                    class="block px-4 py-2 rounded 
+                    {{ request()->is('admin/categories*') 
+                        ? 'bg-gray-700 text-white' 
+                        : 'hover:bg-gray-700' }}">
+                    🗂️ Categories
+                </a>
+
 
             </nav>
         </div>

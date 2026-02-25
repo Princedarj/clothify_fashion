@@ -27,6 +27,27 @@
                    required>
         </div>
 
+        <!-- Category -->
+        <div>
+            <label class="block mb-2 font-semibold text-gray-700">
+                Category
+            </label>
+
+            <select name="category_id"
+                    class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    required>
+
+                <option value="">Select Category</option>
+
+                @foreach($categories as $category)
+                    <option value="{{ $category->id }}">
+                        {{ $category->name }}
+                    </option>
+                @endforeach
+
+            </select>
+        </div>  
+
         <!-- Price -->
         <div>
             <label class="block mb-2 font-semibold text-gray-700">

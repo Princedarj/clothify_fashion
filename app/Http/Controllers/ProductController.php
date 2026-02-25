@@ -4,15 +4,43 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 
 class ProductController extends Controller
 {
     // ✅ PUBLIC VIEW ALL PRODUCTS
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::latest()->get();
-        return view('products.index', compact('products'));
+        $query = Product::query();
+
+        // Category Filter
+        if ($request->category) {
+            $query->where('category_id', $request->category);
+        }
+
+        // Price Filter
+        if ($request->min_price) {
+            $query->where('price', '>=', $request->min_price);
+        }
+
+        if ($request->max_price) {
+            $query->where('price', '<=', $request->max_price);
+        }
+
+        // Sorting
+        if ($request->sort == 'low') {
+            $query->orderBy('price', 'asc');
+        } elseif ($request->sort == 'high') {
+            $query->orderBy('price', 'desc');
+        } else {
+            $query->latest();
+        }
+
+        $products = $query->paginate(8);
+        $categories = Category::all();
+
+        return view('products.index', compact('products', 'categories'));
     }
 
     ///////////////////////////////////////////////////////////////////////////////////
@@ -20,7 +48,8 @@ class ProductController extends Controller
     // ✅ ADMIN CREATE PRODUCT
     public function create()
     {
-        return view('admin.products.create');
+        $categories = Category::all();
+        return view('admin.products.create', compact('categories'));
     }
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -47,6 +76,7 @@ class ProductController extends Controller
             // Save to Database
             Product::create([
                 'name' => $request->name,
+                'category_id' => $request->category_id,
                 'price' => $request->price,
                 'description' => $request->description,
                 'image' => $imageName,
@@ -70,6 +100,7 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $product->update($request->all());
+        
         return redirect()->route('admin.products.index');
     }
 

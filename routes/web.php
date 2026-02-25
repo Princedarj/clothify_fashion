@@ -7,6 +7,8 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\AdminProductController;
+use App\Models\Product;
+use App\Http\Controllers\Admin\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,8 +34,9 @@ Route::middleware(['auth'])->group(function () {
 
     // Dashboard
     Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+        $products = Product::latest()->get();
+        return view('dashboard', compact('products'));
+    })->middleware(['auth'])->name('dashboard');
 
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -83,10 +86,11 @@ Route::middleware(['auth'])->group(function () {
 | Admin Routes
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', 'admin'])
-    ->prefix('admin')
-    ->name('admin.')
-    ->group(function () {
+    Route::middleware(['auth', 'admin'])
+        ->prefix('admin')
+        ->name('admin.')
+        ->group(function () 
+    {
 
         Route::get('/dashboard', [AdminController::class, 'dashboard'])
             ->name('dashboard');
@@ -113,10 +117,29 @@ Route::middleware(['auth', 'admin'])
 
         Route::get('/users', [App\Http\Controllers\Admin\UserController::class, 'index'])
         ->name('users.index');
+    });
+
+    // USER SIDE
+
+    Route::get('/products', [ProductController::class, 'index'])
+        ->name('products.index');
+
+
+    // ADMIN SIDE
+
+    Route::prefix('admin')->name('admin.')->group(function () {
+
+        Route::resource('products', AdminProductController::class);
 
     });
 
+    Route::prefix('admin')->name('admin.')->group(function () {
 
+        Route::resource('products', AdminProductController::class);
+        Route::resource('categories', CategoryController::class);
+
+    });
+    
 Route::middleware(['auth'])->group(function () {
 
   
