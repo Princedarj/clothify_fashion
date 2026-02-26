@@ -83,9 +83,9 @@
                    class="w-full border border-gray-300 rounded-lg p-3 bg-gray-50"
                    required>
 
-            <p class="text-sm text-gray-500 mt-2">
+            <!-- <p class="text-sm text-gray-500 mt-2">
                 Allowed formats: JPG, JPEG, PNG, PDF (Max 2MB)
-            </p>
+            </p> -->
         </div>
 
         <!-- Buttons -->
