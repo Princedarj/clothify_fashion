@@ -50,7 +50,6 @@ class AdminProductController extends Controller
     // 🔹 Show edit form
     public function edit($id)
     {
-        $product = Product::findOrFail($id);
         $categories = Category::all();
 
         return view('admin.products.edit', compact('product', 'categories'));
