@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.user')
 
 @section('content')
 <div class="-mx-4 sm:-mx-6 lg:-mx-8">

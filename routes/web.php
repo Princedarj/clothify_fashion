@@ -7,8 +7,9 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\AdminProductController;
-use App\Models\Product;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Models\Product;
+use App\Http\Controllers\Admin\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +37,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
         $products = Product::latest()->get();
         return view('dashboard', compact('products'));
-    })->middleware(['auth'])->name('dashboard');
+    })->name('dashboard');
 
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -65,85 +66,47 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/my-orders/{id}/invoice', [OrderController::class, 'userInvoice'])
         ->name('user.orders.invoice');
+});
 
-    Route::get('/admin/orders/export', [OrderController::class, 'export'])
-    ->name('admin.orders.export');
-
-    Route::get('/admin/orders/{id}', [OrderController::class, 'show'])
-    ->name('admin.orders.show');
-
-    Route::get('/admin/orders', [OrderController::class, 'index'])
-    ->name('admin.orders');
-
-    // Products
-    Route::get('/products', [ProductController::class, 'index'])
-    ->name('products.index');
-
-        });
 
 /*
 |--------------------------------------------------------------------------
 | Admin Routes
 |--------------------------------------------------------------------------
 */
-    Route::middleware(['auth', 'admin'])
-        ->prefix('admin')
-        ->name('admin.')
-        ->group(function () 
-    {
+
+Route::middleware(['auth', 'admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
 
         Route::get('/dashboard', [AdminController::class, 'dashboard'])
             ->name('dashboard');
 
-        Route::get('/orders', [AdminController::class, 'orders'])
-            ->name('orders');
-
-        Route::get('/users', [AdminController::class, 'users'])
-            ->name('users');
-
         Route::resource('products', AdminProductController::class);
+
+        Route::resource('categories', CategoryController::class);
+        
+        Route::get('/users', [UserController::class, 'index'])
+            ->name('users.index');
+
+        Route::get('/orders', [OrderController::class, 'index'])
+            ->name('orders.index');
+
+        Route::get('/orders/export', [OrderController::class, 'export'])
+            ->name('orders.export');
+
+        Route::get('/orders/{id}', [OrderController::class, 'show'])
+            ->name('orders.show');
 
         Route::post('/orders/{id}/deliver', [OrderController::class, 'deliver'])
             ->name('orders.deliver');
-        
+
         Route::get('/orders/{id}/invoice', [OrderController::class, 'invoice'])
-            ->name('invoice');
-
-        Route::get('/products', [AdminProductController::class, 'index'])->name('products.index');
-
-        Route::get('/products/{id}/edit', [AdminProductController::class, 'edit'])->name('products.edit');
-
-        Route::put('/products/{id}', [AdminProductController::class, 'update'])->name('products.update');
-
-        Route::get('/users', [App\Http\Controllers\Admin\UserController::class, 'index'])
-        ->name('users.index');
+            ->name('orders.invoice');
     });
 
-    // USER SIDE
 
-    Route::get('/products', [ProductController::class, 'index'])
-        ->name('products.index');
-
-
-    // ADMIN SIDE
-
-    Route::prefix('admin')->name('admin.')->group(function () {
-
-        Route::resource('products', AdminProductController::class);
-
-    });
-
-    Route::prefix('admin')->name('admin.')->group(function () {
-
-        Route::resource('products', AdminProductController::class);
-        Route::resource('categories', CategoryController::class);
-
-    });
-    
-Route::middleware(['auth'])->group(function () {
-
-  
-});
 /*
 |--------------------------------------------------------------------------
 | Auth Routes

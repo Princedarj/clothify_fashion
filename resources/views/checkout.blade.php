@@ -1,46 +1,60 @@
-<x-app-layout>
+@extends('layouts.user')
 
-    <div class="max-w-3xl mx-auto bg-white p-6 rounded shadow">
-        <h2 class="text-2xl font-bold mb-4">Checkout</h2>
+@section('content')
+<div class="max-w-3xl mx-auto py-12 px-4">
+
+    <div class="bg-white shadow-lg rounded-xl p-8">
+        <h2 class="text-3xl font-bold text-gray-900 mb-6">
+            Checkout 🛒
+        </h2>
 
         @if(session('success'))
-            <div class="bg-green-100 text-green-800 p-3 mb-4 rounded">
+            <div class="bg-green-100 text-green-800 p-4 mb-6 rounded-lg border border-green-200">
                 {{ session('success') }}
             </div>
         @endif
 
-        <form method="POST" action="{{ route('order.place') }}">
+        <form method="POST" action="{{ route('order.place') }}" class="space-y-5">
             @csrf
 
-            <div class="mb-3">
-                <label>Name</label>
-                <input type="text" name="name" class="w-full border p-2" required>
+            <!-- Name -->
+            <div>
+                <label class="block text-gray-700 font-medium mb-1">Full Name</label>
+                <input type="text" name="name" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" required>
             </div>
 
-            <div class="mb-3">
-                <label>Email</label>
-                <input type="email" name="email" class="w-full border p-2" required>
+            <!-- Email -->
+            <div>
+                <label class="block text-gray-700 font-medium mb-1">Email</label>
+                <input type="email" name="email" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" required>
             </div>
 
-            <div class="mb-3">
-                <label>Phone</label>
-                <input type="text" name="phone" class="w-full border p-2" required>
+            <!-- Phone -->
+            <div>
+                <label class="block text-gray-700 font-medium mb-1">Phone</label>
+                <input type="text" name="phone" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" required>
             </div>
 
-            <div class="mb-3">
-                <label>Address</label>
-                <textarea name="address" class="w-full border p-2" required></textarea>
+            <!-- Address -->
+            <div>
+                <label class="block text-gray-700 font-medium mb-1">Address</label>
+                <textarea name="address" rows="3" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" required></textarea>
             </div>
 
-            <div class="mb-3">
-                <label>Pincode</label>
-                <input type="text" name="pincode" class="w-full border p-2" required>
+            <!-- Pincode -->
+            <div>
+                <label class="block text-gray-700 font-medium mb-1">Pincode</label>
+                <input type="text" name="pincode" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" required>
             </div>
 
-            <button class="bg-blue-600 text-white px-6 py-2 rounded">
-                Place Order
-            </button>
+            <!-- Submit Button -->
+            <div class="flex justify-end">
+                <button type="submit" class="bg-blue-700 hover:bg-blue-800 text-white font-semibold px-6 py-2 rounded-lg transition duration-200">
+                    Place Order
+                </button>
+            </div>
         </form>
     </div>
 
-</x-app-layout>
+</div>
+@endsection

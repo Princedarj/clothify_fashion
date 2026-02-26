@@ -17,7 +17,7 @@
                 </p>
             </div>
 
-            <a href="{{ route('admin.orders') }}"
+            <a href="{{ route('admin.orders.index') }}"
                class="bg-gray-800 hover:bg-black text-white px-5 py-2 rounded-lg shadow">
                 ← Back
             </a>

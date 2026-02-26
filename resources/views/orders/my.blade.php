@@ -1,41 +1,59 @@
-<x-app-layout>
-    <div class="py-8 max-w-5xl mx-auto">
-        <h2 class="text-xl font-bold mb-4">My Orders 📦</h2>
+@extends('layouts.user')
 
-        @if($orders->isEmpty())
-            <p>You have no orders yet.</p>
-        @else
-        <table class="w-full border text-center text-sm">
-            <thead class="bg-gray-100">
-                <tr>
-                    <th class="p-2">Order ID</th>
-                    <th class="p-2">Total</th>
-                    <th class="p-2">Status</th>
-                    <th class="p-2">Address</th>
-                    <th class="p-2">Invoice</th>
-                </tr>
-            </thead>
+@section('content')
+<div class="py-12 max-w-6xl mx-auto px-4">
 
-            <tbody>
-@foreach($orders as $order)
-<tr>
-    <td class="p-2">{{ $order->id }}</td>
-    <td class="p-2">₹{{ $order->total_amount }}</td>
-    <td class="p-2">{{ $order->status }}</td>
-    <td class="p-2">{{ $order->address }}</td>
+    <h2 class="text-3xl font-bold mb-8 text-gray-900">
+        My Orders 📦
+    </h2>
 
-    <td class="p-2">
-        <a href="{{ route('user.orders.invoice', $order->id) }}"
-           class="bg-blue-600 text-white px-3 py-1 rounded text-xs">
-            Download Invoice
-        </a>
-    </td>
-</tr>
-@endforeach
-</tbody>
+    @if($orders->isEmpty())
+        <p class="text-gray-500 text-lg">You have no orders yet.</p>
+    @else
+        <div class="grid gap-6 md:grid-cols-2">
 
+            @foreach($orders as $order)
+                <div class="bg-white shadow-lg rounded-xl p-6 border border-gray-200 hover:shadow-xl transition duration-300">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-gray-600 font-semibold">Order ID: #{{ $order->id }}</span>
+                        <span class="text-gray-800 font-bold">₹{{ number_format($order->total_amount, 2) }}</span>
+                    </div>
 
-        </table>
-        @endif
-    </div>
-</x-app-layout>
+                    <div class="mb-3">
+                        <span class="text-gray-600 font-medium">Status:</span>
+                        @if($order->status == 'Pending')
+                            <span class="inline-block bg-yellow-200 text-yellow-800 text-xs px-2 py-1 rounded-full ml-2">
+                                {{ $order->status }}
+                            </span>
+                        @elseif($order->status == 'Delivered')
+                            <span class="inline-block bg-green-200 text-green-800 text-xs px-2 py-1 rounded-full ml-2">
+                                {{ $order->status }}
+                            </span>
+                        @elseif($order->status == 'Cancelled')
+                            <span class="inline-block bg-red-200 text-red-800 text-xs px-2 py-1 rounded-full ml-2">
+                                {{ $order->status }}
+                            </span>
+                        @else
+                            <span class="inline-block bg-gray-200 text-gray-800 text-xs px-2 py-1 rounded-full ml-2">
+                                {{ $order->status }}
+                            </span>
+                        @endif
+                    </div>
+
+                    <div class="mb-4">
+                        <span class="text-gray-600 font-medium">Address:</span>
+                        <p class="text-gray-800">{{ $order->address }}</p>
+                    </div>
+
+                    <a href="{{ route('user.orders.invoice', $order->id) }}"
+                       class="inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition">
+                        Download Invoice
+                    </a>
+                </div>
+            @endforeach
+
+        </div>
+    @endif
+
+</div>
+@endsection

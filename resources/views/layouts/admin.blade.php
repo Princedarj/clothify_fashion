@@ -26,7 +26,7 @@
                    📊 Dashboard
                 </a>
 
-                <a href="{{ route('admin.orders') }}"
+                <a href="{{ route('admin.orders.index') }}"
                    class="block px-4 py-2 rounded 
                    {{ request()->is('admin/orders*') 
                       ? 'bg-gray-700 text-white' 

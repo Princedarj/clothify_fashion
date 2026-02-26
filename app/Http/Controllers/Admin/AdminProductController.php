@@ -41,6 +41,7 @@ class AdminProductController extends Controller
             'price' => $request->price,
             'description' => $request->description,
             'image' => $imagePath,
+            'category_id' => $request->category_id,
         ]);
 
         return redirect()->route('admin.products.index')
@@ -48,12 +49,12 @@ class AdminProductController extends Controller
     }
 
     // 🔹 Show edit form
-    public function edit($id)
-    {
-        $categories = Category::all();
+    public function edit(Product $product)
+{
+    $categories = Category::all();
 
-        return view('admin.products.edit', compact('product', 'categories'));
-    }
+    return view('admin.products.edit', compact('product', 'categories'));
+}
 
     // 🔹 Update product
     public function update(Request $request, Product $product)
