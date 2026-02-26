@@ -76,7 +76,7 @@
 <!-- CHART SECTION -->
 <div class="bg-gradient-to-r from-white to-gray-50 p-8 rounded-2xl shadow-xl mb-10 border">
     <h3 class="text-xl font-semibold mb-6 text-gray-700">Sales Analytics</h3>
-    <canvas id="salesChart"></canvas>
+    <canvas id="salesChart" height="100"></canvas>
 </div>
 
 <!-- RECENT ORDERS -->
