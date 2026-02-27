@@ -99,10 +99,13 @@
                                 </form>
 
                                 <!-- Buy Now -->
-                                <a href="{{ route('checkout', $product->id) }}"
-                                   class="flex-1 text-center bg-yellow-500 text-black py-2 rounded-lg hover:bg-gray-900 hover:text-white transition duration-300 text-sm font-medium">
-                                    Buy Now
-                                </a>
+                                <form action="{{ route('buy.now', $product->id) }}" method="POST" class="flex-1">
+                                    @csrf
+                                    <button type="submit"
+                                        class="w-full bg-yellow-500 text-black py-2 rounded-lg hover:bg-gray-900 hover:text-white transition duration-300 text-sm font-medium">
+                                        Buy Now
+                                    </button>
+                                </form>
 
                                 <!-- Quick View -->
                                 <button onclick="openModal('{{ $product->id }}', '{{ $product->name }}', '{{ $product->price }}', '{{ asset('storage/' . $product->image) }}')"
@@ -150,4 +153,5 @@
     }
 </script>
 
+@include('layouts.footer')
 @endsection

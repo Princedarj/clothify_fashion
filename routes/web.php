@@ -66,6 +66,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/my-orders/{id}/invoice', [OrderController::class, 'userInvoice'])
         ->name('user.orders.invoice');
+
+    // Buy Now
+    Route::post('/buy-now/{id}', [OrderController::class, 'buyNow'])->name('buy.now');
+    
+    
 });
 
 

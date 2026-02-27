@@ -3,7 +3,7 @@
     $cartCount = array_sum(array_column($cart, 'quantity'));
 @endphp
 
-<nav class="bg-white shadow-sm border-b">
+<nav class="bg-white shadow-sm border-b relative fixed top-0 left-0 w-full z-10">
     <div class="max-w-7xl mx-auto px-8">
         <div class="flex justify-between items-center h-20">
 
@@ -61,9 +61,10 @@
 
                 @auth
                     <!-- User Dropdown -->
-                    <div class="relative group">
+                    <div x-data="{ open: false }" class="relative">
 
-                        <button class="flex items-center space-x-2 text-gray-700 hover:text-black">
+                        <button @click="open = !open"
+                                class="flex items-center space-x-2 text-gray-700 hover:text-black focus:outline-none">
                             <span class="font-medium">
                                 {{ auth()->user()->name }}
                             </span>
@@ -74,12 +75,13 @@
                             </svg>
                         </button>
 
-                        <div class="absolute right-0 mt-3 w-40 bg-white border rounded-lg shadow-lg 
-                                    opacity-0 invisible group-hover:opacity-100 
-                                    group-hover:visible transition duration-200">
+                        <div x-show="open"
+                            @click.outside="open = false"
+                            x-transition
+                            class="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-[999]">
 
                             <a href="{{ route('profile.edit') }}" 
-                               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 Profile
                             </a>
 
@@ -90,7 +92,6 @@
                                     Logout
                                 </button>
                             </form>
-
                         </div>
                     </div>
 

@@ -81,6 +81,27 @@ public function checkout()
     return view('checkout', compact('cart'));
 }
 
+public function buyNow($id)
+{
+    $product = Product::findOrFail($id);
+
+    // Optional: Clear old cart
+    session()->forget('cart');
+
+    // Add only this product
+    $cart = [];
+    $cart[$id] = [
+        "name" => $product->name,
+        "price" => $product->price,
+        "quantity" => 1,
+        "image" => $product->image,
+    ];
+
+    session()->put('cart', $cart);
+
+    // Redirect directly to checkout page
+    return redirect()->route('checkout.page');
+}
 
 
 }

@@ -255,5 +255,27 @@ public function export(Request $request)
     return Excel::download(new OrdersExport($orders), 'orders.xlsx');
 }
 
+public function buyNow($id)
+{
+    $product = \App\Models\Product::findOrFail($id);
+
+    // Clear old cart (optional but recommended)
+    session()->forget('cart');
+
+    // Add only this product to cart
+    $cart = [];
+    $cart[$id] = [
+        "name" => $product->name,
+        "price" => $product->price,
+        "quantity" => 1,
+        "image" => $product->image,
+    ];
+
+    session()->put('cart', $cart);
+
+    // Redirect DIRECTLY to checkout page
+    return redirect()->route('checkout');
+}
+
 
 }

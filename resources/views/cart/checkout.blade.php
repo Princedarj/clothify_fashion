@@ -39,4 +39,6 @@
         <button class="btn btn-success">Place Order</button>
     </form>
 </div>
+
+@include('layouts.footer')
 @endsection

@@ -1,25 +1,55 @@
-<x-app-layout>
-<div class="py-8 max-w-3xl mx-auto text-center">
+@extends('layouts.user')
 
-    <h2 class="text-2xl font-bold text-green-600">
-        🎉 Order Placed Successfully
-    </h2>
+@section('content')
 
-    <p class="mt-3">Thank you for shopping with us.</p>
+<div class="min-h-screen flex items-center justify-center bg-gray-50 px-4">
 
-    <div class="flex justify-center gap-4 mt-6">
+    <div class="bg-white shadow-xl rounded-2xl p-10 max-w-md w-full text-center border border-gray-200">
 
-        <a href="{{ route('products.index') }}"
-           class="bg-blue-600 text-white px-4 py-2 rounded">
-            Continue Shopping
-        </a>
+        <!-- Success Icon -->
+        <div class="w-20 h-20 mx-auto flex items-center justify-center rounded-full bg-green-100 mb-6">
+            <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" stroke-width="3"
+                 viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M5 13l4 4L19 7"></path>
+            </svg>
+        </div>
 
-        <a href="{{ route('user.orders.invoice', $order->id) }}"
-           class="bg-green-600 text-white px-4 py-2 rounded">
-            Download Invoice
-        </a>
+        <!-- Title -->
+        <h2 class="text-3xl font-bold text-gray-900 mb-3">
+            Order Placed Successfully 🎉
+        </h2>
+
+        <p class="text-gray-600 mb-6">
+            Thank you for shopping with us. Your order has been confirmed and is being processed.
+        </p>
+
+        <!-- Order ID -->
+        <div class="bg-gray-100 rounded-lg py-3 px-4 mb-6">
+            <p class="text-sm text-gray-500">Order ID</p>
+            <p class="font-semibold text-gray-900">#{{ $order->id }}</p>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex flex-col sm:flex-row gap-3">
+
+            <a href="{{ route('products.index') }}"
+               class="flex-1 bg-gray-900 text-white py-3 rounded-lg 
+                      hover:bg-yellow-500 hover:text-black transition duration-300 font-medium">
+                Continue Shopping
+            </a>
+
+            <a href="{{ route('user.orders.invoice', $order->id) }}"
+               class="flex-1 bg-green-600 text-white py-3 rounded-lg 
+                      hover:bg-green-700 transition duration-300 font-medium">
+                Download Invoice
+            </a>
+
+        </div>
 
     </div>
 
 </div>
-</x-app-layout>
+
+@include('layouts.footer')
+@endsection
