@@ -1,0 +1,21 @@
+<?php
+return[
+    'dashboard' => 'ડેશબોર્ડ અવલોકન',
+    'Clothify Performance Summary' => 'ક્લોથિફાઈ પ્રદર્શન સારાંશ',
+    'welcome' => 'તમારૂ સ્વાગત છે. ',
+    'total_revenue' => 'કુલ આવક',
+    '%from last_month' => 'પાછલા મહિના થી %',    
+    'total_orders' => 'કુલ ઑર્ડર',
+    'delivered' => 'ડિલીવર',
+    'delivered_orders' => 'ડિલીવર કરેલા ઓર્ડર',
+    'pending_orders' => 'અપૂર્ણ ઑર્ડર',
+    'total_products' => 'કુલ ઉત્પાદનો',
+    'products' => 'ઉત્પાદનો',
+    'recent_orders' => 'તાજેતર ના ઑર્ડરો',
+    'sales_analytics' => 'વેચાણ વિશ્લેષણ',
+    'order_id' => 'ઓર્ડર આઈડી',
+    'customer' => 'ગ્રાહક',
+    'amount' => 'રાશિ',
+    'status' => 'સ્થિતિ',
+    'date' => 'તારીખ',
+];

@@ -3,8 +3,8 @@
 @section('content')
 
 <div class="mb-8">
-    <h2 class="text-3xl font-bold text-gray-800">Dashboard Overview</h2>
-    <p class="text-gray-500">Clothify Performance Summary</p>
+    <h2 class="text-3xl font-bold text-gray-800">{{ __('messages.dashboard') }}</h2>
+    <p class="text-gray-500">{{ __('messages.Clothify Performance Summary') }}</p>
 </div>
 
 <!-- KPI CARDS -->
@@ -14,13 +14,13 @@
     <div class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white p-6 rounded-2xl shadow-xl">
         <div class="flex justify-between items-center">
             <div>
-                <p class="text-sm uppercase opacity-80">Total Revenue</p>
+                <p class="text-sm uppercase opacity-80">{{ __('messages.total_revenue') }}</p>
                 <h3 class="text-2xl font-bold mt-2">₹{{ number_format($totalRevenue) }}</h3>
                 <p class="text-xs mt-2 
                     {{ $growthPercentage >= 0 ? 'text-green-500' : 'text-red-500'}}">
                     
                     {{ $growthPercentage >= 0 ? '▲' : '▼' }}
-                    {{ abs($growthPercentage) }}% from last month
+                    {{ abs($growthPercentage) }}{{ __('messages.%from last_month') }}
                 </p>
             </div>
             <div class="text-4xl opacity-30">💰</div>
@@ -31,7 +31,7 @@
     <div class="bg-gradient-to-r from-blue-500 to-cyan-500 text-white p-6 rounded-2xl shadow-xl">
         <div class="flex justify-between">
             <div>
-                <p class="text-sm uppercase opacity-80">Total Orders</p>
+                <p class="text-sm uppercase opacity-80">{{ __('messages.total_orders') }}</p>
                 <h3 class="text-2xl font-bold mt-2">{{ $totalOrders }}</h3>
             </div>
             <div class="text-4xl opacity-30">🛒</div>
@@ -42,7 +42,7 @@
     <div class="bg-gradient-to-r from-green-400 to-emerald-600 text-white p-6 rounded-2xl shadow-xl">
         <div class="flex justify-between">
             <div>
-                <p class="text-sm uppercase opacity-80">Delivered</p>
+                <p class="text-sm uppercase opacity-80">{{ __('messages.delivered') }}</p>
                 <h3 class="text-2xl font-bold mt-2">{{ $deliveredOrders }}</h3>
             </div>
             <div class="text-4xl opacity-30">✅</div>
@@ -64,7 +64,7 @@
     <div class="bg-gradient-to-r from-pink-500 to-rose-600 text-white p-6 rounded-2xl shadow-xl">
         <div class="flex justify-between">
             <div>
-                <p class="text-sm uppercase opacity-80">Products</p>
+                <p class="text-sm uppercase opacity-80">{{ __('messages.products') }}</p>
                 <h3 class="text-2xl font-bold mt-2">{{ $totalProducts }}</h3>
             </div>
             <div class="text-4xl opacity-30">👕</div>
@@ -75,23 +75,23 @@
 
 <!-- CHART SECTION -->
 <div class="bg-gradient-to-r from-white to-gray-50 p-8 rounded-2xl shadow-xl mb-10 border">
-    <h3 class="text-xl font-semibold mb-6 text-gray-700">Sales Analytics</h3>
+    <h3 class="text-xl font-semibold mb-6 text-gray-700">{{ __('messages.sales_analytics') }}</h3>
     <canvas id="salesChart" height="100"></canvas>
 </div>
 
 <!-- RECENT ORDERS -->
 <div class="bg-white p-8 rounded-2xl shadow-xl">
-    <h3 class="text-xl font-semibold mb-6 text-gray-700">Recent Orders</h3>
+    <h3 class="text-xl font-semibold mb-6 text-gray-700">{{ __('messages.recent_orders') }}</h3>
 
     <div class="overflow-x-auto">
         <table class="w-full text-sm">
             <thead>
                 <tr class="bg-gradient-to-r from-gray-100 to-gray-200 text-gray-600 uppercase text-xs">
                     <th class="p-4 text-left">#</th>
-                    <th class="p-4 text-left">Customer</th>
-                    <th class="p-4 text-left">Amount</th>
-                    <th class="p-4 text-left">Status</th>
-                    <th class="p-4 text-left">Date</th>
+                    <th class="p-4 text-left">{{ __('messages.customer') }}</th>
+                    <th class="p-4 text-left">{{ __('messages.amount') }}</th>
+                    <th class="p-4 text-left">{{ __('messages.status') }}</th>
+                    <th class="p-4 text-left">{{ __('messages.date') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -103,7 +103,7 @@
                     <td class="p-4">
                         @if($order->status == 'Delivered')
                             <span class="px-3 py-1 text-xs rounded-full bg-green-100 text-green-700">
-                                Delivered
+                                {{__('messages.delivered')}}
                             </span>
                         @elseif($order->status == 'Pending')
                             <span class="px-3 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700">
