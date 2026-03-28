@@ -9,12 +9,12 @@
         <!-- Header -->
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-bold text-gray-800">
-                Manage Categories
+                {{ __('messages.manage_categories') }}
             </h2>
 
             <a href="{{ route('admin.categories.create') }}"
                class="px-5 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition shadow">
-                + Add Category
+                + {{ __('messages.add_category') }}
             </a>
         </div>
 
@@ -32,9 +32,9 @@
                 <thead>
                     <tr class="bg-gray-100 text-gray-600 uppercase text-sm">
                         <th class="p-4">#</th>
-                        <th class="p-4">Category Name</th>
-                        <th class="p-4">Products</th>
-                        <th class="p-4 text-right">Action</th>
+                        <th class="p-4">{{ __('messages.category_name') }}</th>
+                        <th class="p-4">{{ __('messages.products') }}</th>
+                        <th class="p-4 text-right">{{ __('messages.action') }}</th>
                     </tr>
                 </thead>
 
@@ -59,13 +59,13 @@
                             <form action="{{ route('admin.categories.destroy', $category->id) }}"
                                   method="POST"
                                   class="inline-block"
-                                  onsubmit="return confirm('Delete this category?')">
+                                  onsubmit="return confirm('{{ __('messages.delete_confirm') }}')">
 
                                 @csrf
                                 @method('DELETE')
 
                                 <button class="px-4 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition">
-                                    Delete
+                                    {{ __('messages.delete') }}
                                 </button>
                             </form>
                         </td>

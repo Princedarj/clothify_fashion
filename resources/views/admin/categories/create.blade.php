@@ -5,7 +5,7 @@
 <div class="max-w-xl mx-auto bg-white shadow-lg rounded-xl p-8">
 
     <h2 class="text-xl font-bold mb-6 text-gray-800">
-        ➕ Add Category
+        ➕ {{ __('messages.add_category') }}
     </h2>
 
     <form action="{{ route('admin.categories.store') }}" method="POST">
@@ -13,7 +13,7 @@
 
         <div class="mb-4">
             <label class="block mb-2 font-semibold text-gray-700">
-                Category Name
+                {{ __('messages.category_name') }}
             </label>
 
             <input type="text"
@@ -25,12 +25,12 @@
         <div class="flex justify-between">
             <a href="{{ route('admin.categories.index') }}"
                class="px-5 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition">
-                ← Back
+                ← {{ __('messages.back') }}
             </a>
 
             <button type="submit"
                     class="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                Save Category
+                {{ __('messages.save_category') }}
             </button>
         </div>
 

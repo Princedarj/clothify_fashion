@@ -105,7 +105,7 @@
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button class="bg-red-600 px-4 py-2 rounded w-full hover:bg-red-700 transition">
-                    Logout
+                    {{ __('messages.logout') }}
                 </button>
             </form>
         </div>

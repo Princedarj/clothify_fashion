@@ -4,7 +4,7 @@
 
 <div class="mb-8">
     <h2 class="text-3xl font-bold text-gray-800">{{ __('messages.dashboard') }}</h2>
-    <p class="text-gray-500">{{ __('messages.Clothify Performance Summary') }}</p>
+    <p class="text-gray-500">{{ __('messages.performance_summary') }}</p>
 </div>
 
 <!-- KPI CARDS -->
@@ -20,7 +20,7 @@
                     {{ $growthPercentage >= 0 ? 'text-green-500' : 'text-red-500'}}">
                     
                     {{ $growthPercentage >= 0 ? '▲' : '▼' }}
-                    {{ abs($growthPercentage) }}{{ __('messages.%from last_month') }}
+                    {{ abs($growthPercentage) }}{{ __('messages.percent_last_month') }}
                 </p>
             </div>
             <div class="text-4xl opacity-30">💰</div>
@@ -53,7 +53,7 @@
     <div class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white p-6 rounded-2xl shadow-xl">
         <div class="flex justify-between">
             <div>
-                <p class="text-sm uppercase opacity-80">Pending</p>
+                <p class="text-sm uppercase opacity-80">{{ __('messages.pending') }}</p>
                 <h3 class="text-2xl font-bold mt-2">{{ $pendingOrders }}</h3>
             </div>
             <div class="text-4xl opacity-30">⏳</div>
@@ -103,15 +103,15 @@
                     <td class="p-4">
                         @if($order->status == 'Delivered')
                             <span class="px-3 py-1 text-xs rounded-full bg-green-100 text-green-700">
-                                {{__('messages.delivered')}}
+                                {{ __('messages.delivered') }}
                             </span>
                         @elseif($order->status == 'Pending')
                             <span class="px-3 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700">
-                                {{__('messages.pending')}}
+                                {{ __('messages.pending') }}
                             </span>
                         @else
                             <span class="px-3 py-1 text-xs rounded-full bg-red-100 text-red-700">
-                                {{__('messages.cancelled')}}
+                                {{ __('messages.cancelled') }}
                             </span>
                         @endif
                     </td>
@@ -135,7 +135,7 @@ new Chart(ctx, {
     data: {
         labels: {!! json_encode($monthlySales->keys()) !!},
         datasets: [{
-            label: 'Revenue',
+            label: '{{ __("messages.revenue") }}',
             data: {!! json_encode($monthlySales->values()) !!},
             borderColor: '#7c3aed',
             backgroundColor: 'rgba(124,58,237,0.15)',
