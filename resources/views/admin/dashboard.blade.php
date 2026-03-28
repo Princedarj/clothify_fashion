@@ -107,11 +107,11 @@
                             </span>
                         @elseif($order->status == 'Pending')
                             <span class="px-3 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700">
-                                Pending
+                                {{__('messages.pending')}}
                             </span>
                         @else
                             <span class="px-3 py-1 text-xs rounded-full bg-red-100 text-red-700">
-                                Cancelled
+                                {{__('messages.cancelled')}}
                             </span>
                         @endif
                     </td>

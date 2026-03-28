@@ -1,7 +1,11 @@
 <?php
 
 return [
-    'dashboard' => 'Dashboard Overview',
+    'dashboard overview' => 'Dashboard Overview',
+    'dashboard' => 'Dashboard',
+    'orders' => 'Orders',
+    'users' => 'Users',
+    'categories' => 'Categories',
     'Clothify Performance Summary' => 'Clothify Performance Summary',
     'welcome' => 'Welcome back, Admin',
     'total_revenue' => 'Total Revenue',
@@ -19,4 +23,6 @@ return [
     'amount' => 'Amount',
     'status' => 'Status',
     'date' => 'Date',
+    'pending' => 'Pending',
+    'cancelled' => 'Cancelled'
 ];

@@ -23,7 +23,7 @@
                    {{ request()->is('admin/dashboard*') 
                       ? 'bg-gray-700 text-white' 
                       : 'hover:bg-gray-700' }}">
-                   📊 Dashboard
+                   📊 {{__('messages.dashboard')}}
                 </a>
 
                 <a href="{{ route('admin.orders.index') }}"
@@ -31,7 +31,7 @@
                    {{ request()->is('admin/orders*') 
                       ? 'bg-gray-700 text-white' 
                       : 'hover:bg-gray-700' }}">
-                   📦 Orders
+                   📦 {{__('messages.orders')}}
                 </a>
 
                 <a href="{{ route('admin.products.index') }}"
@@ -39,7 +39,7 @@
                     {{ request()->is('admin/products*') 
                         ? 'bg-gray-700 text-white' 
                         : 'hover:bg-gray-700' }}">
-                    👕 Products
+                    👕 {{__('messages.products')}}
                 </a>
 
                 <a href="{{ route('admin.users.index') }}"
@@ -47,7 +47,7 @@
                     {{ request()->is('admin/users*') 
                         ? 'bg-gray-700 text-white' 
                         : 'hover:bg-gray-700' }}">
-                    👥 Users
+                    👥 {{__('messages.users')}}
                 </a>
 
                 <a href="{{ route('admin.categories.index') }}"
@@ -55,11 +55,49 @@
                     {{ request()->is('admin/categories*') 
                         ? 'bg-gray-700 text-white' 
                         : 'hover:bg-gray-700' }}">
-                    🗂️ Categories
+                    🗂️ {{__('messages.categories')}}
                 </a>
 
 
             </nav>
+        </div>
+
+        <!--Languages-->
+
+        <div class="pt-6 border-t border-gray-700">
+
+            <p class="text-xs uppercase text-gray-400 mb-3 tracking-wide flex items-center gap-2">
+                🌐 Language
+            </p>
+
+            <div class="grid grid-cols-3 gap-2">
+
+                <a href="{{ route('lang.switch', 'en') }}"
+                class="text-center py-2 rounded-lg text-sm font-medium transition
+                {{ app()->getLocale() == 'en' 
+                    ? 'bg-blue-600 text-white' 
+                    : 'bg-gray-800 hover:bg-gray-700 text-gray-300' }}">
+                    EN
+                </a>
+
+                <a href="{{ route('lang.switch', 'gu') }}"
+                class="text-center py-2 rounded-lg text-sm font-medium transition
+                {{ app()->getLocale() == 'gu' 
+                    ? 'bg-blue-600 text-white' 
+                    : 'bg-gray-800 hover:bg-gray-700 text-gray-300' }}">
+                    GU
+                </a>
+
+                <a href="{{ route('lang.switch', 'hi') }}"
+                class="text-center py-2 rounded-lg text-sm font-medium transition
+                {{ app()->getLocale() == 'hi' 
+                    ? 'bg-blue-600 text-white' 
+                    : 'bg-gray-800 hover:bg-gray-700 text-gray-300' }}">
+                    HI
+                </a>
+
+            </div>
+
         </div>
 
         <!-- Bottom Section -->

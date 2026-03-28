@@ -1,6 +1,11 @@
 <?php
 return[
-    'dashboard' => 'ડેશબોર્ડ અવલોકન',
+    'dashboard overview' => 'ડેશબોર્ડ અવલોકન',
+    'dashboard' => 'ડેશબોર્ડ',
+    'orders' => 'ઑર્ડર',
+    'product' => 'વસ્તુઓ ',
+    'users' => 'ગ્રાહકો',
+    'categores' => 'વસ્તુ ના પ્રકાર',
     'Clothify Performance Summary' => 'ક્લોથિફાઈ પ્રદર્શન સારાંશ',
     'welcome' => 'તમારૂ સ્વાગત છે. ',
     'total_revenue' => 'કુલ આવક',
@@ -18,4 +23,6 @@ return[
     'amount' => 'રાશિ',
     'status' => 'સ્થિતિ',
     'date' => 'તારીખ',
+    'pending' => 'બાકી',
+    'cancelled' => 'રદ કરો'
 ];

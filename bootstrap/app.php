@@ -11,11 +11,15 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->web(); // 👈 THIS WAS MISSING
+
+        $middleware->web(append: [
+            \App\Http\Middleware\SetLocale::class,
+        ]);
 
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
         ]);
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

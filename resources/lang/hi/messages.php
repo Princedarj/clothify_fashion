@@ -1,7 +1,12 @@
 <?php
 
 return [
-    'dashboard' => 'डैशबोर्ड अवलोकन',
+    'dashboard overview' => 'डैशबोर्ड अवलोकन',
+    'dashboard' => 'डैशबोर्ड',
+    'orders' => 'ऑर्डर',
+    'product ' => 'उत्पाद',
+    'users' => 'उपयोगकर्ताओं',
+    'categores' => 'श्रेणियाँ',
     'Clothify Performance Summary' => 'क्लोथिफाई प्रदर्शन सारांश',
     'welcome' => 'वापसी पर स्वागत है, एडमिन',
     'total_revenue' => 'कुल आवक',
@@ -19,4 +24,6 @@ return [
     'amount' => 'राशि',
     'status' => 'स्थिति',
     'date' => 'तारीख',
+    'pending' => 'लंबित',
+    'cancelled' => 'रद्द'
 ];
