@@ -89,7 +89,7 @@
                         @endif
 
                         @if($order->status !== 'cancelled')
-                            <a href="{{ route('admin.invoice', $order->id) }}"
+                            <a href="{{ route('admin.orders.invoice', $order->id) }}"
                                class="block text-center w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition shadow">
                                 {{ __('messages.download_invoice') }}
                             </a>
