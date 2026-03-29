@@ -17,16 +17,18 @@
 
         <!-- Title -->
         <h2 class="text-3xl font-bold text-gray-900 mb-3">
-            Order Placed Successfully 🎉
+            {{ __('messages.Order Success') }} 🎉
         </h2>
 
         <p class="text-gray-600 mb-6">
-            Thank you for shopping with us. Your order has been confirmed and is being processed.
+            {{ __('messages.Order Success Description') }}
         </p>
 
         <!-- Order ID -->
         <div class="bg-gray-100 rounded-lg py-3 px-4 mb-6">
-            <p class="text-sm text-gray-500">Order ID</p>
+            <p class="text-sm text-gray-500">
+                {{ __('messages.Order ID') }}
+            </p>
             <p class="font-semibold text-gray-900">#{{ $order->id }}</p>
         </div>
 
@@ -36,13 +38,13 @@
             <a href="{{ route('products.index') }}"
                class="flex-1 bg-gray-900 text-white py-3 rounded-lg 
                       hover:bg-yellow-500 hover:text-black transition duration-300 font-medium">
-                Continue Shopping
+                {{ __('messages.Continue Shopping') }}
             </a>
 
             <a href="{{ route('user.orders.invoice', $order->id) }}"
                class="flex-1 bg-green-600 text-white py-3 rounded-lg 
                       hover:bg-green-700 transition duration-300 font-medium">
-                Download Invoice
+                {{ __('messages.Download Invoice') }}
             </a>
 
         </div>

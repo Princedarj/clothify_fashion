@@ -6,7 +6,7 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
         <h2 class="text-3xl font-bold text-gray-800 mb-6">
-            Profile Settings
+            {{ __('messages.profile_settings') }}
         </h2>
 
         <!-- Update Profile -->

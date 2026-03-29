@@ -8,11 +8,13 @@
 <div class="py-12 max-w-6xl mx-auto px-4">
 
     <h2 class="text-3xl font-bold mb-8 text-gray-900">
-        Your Cart 🛒
+        {{ __('messages.Your Cart') }} 🛒
     </h2>
 
     @if(empty($cart))
-        <p class="text-gray-500 text-lg">Your cart is empty.</p>
+        <p class="text-gray-500 text-lg">
+            {{ __('messages.Your Cart is Empty') }}
+        </p>
     @else
 
         <div class="space-y-6">
@@ -65,12 +67,12 @@
         <!-- Grand Total & Checkout -->
         <div class="mt-8 flex flex-col md:flex-row justify-between items-center bg-gray-100 p-4 rounded-lg">
             <div class="text-lg font-semibold text-gray-800">
-                Grand Total: ₹ {{ $grandTotal }}
+                {{ __('messages.Grand Total') }}: ₹ {{ $grandTotal }}
             </div>
 
             <a href="{{ route('checkout') }}"
                class="mt-4 md:mt-0 px-6 py-2 bg-blue-700 text-white font-medium rounded-lg hover:bg-blue-800 transition">
-                Proceed to Checkout →
+                {{ __('messages.Proceed to Checkout') }} →
             </a>
         </div>
 

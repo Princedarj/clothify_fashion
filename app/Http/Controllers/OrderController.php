@@ -88,7 +88,8 @@ public function place(Request $request)
         'address'      => $request->address,
         'pincode'      => $request->pincode,
         'total_amount' => $totalAmount,
-        'status'       => 'Pending',
+        // 'status'       => 'Pending',
+        'status' => __('messages.Pending'),
     ]);
 
     // ✅ Save order items
@@ -104,7 +105,10 @@ public function place(Request $request)
 
     session()->forget('cart');
 
-    return redirect()->route('order.success', $order->id);
+    //return redirect()->route('order.success', $order->id);
+    return redirect()
+    ->route('order.success', $order->id)
+    ->with('success', __('messages.Order Placed Successfully'));
 
 }
 

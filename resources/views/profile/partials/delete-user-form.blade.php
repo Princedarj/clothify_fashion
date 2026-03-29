@@ -2,18 +2,18 @@
 
     <header>
         <h2 class="text-xl font-semibold text-gray-900">
-            Delete Account
+            {{ __('messages.delete_account') }}
         </h2>
 
         <p class="mt-2 text-sm text-gray-600">
-            Once your account is deleted, all of its resources and data will be permanently deleted.
+            {{ __('messages.delete_account_desc') }}
         </p>
     </header>
 
     <!-- Delete Button -->
     <button onclick="openDeleteModal()"
         class="bg-red-600 text-white px-5 py-2 rounded-lg hover:bg-red-700 transition">
-        Delete Account
+        {{ __('messages.delete_account') }}
     </button>
 
 </section>
@@ -30,11 +30,11 @@
         </button>
 
         <h2 class="text-lg font-semibold text-gray-900 mb-4">
-            Are you sure?
+            {{ __('messages.are_you_sure') }}
         </h2>
 
         <p class="text-sm text-gray-600 mb-6">
-            This action is permanent. Please enter your password to confirm.
+            {{ __('messages.delete_warning') }}
         </p>
 
         <form method="POST" action="{{ route('profile.destroy') }}">
@@ -43,7 +43,7 @@
 
             <input type="password"
                 name="password"
-                placeholder="Enter your password"
+                placeholder="{{ __('messages.enter_password') }}"
                 class="w-full border rounded-lg px-4 py-2 mb-4 focus:ring-2 focus:ring-red-500"
                 required>
 
@@ -51,12 +51,12 @@
                 <button type="button"
                     onclick="closeDeleteModal()"
                     class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300">
-                    Cancel
+                    {{ __('messages.cancel') }}
                 </button>
 
                 <button type="submit"
                     class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700">
-                    Delete Account
+                    {{ __('messages.delete_account') }}
                 </button>
             </div>
 

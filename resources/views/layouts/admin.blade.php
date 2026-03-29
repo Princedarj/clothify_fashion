@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Panel</title>
+    <title>{{ __('messages.Admin Panel') }}</title>
     @vite(['resources/css/app.css','resources/js/app.js'])
 </head>
 <body class="bg-gray-100">
@@ -14,7 +14,9 @@
 
         <!-- Top Section -->
         <div>
-            <h2 class="text-2xl font-bold mb-6">Clothify Admin</h2>
+            <h2 class="text-2xl font-bold mb-6">
+                {{ __('messages.Clothify Admin') }}
+            </h2>
 
             <nav class="space-y-3">
 
@@ -23,7 +25,7 @@
                    {{ request()->is('admin/dashboard*') 
                       ? 'bg-gray-700 text-white' 
                       : 'hover:bg-gray-700' }}">
-                   📊 {{__('messages.dashboard')}}
+                   📊 {{ __('messages.dashboard') }}
                 </a>
 
                 <a href="{{ route('admin.orders.index') }}"
@@ -31,7 +33,7 @@
                    {{ request()->is('admin/orders*') 
                       ? 'bg-gray-700 text-white' 
                       : 'hover:bg-gray-700' }}">
-                   📦 {{__('messages.orders')}}
+                   📦 {{ __('messages.orders') }}
                 </a>
 
                 <a href="{{ route('admin.products.index') }}"
@@ -39,7 +41,7 @@
                     {{ request()->is('admin/products*') 
                         ? 'bg-gray-700 text-white' 
                         : 'hover:bg-gray-700' }}">
-                    👕 {{__('messages.products')}}
+                    👕 {{ __('messages.products') }}
                 </a>
 
                 <a href="{{ route('admin.users.index') }}"
@@ -47,7 +49,7 @@
                     {{ request()->is('admin/users*') 
                         ? 'bg-gray-700 text-white' 
                         : 'hover:bg-gray-700' }}">
-                    👥 {{__('messages.users')}}
+                    👥 {{ __('messages.users') }}
                 </a>
 
                 <a href="{{ route('admin.categories.index') }}"
@@ -55,9 +57,8 @@
                     {{ request()->is('admin/categories*') 
                         ? 'bg-gray-700 text-white' 
                         : 'hover:bg-gray-700' }}">
-                    🗂️ {{__('messages.categories')}}
+                    🗂️ {{ __('messages.categories') }}
                 </a>
-
 
             </nav>
         </div>
@@ -67,7 +68,7 @@
         <div class="pt-6 border-t border-gray-700">
 
             <p class="text-xs uppercase text-gray-400 mb-3 tracking-wide flex items-center gap-2">
-                🌐 Language
+                🌐 {{ __('messages.Language') }}
             </p>
 
             <div class="grid grid-cols-3 gap-2">
@@ -77,7 +78,7 @@
                 {{ app()->getLocale() == 'en' 
                     ? 'bg-blue-600 text-white' 
                     : 'bg-gray-800 hover:bg-gray-700 text-gray-300' }}">
-                    EN
+                    {{ __('messages.EN') }}
                 </a>
 
                 <a href="{{ route('lang.switch', 'gu') }}"
@@ -85,7 +86,7 @@
                 {{ app()->getLocale() == 'gu' 
                     ? 'bg-blue-600 text-white' 
                     : 'bg-gray-800 hover:bg-gray-700 text-gray-300' }}">
-                    GU
+                    {{ __('messages.GU') }}
                 </a>
 
                 <a href="{{ route('lang.switch', 'hi') }}"
@@ -93,7 +94,7 @@
                 {{ app()->getLocale() == 'hi' 
                     ? 'bg-blue-600 text-white' 
                     : 'bg-gray-800 hover:bg-gray-700 text-gray-300' }}">
-                    HI
+                    {{ __('messages.HI') }}
                 </a>
 
             </div>

@@ -2,11 +2,11 @@
 
     <header>
         <h2 class="text-xl font-semibold text-gray-900">
-            Profile Information
+            {{ __('messages.profile_information') }}
         </h2>
 
         <p class="mt-2 text-sm text-gray-600">
-            Update your account's profile information and email address.
+            {{ __('messages.profile_description') }}
         </p>
     </header>
 
@@ -23,7 +23,7 @@
         <!-- Name -->
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">
-                Name
+                {{ __('messages.name') }}
             </label>
             <input type="text"
                    name="name"
@@ -39,7 +39,7 @@
         <!-- Email -->
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">
-                Email
+                {{ __('messages.email') }}
             </label>
             <input type="email"
                    name="email"
@@ -54,17 +54,17 @@
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
                 <div class="mt-3">
                     <p class="text-sm text-gray-800">
-                        Your email address is unverified.
+                        {{ __('messages.email_unverified') }}
 
                         <button form="send-verification"
                                 class="underline text-sm text-indigo-600 hover:text-indigo-800">
-                            Click here to re-send the verification email.
+                            {{ __('messages.resend_verification') }}
                         </button>
                     </p>
 
                     @if (session('status') === 'verification-link-sent')
                         <p class="mt-2 text-sm text-green-600">
-                            A new verification link has been sent to your email address.
+                            {{ __('messages.verification_sent') }}
                         </p>
                     @endif
                 </div>
@@ -75,12 +75,12 @@
         <div class="flex items-center gap-4">
             <button type="submit"
                 class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition">
-                Save Changes
+                {{ __('messages.save_changes') }}
             </button>
 
             @if (session('status') === 'profile-updated')
                 <p class="text-green-600 text-sm">
-                    Profile updated successfully.
+                    {{ __('messages.profile_updated') }}
                 </p>
             @endif
         </div>

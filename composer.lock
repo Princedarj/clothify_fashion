@@ -3959,7 +3959,7 @@
             "version": "2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/php-fig/http-message.git",
+                "url": "https://github.com/php-fig/http-messages.git",
                 "reference": "402d35bcb92c70c026d1a6a9883f06b2ead23d71"
             },
             "dist": {
