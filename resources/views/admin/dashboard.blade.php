@@ -12,15 +12,27 @@
 
     <!-- Revenue -->
     <div class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white p-6 rounded-2xl shadow-xl">
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-start">
             <div>
                 <p class="text-sm uppercase opacity-80">{{ __('messages.total_revenue') }}</p>
                 <h3 class="text-2xl font-bold mt-2">₹{{ number_format($totalRevenue) }}</h3>
-                <p class="text-xs mt-2 
-                    {{ $growthPercentage >= 0 ? 'text-green-500' : 'text-red-500'}}">
-                    
-                    {{ $growthPercentage >= 0 ? '▲' : '▼' }}
-                    {{ abs($growthPercentage) }}{{ __('messages.percent_last_month') }}
+                <p class="text-xs mt-2
+                    @if($growthPercentage > 0)
+                        text-green-500
+                    @elseif($growthPercentage < 0)
+                        text-red-500
+                    @else
+                        text-gray-400
+                    @endif
+                ">
+
+                    @if($growthPercentage > 0)
+                        ▲ {{ $growthPercentage }}{{ __('messages.percent_last_month') }}
+                    @elseif($growthPercentage < 0)
+                        ▼ {{ abs($growthPercentage) }}{{ __('messages.percent_last_month') }}
+                    @else
+                        — {{ __('messages.no_change') }}
+                    @endif
                 </p>
             </div>
             <div class="text-4xl opacity-30">💰</div>
