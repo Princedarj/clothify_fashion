@@ -63,44 +63,6 @@
             </nav>
         </div>
 
-        <!--Languages-->
-
-        <div class="pt-6 border-t border-gray-700">
-
-            <p class="text-xs uppercase text-gray-400 mb-3 tracking-wide flex items-center gap-2">
-                🌐 {{ __('messages.Language') }}
-            </p>
-
-            <div class="grid grid-cols-3 gap-2">
-
-                <a href="{{ route('lang.switch', 'en') }}"
-                class="text-center py-2 rounded-lg text-sm font-medium transition
-                {{ app()->getLocale() == 'en' 
-                    ? 'bg-blue-600 text-white' 
-                    : 'bg-gray-800 hover:bg-gray-700 text-gray-300' }}">
-                    {{ __('messages.EN') }}
-                </a>
-
-                <a href="{{ route('lang.switch', 'gu') }}"
-                class="text-center py-2 rounded-lg text-sm font-medium transition
-                {{ app()->getLocale() == 'gu' 
-                    ? 'bg-blue-600 text-white' 
-                    : 'bg-gray-800 hover:bg-gray-700 text-gray-300' }}">
-                    {{ __('messages.GU') }}
-                </a>
-
-                <a href="{{ route('lang.switch', 'hi') }}"
-                class="text-center py-2 rounded-lg text-sm font-medium transition
-                {{ app()->getLocale() == 'hi' 
-                    ? 'bg-blue-600 text-white' 
-                    : 'bg-gray-800 hover:bg-gray-700 text-gray-300' }}">
-                    {{ __('messages.HI') }}
-                </a>
-
-            </div>
-
-        </div>
-
         <!-- Bottom Section -->
         <div class="pt-6 border-t border-gray-700">
             <form method="POST" action="{{ route('logout') }}">

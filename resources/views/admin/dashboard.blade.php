@@ -1,10 +1,50 @@
 @extends('layouts.admin')
 
 @section('content')
+<div class="flex justify-between items-center mb-8">
 
-<div class="mb-8">
-    <h2 class="text-3xl font-bold text-gray-800">{{ __('messages.dashboard') }}</h2>
-    <p class="text-gray-500">{{ __('messages.performance_summary') }}</p>
+    <!-- LEFT SIDE -->
+    <div>
+        <h2 class="text-3xl font-bold text-gray-800">
+            {{ __('messages.dashboard') }}
+        </h2>
+        <p class="text-gray-500">
+            {{ __('messages.performance_summary') }}
+        </p>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="flex items-center space-x-3">
+
+        <!-- 🌐 LANGUAGE -->
+        <div class="relative">
+            <button onclick="toggleLangDropdown()" 
+                class="bg-white px-4 py-2 rounded-lg shadow flex items-center space-x-2 hover:bg-gray-100 transition">
+
+                🌐 
+                <span class="text-sm font-medium">Language</span>
+            </button>
+
+            <div id="langDropdown" 
+                class="hidden absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-lg z-50">
+
+                <a href="{{ route('lang.switch', 'en') }}" class="block px-4 py-2 text-sm hover:bg-gray-100">English</a>
+                <a href="{{ route('lang.switch', 'gu') }}" class="block px-4 py-2 text-sm hover:bg-gray-100">Gujarati</a>
+                <a href="{{ route('lang.switch', 'hi') }}" class="block px-4 py-2 text-sm hover:bg-gray-100">Hindi</a>
+            </div>
+        </div>
+
+        <!-- 🚪 LOGOUT BUTTON -->
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit"
+                class="bg-red-500 text-white px-4 py-2 rounded-lg shadow hover:bg-red-600 transition">
+                Logout
+            </button>
+        </form>
+
+    </div>
+
 </div>
 
 <!-- KPI CARDS -->
@@ -166,6 +206,12 @@ new Chart(ctx, {
         }
     }
 });
+</script>
+
+<script>
+function toggleLangDropdown() {
+    document.getElementById("langDropdown").classList.toggle("hidden");
+}
 </script>
 
 @endsection
