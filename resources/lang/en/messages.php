@@ -254,4 +254,18 @@ return [
     'profile_updated' => 'Profile updated successfully.',
 
     'profile_settings' => 'Profile Settings',
+
+    'Hero Title' => 'Elevate Your Everyday Style',
+    'Hero Description' => 'Discover the perfect blend of style and comfort with our curated collection.',
+    'Explore Collection' => 'Explore Collection',
+    'Free Shipping' => 'Free Shipping',
+    'Free Shipping Desc' => 'Get free delivery on orders above ₹1500',
+    'Premium Quality' => 'Premium Quality',
+    'Premium Quality Desc' => 'Experience the finest materials and craftsmanship.',
+    'Secure Payment' => 'Secure Payment',
+    'Secure Payment Desc' => 'Your payment information is always protected.',
+    'Latest Arrivals' => 'Latest Arrivals',
+    'Latest Arrivals Desc' => 'Stay ahead of the trends with our newest styles.',
+    'View' => 'View',
+
 ];

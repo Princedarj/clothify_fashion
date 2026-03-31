@@ -59,29 +59,59 @@
             <!-- Right Side -->
             <div class="flex items-center space-x-6">
 
-                @auth
-                    <!-- User Dropdown -->
+               @auth
                     <div x-data="{ open: false }" class="relative">
 
+                        <!-- Button -->
                         <button @click="open = !open"
-                                class="flex items-center space-x-2 text-gray-700 hover:text-black">
+                            class="flex items-center space-x-2 text-gray-700 hover:text-black">
+                            
                             <span class="font-medium">
                                 {{ auth()->user()->name }}
                             </span>
+
                             <svg class="w-4 h-4 mt-1" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" 
                                     d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
                             </svg>
                         </button>
 
+                        <!-- Dropdown -->
                         <div x-show="open"
+                            x-transition
                             @click.outside="open = false"
-                            class="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-[999]">
+                            class="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-[999]">
 
+                            <!-- Profile -->
                             <a href="{{ route('profile.edit') }}" 
-                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 {{ __('messages.Profile') }}
                             </a>
+
+                            <!-- Language -->
+                            <div class="border-t my-1"></div>
+
+                            <p class="px-4 py-2 text-xs text-gray-500">
+                                {{ __('messages.Language') }}
+                            </p>
+
+                            <a href="{{ route('lang.switch', 'en') }}"
+                                class="block px-4 py-2 text-sm hover:bg-gray-100">
+                                🇺🇸 English
+                            </a>
+
+                            <a href="{{ route('lang.switch', 'hi') }}"
+                                class="block px-4 py-2 text-sm hover:bg-gray-100">
+                                🇮🇳 Hindi
+                            </a>
+
+                            <a href="{{ route('lang.switch', 'gu') }}"
+                                class="block px-4 py-2 text-sm hover:bg-gray-100">
+                                🇮🇳 Gujarati
+                            </a>
+
+                            <!-- Logout -->
+                            <div class="border-t my-1"></div>
 
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
@@ -90,15 +120,10 @@
                                     {{ __('messages.Logout') }}
                                 </button>
                             </form>
+
                         </div>
                     </div>
-
-                @else
-                    <a href="{{ route('login') }}" 
-                       class="bg-black text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-gray-800 transition">
-                        {{ __('messages.Login') }}
-                    </a>
-                @endauth
+                    @endauth
 
             </div>
 

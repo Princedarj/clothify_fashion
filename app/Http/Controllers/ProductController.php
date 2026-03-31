@@ -15,8 +15,8 @@ class ProductController extends Controller
         $query = Product::query();
 
         // Category Filter
-        if ($request->category) {
-            $query->where('category_id', $request->category);
+        if ($request->category_id) {
+            $query->where('category_id', $request->category_id);
         }
 
         // Price Filter

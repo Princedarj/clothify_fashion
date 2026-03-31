@@ -206,7 +206,7 @@ return [
     // 'Enter Email' => 'તમારું ઇમેલ નાખો',
     // 'Join' => 'જોડાઓ',
     'All rights reserved' => 'બધા અધિકારો સુરક્ષિત.',
-    'Mens Collection' => 'પુરુષોનો કલેક્શન',
+    'Mens Collection' => 'પુરુષોનું કલેક્શન',
     'Mens Collection Desc' => 'આધુનિક પુરુષો માટે પ્રીમિયમ સ્ટાઇલ.',
 
     'Filter Products' => 'પ્રોડક્ટ ફિલ્ટર કરો',
@@ -255,4 +255,23 @@ return [
     'profile_updated' => 'પ્રોફાઇલ સફળતાપૂર્વક અપડેટ થયું.',
 
     'profile_settings' => 'પ્રોફાઇલ સેટિંગ્સ',
+
+    'Hero Title' => 'તમારા રોજિંદા સ્ટાઇલને ઊંચાઈ આપો',
+    'Hero Description' => 'અમારા પસંદગી કરેલા કલેક્શન સાથે સ્ટાઇલ અને આરામનો સંપૂર્ણ સમન્વય શોધો.',
+    'Explore Collection' => 'કલેક્શન જુઓ',
+
+    'Free Shipping' => 'મફત શિપિંગ',
+    'Free Shipping Desc' => '₹1500થી વધુ ઓર્ડર પર મફત ડિલિવરી મેળવો',
+
+    'Premium Quality' => 'ઉત્તમ ગુણવત્તા',
+    'Premium Quality Desc' => 'શ્રેષ્ઠ મટિરિયલ અને કારીગરીનો અનુભવ કરો.',
+
+    'Secure Payment' => 'સુરક્ષિત ચુકવણી',
+    'Secure Payment Desc' => 'તમારી ચુકવણીની માહિતી હંમેશા સુરક્ષિત રહે છે.',
+
+    'Latest Arrivals' => 'નવી આવક',
+    'Latest Arrivals Desc' => 'અમારા નવા સ્ટાઇલ સાથે ટ્રેન્ડમાં આગળ રહો.',
+
+    'View' => 'જુઓ',
+
 ];
