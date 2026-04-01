@@ -63,16 +63,6 @@
             </nav>
         </div>
 
-        <!-- Bottom Section -->
-        <div class="pt-6 border-t border-gray-700">
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button class="bg-red-600 px-4 py-2 rounded w-full hover:bg-red-700 transition">
-                    {{ __('messages.logout') }}
-                </button>
-            </form>
-        </div>
-
     </div>
 
     <!-- Main Content -->

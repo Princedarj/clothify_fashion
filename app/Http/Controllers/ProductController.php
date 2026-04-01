@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 
 
 class ProductController extends Controller
@@ -54,37 +55,64 @@ class ProductController extends Controller
 
 /////////////////////////////////////////////////////////////////////////////////////
 
-    // ✅ ADMIN STORE PRODUCT
-    public function store(Request $request)
-    {
-            // Validation
-            $request->validate([
-                'name' => 'required|string|max:255',
-                'price' => 'required|numeric',
-                'description' => 'required|string',
-                'image' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
-            ]);
+    // ✅ ADMIN STORE PRODUCTuse Stichoza\GoogleTranslate\GoogleTranslate;
 
-            $imageName = null;
+public function store(Request $request)
+{
+    // ✅ Validation
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'price' => 'required|numeric',
+        'description' => 'required|string',
+        'image' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
+    ]);
 
-            // Upload Image
-            if ($request->hasFile('image')) {
-                $imageName = time() . '.' . $request->image->extension();
-                $request->image->move(public_path('uploads/products'), $imageName);
-            }
-            
-            // Save to Database
-            Product::create([
-                'name' => $request->name,
-                'category_id' => $request->category_id,
-                'price' => $request->price,
-                'description' => $request->description,
-                'image' => $imageName,
-            ]);
+    // 🌐 Translator
+    $tr = new GoogleTranslate();
 
-            return redirect()->route('admin.products.index')
-                            ->with('success', 'Product added successfully!');
-        }
+    // 👉 English (original input)
+    $name_en = $request->name;
+    $desc_en = $request->description;
+
+    // 👉 Hindi
+    $tr->setTarget('hi');
+    $name_hi = $tr->translate($name_en);
+    $desc_hi = $tr->translate($desc_en);
+
+    // 👉 Gujarati
+    $tr->setTarget('gu');
+    $name_gu = $tr->translate($name_en);
+    $desc_gu = $tr->translate($desc_en);
+
+    // 📸 Image Upload
+    $imageName = null;
+    if ($request->hasFile('image')) {
+        $imageName = time() . '.' . $request->image->extension();
+        $request->image->move(public_path('uploads/products'), $imageName);
+    }
+
+    // 💾 Save to Database
+    Product::create([
+        'name' => $name_en, // fallback
+
+        'name_en' => $name_en,
+        'name_hi' => $name_hi,
+        'name_gu' => $name_gu,
+
+        'description' => $desc_en, // fallback
+
+        'description_en' => $desc_en,
+        'description_hi' => $desc_hi,
+        'description_gu' => $desc_gu,
+
+        'category_id' => $request->category_id,
+        'price' => $request->price,
+        'image' => $imageName,
+    ]);
+
+    return redirect()->route('admin.products.index')
+        ->with('success', 'Product added with auto translation!');
+}
     
     //////////////////////////////////////////////////////////////////////////////////////
     
