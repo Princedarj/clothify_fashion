@@ -49,68 +49,62 @@ class ProductController extends Controller
 
     // ✅ STORE PRODUCT (FINAL WORKING)
     public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric',
-            'description' => 'required|string',
-            'image' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
-        ]);
+{
+    $request->validate([
+        'name_en' => 'required|string|max:255',
+        'price' => 'required|numeric',
+        'description_en' => 'required|string',
+        'image' => 'nullable|mimes:jpg,jpeg,png|max:2048',
+    ]);
 
-        $name_en = $request->name;
-        $desc_en = $request->description;
+    $name_en = $request->name_en;
+    $desc_en = $request->description_en;
 
-        try {
-            $tr = new GoogleTranslate();
-            $tr->setSource(); // auto detect
+    try {
+        $tr = new GoogleTranslate();
+        $tr->setSource();
 
-            // Hindi
-            $tr->setTarget('hi');
-            $name_hi = $tr->translate($name_en);
-            $desc_hi = $tr->translate($desc_en);
+        // Hindi
+        $tr->setTarget('hi');
+        $name_hi = $tr->translate($name_en);
+        $desc_hi = $tr->translate($desc_en);
 
-            // Gujarati
-            $tr->setTarget('gu');
-            $name_gu = $tr->translate($name_en);
-            $desc_gu = $tr->translate($desc_en);
+        // Gujarati
+        $tr->setTarget('gu');
+        $name_gu = $tr->translate($name_en);
+        $desc_gu = $tr->translate($desc_en);
 
-        } catch (\Exception $e) {
-            // fallback if translation fails
-            $name_hi = $name_en;
-            $name_gu = $name_en;
-            $desc_hi = $desc_en;
-            $desc_gu = $desc_en;
-        }
-
-        // Image upload
-        $imageName = null;
-        if ($request->hasFile('image')) {
-            $imageName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('uploads/products'), $imageName);
-        }
-
-        // Save
-        Product::create([
-            'name' => $name_en,
-
-            'name_en' => $name_en,
-            'name_hi' => $name_hi ?: $name_en,
-            'name_gu' => $name_gu ?: $name_en,
-
-            'description' => $desc_en,
-
-            'description_en' => $desc_en,
-            'description_hi' => $desc_hi ?: $desc_en,
-            'description_gu' => $desc_gu ?: $desc_en,
-
-            'category_id' => $request->category_id,
-            'price' => $request->price,
-            'image' => $imageName,
-        ]);
-
-        return redirect()->route('admin.products.index')
-            ->with('success', 'Product added successfully!');
+    } catch (\Exception $e) {
+        $name_hi = $name_en;
+        $name_gu = $name_en;
+        $desc_hi = $desc_en;
+        $desc_gu = $desc_en;
     }
+
+    // Image upload
+    $imageName = null;
+    if ($request->hasFile('image')) {
+        $imageName = time() . '.' . $request->image->extension();
+        $request->image->move(public_path('uploads/products'), $imageName);
+    }
+
+    Product::create([
+        'name_en' => $name_en,
+        'name_hi' => $name_hi,
+        'name_gu' => $name_gu,
+
+        'description_en' => $desc_en,
+        'description_hi' => $desc_hi,
+        'description_gu' => $desc_gu,
+
+        'category_id' => $request->category_id,
+        'price' => $request->price,
+        'image' => $imageName,
+    ]);
+
+    return redirect()->route('admin.products.index')
+        ->with('success', 'Product added successfully!');
+}
 
     // ✅ EDIT
     public function edit(Product $product)
@@ -121,8 +115,27 @@ class ProductController extends Controller
     // ✅ UPDATE
     public function update(Request $request, Product $product)
     {
-        $product->update($request->all());
-        return redirect()->route('admin.products.index');
+        $request->validate([
+            'name_en' => 'required|string|max:255',
+            'description_en' => 'required|string',
+            'price' => 'required|numeric',
+        ]);
+
+        $product->update([
+            'name_en' => $request->name_en,
+            'name_hi' => $request->name_hi,
+            'name_gu' => $request->name_gu,
+
+            'description_en' => $request->description_en,
+            'description_hi' => $request->description_hi,
+            'description_gu' => $request->description_gu,
+
+            'category_id' => $request->category_id,
+            'price' => $request->price,
+        ]);
+
+        return redirect()->route('admin.products.index')
+            ->with('success', 'Product updated successfully!');
     }
 
     // ✅ DELETE

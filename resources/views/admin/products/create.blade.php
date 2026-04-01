@@ -17,14 +17,18 @@
 
         <!-- Product Name -->
         <div>
-            <label class="block mb-2 font-semibold text-gray-700">
-                {{ __('messages.product_name') }}
-            </label>
-            <input type="text" 
-                   name="name" 
-                   placeholder="{{ __('messages.enter_product_name') }}"
-                   class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                   required>
+            <label>Product Name (English)</label>
+            <input type="text" name="name_en" class="form-control" required>
+        </div>
+
+        <div>
+            <label>Product Name (Hindi)</label>
+            <input type="text" name="name_hi" class="form-control">
+        </div>
+
+        <div>
+            <label>Product Name (Gujarati)</label>
+            <input type="text" name="name_gu" class="form-control">
         </div>
 
         <!-- Category -->
@@ -62,14 +66,18 @@
 
         <!-- Description -->
         <div>
-            <label class="block mb-2 font-semibold text-gray-700">
-                {{ __('messages.description') }}
-            </label>
-            <textarea name="description"
-                      rows="4"
-                      placeholder="{{ __('messages.enter_description') }}"
-                      class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:outline-none"
-                      required></textarea>
+            <label>Description (English)</label>
+            <textarea name="description_en" class="form-control" required></textarea>
+        </div>
+
+        <div>
+            <label>Description (Hindi)</label>
+            <textarea name="description_hi" class="form-control"></textarea>
+        </div>
+
+        <div>
+            <label>Description (Gujarati)</label>
+            <textarea name="description_gu" class="form-control"></textarea>
         </div>
 
         <!-- Image Upload -->

@@ -7,30 +7,49 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    //
+    use HasFactory;
+
     protected $fillable = [
-    'name',
+        'name_en',
+        'name_hi',
+        'name_gu',
 
-    'name_en',
-    'name_hi',
-    'name_gu',
+        'description_en',
+        'description_hi',
+        'description_gu',
 
-    'description',
+        'price',
+        'image',
+        'category_id'
+    ];
 
-    'description_en',
-    'description_hi',
-    'description_gu',
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 
-    'price',
-    'image',
-    'category_id'
-];
+    // 🔥 Add this function (VERY IMPORTANT)
+    public function getName()
+    {
+        $locale = app()->getLocale();
 
-public function category()
-{
-    return $this->belongsTo(Category::class);
-}
+        return match($locale) {
+            'hi' => $this->name_hi,
+            'gu' => $this->name_gu,
+            default => $this->name_en,
+        };
+    }
 
+    public function getDescription()
+    {
+        $locale = app()->getLocale();
+
+        return match($locale) {
+            'hi' => $this->description_hi,
+            'gu' => $this->description_gu,
+            default => $this->description_en,
+        };
+    }
 }
 
 
