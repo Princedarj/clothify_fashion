@@ -95,14 +95,14 @@
 
                         <div class="p-5">
 
-                            <h3 class="text-lg font-semibold">{{ $product->{'name_' . app()->getLocale()} }}</h3>
+                            <h3 class="text-lg font-semibold">{{ $product->{'name_' . app()->getLocale()} ?? $product->name }}</h3>
 
                             <p class="text-sm text-gray-600">
-                                {{ $product->{'description_' . app()->getLocale()} }}
+                                {{ $product->{'description_' . app()->getLocale()} ?? $product->description }}
                             </p>
 
                             <p class="text-sm text-gray-500">
-                                {{ $product->category->{'name_' . app()->getLocale()} ?? __('messages.No Category') }}
+                                {{ $product->category->{'name_' . app()->getLocale()} ?? $product->category->name ?? __('messages.No Category') }}
                             </p>
 
                             <p class="text-xl font-bold mt-2">
