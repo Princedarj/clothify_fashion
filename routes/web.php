@@ -77,6 +77,9 @@ Route::middleware(['auth'])->group(function () {
 
     // Buy Now
     Route::post('/buy-now/{id}', [OrderController::class, 'buyNow'])->name('buy.now');
+
+    Route::get('/invoice/{id}', [OrderController::class, 'invoice'])
+    ->name('invoice.download');
     
     
 });

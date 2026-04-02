@@ -12,7 +12,7 @@
         {{-- Name --}}
         <div class="mb-4">
             <label class="block font-semibold mb-2">{{ __('messages.product_name') }}</label>
-            <input type="text" name="name" value="{{ $product->name }}"
+            <input type="text" name="name" value="{{ $product->getName() }}"
                 class="w-full border rounded px-3 py-2">
         </div>
 
@@ -26,7 +26,7 @@
                 @foreach($categories as $category)
                     <option value="{{ $category->id }}"
                         {{ $product->category_id == $category->id ? 'selected' : '' }}>
-                        {{ $category->name }}
+                        {{ $category->getName() }}
                     </option>
                 @endforeach
 
@@ -44,7 +44,7 @@
         <div class="mb-4">
             <label class="block font-semibold mb-2">{{ __('messages.description') }}</label>
             <textarea name="description" rows="4"
-                class="w-full border rounded px-3 py-2">{{ $product->description }}</textarea>
+                class="w-full border rounded px-3 py-2">{{ $product->getDescription() }}</textarea>
         </div>
 
         {{-- Current Image --}}

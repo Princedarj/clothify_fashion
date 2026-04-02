@@ -10,7 +10,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Exports\OrdersExport;
 use Maatwebsite\Excel\Facades\Excel;
-
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderPlacedMail;
 
 class OrderController extends Controller
 {
@@ -58,6 +60,8 @@ public function myOrders()
 /// ✅ PLACE ORDER
 public function place(Request $request)
 {
+    App::setLocale(auth()->user()->language ?? 'en');
+    
     $request->validate([
         'name' => 'required',
         'email' => 'required|email',
@@ -94,14 +98,17 @@ public function place(Request $request)
 
     // ✅ Save order items
     foreach ($cart as $item) {
-        OrderItem::create([
-            'order_id'     => $order->id,
-            'product_name' => $item['name'],
-            'price'        => $item['price'],
-            'quantity'     => $item['quantity'],
-            'total'        => $item['price'] * $item['quantity'],
-        ]);
+    OrderItem::create([
+        'order_id'     => $order->id,
+        'product_name' => $item['name'] ?? 'Unknown Product',
+        'price'        => $item['price'] ?? 0,
+        'quantity'     => $item['quantity'] ?? 1,
+        'total'        => ($item['price'] ?? 0) * ($item['quantity'] ?? 1),
+    ]);
     }
+    
+        App::setLocale(auth()->user()->language ?? 'en');
+        Mail::to($order->email)->send(new OrderPlacedMail($order));
 
     session()->forget('cart');
 

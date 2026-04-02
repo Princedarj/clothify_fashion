@@ -6,12 +6,58 @@
 
     <!-- Header Section -->
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-gray-800">{{ __('messages.manage_products') }}</h1>
 
-        <a href="{{ route('admin.products.create') }}"
-           class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg shadow transition duration-200">
-           + {{ __('messages.add_product') }}
-        </a>
+        <!-- Left: Title -->
+        <h2 class="text-2xl font-semibold text-gray-800">
+            {{ __('messages.orders_management') }}
+        </h2>
+
+        <!-- Right: Language + Logout -->
+        <div class="flex items-center gap-3">
+
+            <!-- 🌐 Language -->
+            <div class="relative flex items-center">
+
+                <button onclick="toggleLangDropdown()" 
+                    class="bg-gray-100 px-4 py-2 flex items-center rounded-lg shadow hover:bg-gray-200">
+
+                    <span class="flex items-center gap-2 leading-none">
+                        <span>🌐</span>
+                        <span>{{ __('messages.language') }}</span>
+                    </span>
+
+                </button>
+
+                <div id="langDropdown" 
+                    class="hidden absolute right-0 mt-2 bg-white shadow-lg rounded-lg w-32 z-50">
+
+                    <a href="{{ route('lang.switch', 'en') }}" 
+                    class="block px-4 py-2 hover:bg-gray-100">English</a>
+
+                    <a href="{{ route('lang.switch', 'hi') }}" 
+                    class="block px-4 py-2 hover:bg-gray-100">हिंदी</a>
+
+                    <a href="{{ route('lang.switch', 'gu') }}" 
+                    class="block px-4 py-2 hover:bg-gray-100">ગુજરાતી</a>
+                </div>
+
+            </div>
+
+            <!--  Logout -->
+            <form method="POST" action="{{ route('logout') }}" class="inline-flex items-center">
+                @csrf
+                <button type="submit"
+                    class="bg-red-500 text-white px-4 py-2 flex items-center rounded-lg hover:bg-red-600 leading-none">
+
+                    <span class="flex items-center gap-2">
+                        <span>{{ __('messages.logout') }}</span>
+                    </span>
+
+                </button>
+            </form>
+
+        </div>
+
     </div>
 
     <!-- Table -->
@@ -70,4 +116,9 @@
 
 </div>
 
+<script>
+function toggleLangDropdown() {
+    document.getElementById('langDropdown').classList.toggle('hidden');
+}
+</script>
 @endsection

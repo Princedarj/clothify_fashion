@@ -8,14 +8,64 @@
 
         <!-- Header -->
         <div class="flex justify-between items-center mb-6">
+
+            <!-- Left: Title -->
             <h2 class="text-2xl font-bold text-gray-800">
                 {{ __('messages.manage_categories') }}
             </h2>
 
-            <a href="{{ route('admin.categories.create') }}"
-               class="px-5 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition shadow">
-                + {{ __('messages.add_category') }}
-            </a>
+            <!-- Right: Actions -->
+            <div class="flex items-center gap-3">
+
+                <!-- ➕ Add Category -->
+                <a href="{{ route('admin.categories.create') }}"
+                class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition shadow flex items-center">
+                    + {{ __('messages.add_category') }}
+                </a>
+
+                <!-- 🌐 Language -->
+                <div class="relative flex items-center">
+
+                    <button onclick="toggleLangDropdown()" 
+                        class="bg-gray-100 px-4 py-2 flex items-center rounded-lg shadow hover:bg-gray-200">
+
+                        <span class="flex items-center gap-2 leading-none">
+                            <span>🌐</span>
+                            <span>{{ __('messages.language') }}</span>
+                        </span>
+
+                    </button>
+
+                    <div id="langDropdown" 
+                        class="hidden absolute right-0 mt-2 bg-white shadow-lg rounded-lg w-32 z-50">
+
+                        <a href="{{ route('lang.switch', 'en') }}" 
+                        class="block px-4 py-2 hover:bg-gray-100">English</a>
+
+                        <a href="{{ route('lang.switch', 'hi') }}" 
+                        class="block px-4 py-2 hover:bg-gray-100">हिंदी</a>
+
+                        <a href="{{ route('lang.switch', 'gu') }}" 
+                        class="block px-4 py-2 hover:bg-gray-100">ગુજરાતી</a>
+                    </div>
+
+                </div>
+
+                <!-- 🚪 Logout -->
+                <form method="POST" action="{{ route('logout') }}" class="inline-flex items-center">
+                    @csrf
+                    <button type="submit"
+                        class="bg-red-500 text-white px-4 py-2 flex items-center rounded-lg hover:bg-red-600 leading-none">
+
+                        <span class="flex items-center gap-2">
+                            <span>{{ __('messages.logout') }}</span>
+                        </span>
+
+                    </button>
+                </form>
+
+            </div>
+
         </div>
 
         <!-- Success Message -->

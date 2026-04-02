@@ -33,7 +33,7 @@
                         <option value="">{{ __('messages.All Categories') }}</option>
                         @foreach($categories as $category)
                             <option value="{{ $category->id }}">
-                                {{ $category->name }}
+                                {{ $category->getName() }}
                             </option>
                         @endforeach
                     </select>
