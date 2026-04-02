@@ -28,7 +28,7 @@
                 @foreach($products as $product)
                 <tr class="border-b hover:bg-gray-50 transition">
                     <td class="p-3 font-medium">
-                        {{ $product->name }}
+                        {{ $product->getName() }}
                     </td>
                     <td class="p-3">
                         ₹ {{ number_format($product->price, 2) }}

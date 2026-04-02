@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Models\Product;
 use App\Http\Controllers\Admin\UserController;
+use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,15 +23,10 @@ Route::get('/', function () {
 });
 
 Route::get('/lang/{locale}', function ($locale) {
-
-    if (!in_array($locale, ['en', 'gu', 'hi'])) {
-        abort(400);
+    if (in_array($locale, ['en', 'hi', 'gu'])) {
+        Session::put('locale', $locale);
     }
-
-    session(['locale' => $locale]);
-
     return redirect()->back();
-
 })->name('lang.switch');
 
 Route::get('/products', [ProductController::class, 'index'])

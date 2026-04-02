@@ -95,14 +95,16 @@
 
                         <div class="p-5">
 
-                            <h3 class="text-lg font-semibold">{{ $product->category->getName() }}</h3>
+                            <h3 class="text-lg font-semibold">
+                            {{ $product->getName() }}
+                            </h3>
 
                             <p class="text-sm text-gray-600">
                                 {{ $product->getDescription() }}
                             </p>
 
                             <p class="text-sm text-gray-500">
-                                {{ $product->category->getName() }}
+                                {{ $category->getName() }}
                             </p>
 
                             <p class="text-xl font-bold mt-2">

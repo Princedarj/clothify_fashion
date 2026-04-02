@@ -28,25 +28,20 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
-    // 🔥 Add this function (VERY IMPORTANT)
-    public function getName()
+   
+   public function getName()
     {
-        $locale = app()->getLocale();
-
-        return match($locale) {
-            'hi' => $this->name_hi,
-            'gu' => $this->name_gu,
+        return match(app()->getLocale()) {
+            'hi' => $this->name_hi ?: $this->name_en,
+            'gu' => $this->name_gu ?: $this->name_en,
             default => $this->name_en,
         };
     }
-
     public function getDescription()
     {
-        $locale = app()->getLocale();
-
-        return match($locale) {
-            'hi' => $this->description_hi,
-            'gu' => $this->description_gu,
+        return match(app()->getLocale()) {
+            'hi' => $this->description_hi ?: $this->description_en,
+            'gu' => $this->description_gu ?: $this->description_en,
             default => $this->description_en,
         };
     }

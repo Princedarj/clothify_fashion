@@ -15,79 +15,68 @@
 
         @csrf
 
-        <!-- Product Name -->
+        <!-- ✅ Product Name (ONLY ONE) -->
         <div>
-            <label>Product Name (English)</label>
-            <input type="text" name="name_en" class="form-control" required>
+            <label class="block mb-2 font-semibold text-gray-700">
+                Product Name
+            </label>
+            <input type="text" 
+                   name="name" 
+                   class="w-full border border-gray-300 rounded-lg p-3"
+                   placeholder="Enter product name"
+                   required>
         </div>
 
-        <div>
-            <label>Product Name (Hindi)</label>
-            <input type="text" name="name_hi" class="form-control">
-        </div>
-
-        <div>
-            <label>Product Name (Gujarati)</label>
-            <input type="text" name="name_gu" class="form-control">
-        </div>
-
-        <!-- Category -->
+        <!-- ✅ Category -->
         <div>
             <label class="block mb-2 font-semibold text-gray-700">
                 {{ __('messages.category') }}
             </label>
 
             <select name="category_id"
-                    class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    class="w-full border border-gray-300 rounded-lg p-3"
                     required>
 
                 <option value="">{{ __('messages.select_category') }}</option>
 
                 @foreach($categories as $category)
                     <option value="{{ $category->id }}">
-                        {{ $category->name }}
+                        {{ $category->getName() ?? $category->name_en }}
                     </option>
                 @endforeach
 
             </select>
         </div>  
 
-        <!-- Price -->
+        <!-- ✅ Price -->
         <div>
             <label class="block mb-2 font-semibold text-gray-700">
                 {{ __('messages.price') }} (₹)
             </label>
             <input type="number" 
                    name="price" 
-                   placeholder="{{ __('messages.enter_price') }}"
-                   class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-500 focus:outline-none"
+                   class="w-full border border-gray-300 rounded-lg p-3"
                    required>
         </div>
 
-        <!-- Description -->
+        <!-- ✅ Description (ONLY ONE) -->
         <div>
-            <label>Description (English)</label>
-            <textarea name="description_en" class="form-control" required></textarea>
+            <label class="block mb-2 font-semibold text-gray-700">
+                Description
+            </label>
+            <textarea name="description" 
+                      class="w-full border border-gray-300 rounded-lg p-3"
+                      required></textarea>
         </div>
 
-        <div>
-            <label>Description (Hindi)</label>
-            <textarea name="description_hi" class="form-control"></textarea>
-        </div>
-
-        <div>
-            <label>Description (Gujarati)</label>
-            <textarea name="description_gu" class="form-control"></textarea>
-        </div>
-
-        <!-- Image Upload -->
+        <!-- ✅ Image -->
         <div>
             <label class="block mb-2 font-semibold text-gray-700">
                 {{ __('messages.product_image') }}
             </label>
             <input type="file" 
                    name="image"
-                   accept=".jpg,.jpeg,.png,.pdf"
+                   accept=".jpg,.jpeg,.png"
                    class="w-full border border-gray-300 rounded-lg p-3 bg-gray-50"
                    required>
         </div>
@@ -96,12 +85,12 @@
         <div class="flex justify-between items-center pt-4">
 
             <a href="{{ route('admin.products.index') }}"
-               class="px-6 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition">
+               class="px-6 py-2 bg-gray-200 rounded-lg hover:bg-gray-300">
                ← {{ __('messages.back') }}
             </a>
 
             <button type="submit"
-                    class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow">
+                    class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
                 💾 {{ __('messages.save_product') }}
             </button>
 

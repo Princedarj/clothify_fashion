@@ -48,7 +48,7 @@
                         </td>
 
                         <td class="p-4 font-medium text-gray-800">
-                            {{ $category->name }}
+                            {{ $category->getName() }}
                         </td>
 
                         <td class="p-4">
