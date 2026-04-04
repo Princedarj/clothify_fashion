@@ -15,6 +15,16 @@
         <!-- Right: Language + Logout -->
         <div class="flex items-center gap-3">
 
+            <a href="{{ route('admin.products.create') }}"
+                class="px-5 py-2 rounded-lg text-white font-medium shadow-md 
+                        bg-gradient-to-r from-indigo-500 to-purple-600 
+                        hover:from-indigo-600 hover:to-purple-700 
+                        transition duration-200 flex items-center gap-2">
+
+                    <span class="text-lg">+</span>
+                    <span>{{ __('messages.add_product') }}</span>
+            </a>
+
             <!-- 🌐 Language -->
             <div class="relative flex items-center">
 

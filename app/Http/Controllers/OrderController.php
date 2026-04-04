@@ -106,9 +106,11 @@ public function place(Request $request)
         'total'        => ($item['price'] ?? 0) * ($item['quantity'] ?? 1),
     ]);
     }
-    
+        $order->load('items.product', 'user');
         App::setLocale(auth()->user()->language ?? 'en');
+        $order = Order::with('items.product')->find($order->id);
         Mail::to($order->email)->send(new OrderPlacedMail($order));
+        
 
     session()->forget('cart');
 
@@ -173,6 +175,8 @@ public function success($id)
     $order = Order::where('id', $id)
         ->where('user_id', Auth::id())
         ->firstOrFail();
+
+        $order->load('items.product');
 
     return view('orders.success', compact('order'));
 }

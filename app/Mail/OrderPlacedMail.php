@@ -14,6 +14,8 @@ class OrderPlacedMail extends Mailable
     public function __construct($order)
     {
         $this->order = $order;
+        $this->order = $order->load('items.product', 'user');
+        $this->order = $order->load('items.product');
     }
 
     public function build()
