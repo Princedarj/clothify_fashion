@@ -95,16 +95,17 @@
 
                         <div class="p-5">
 
-                            <h3 class="text-lg font-semibold">
-                            {{ $product->getName() }}
+                            <h3 class="text-lg font-semibold line-clamp-1">
+                                {{ $product->getName() }}
                             </h3>
 
-                            <p class="text-sm text-gray-600">
-                                {{ $product->getDescription() }}
+                            <p class="text-sm text-gray-600"
+                                style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                    {{ $product->getDescription() }}
                             </p>
 
                             <p class="text-sm text-gray-500">
-                                {{ $category->getName() }}
+                                {{ $product->category->getName() ?? 'No Category' }}
                             </p>
 
                             <p class="text-xl font-bold mt-2">

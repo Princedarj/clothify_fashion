@@ -145,7 +145,10 @@
     </div>
 </div>
 
-{{ $orders->links() }}
+  <div class="mt-6 flex justify-center">
+        {{ $orders->links() }}
+    </div>
+
 <script>
 function toggleLangDropdown() {
     document.getElementById('langDropdown').classList.toggle('hidden');
