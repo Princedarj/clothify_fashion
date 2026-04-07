@@ -268,4 +268,16 @@ return [
     'Latest Arrivals Desc' => 'Stay ahead of the trends with our newest styles.',
     'View' => 'View',
 
+    'admin_profile' => 'Admin Profile',
+    // 'logout' => 'Logout',
+    // 'name' => 'Name',
+    // 'email' => 'Email',
+    // 'phone' => 'Phone',
+     'city' => 'City',
+    // 'password' => 'Password',
+    'add_admin' => 'Add Admin',
+    'update_profile' => 'Update Profile',
+    'create_admin' => 'Create Admin',
+    //'back' => 'Back',
+
 ];

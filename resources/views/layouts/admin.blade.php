@@ -60,6 +60,14 @@
                     🗂️ {{ __('messages.categories') }}
                 </a>
 
+                <a href="{{ route('admin.profile') }}"
+                    class="block px-4 py-2 rounded 
+                    {{ request()->is('admin/profile*') 
+                        ? 'bg-gray-700 text-white' 
+                        : 'hover:bg-gray-700' }}">
+                    👤 {{ __('messages.admin_profile') }}
+                </a>
+
             </nav>
         </div>
 

@@ -3,7 +3,20 @@
 @section('content')
 
 <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow">
-    <h2 class="text-2xl font-bold mb-6">{{ __('messages.edit_product') }}</h2>
+    <div class="flex justify-between items-center mb-6">
+    
+        <!-- Left: Title -->    
+        <h2 class="text-2xl font-bold text-gray-800">
+            {{ __('messages.edit_product') }}
+        </h2>
+
+        <!-- Right: Back Button -->
+        <a href="{{ route('admin.products.index') }}"
+        class="inline-flex items-center gap-2 bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition">
+            ← {{ __('messages.back') }}
+        </a>
+
+    </div>
 
     <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
         @csrf

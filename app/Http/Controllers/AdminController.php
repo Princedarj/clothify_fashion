@@ -143,4 +143,34 @@ class AdminController extends Controller
         $users = User::where('role', 'user')->count();
         return view('admin.users', compact('users'));
     }
+
+    public function update(Request $request)
+    {
+        $user = auth()->user();
+
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'city' => $request->city,
+        ]);
+
+        if ($request->password) {
+            $user->password = bcrypt($request->password);
+            $user->save();
+        }
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('admins', 'public');
+            $user->image = $path;
+            $user->save();
+        }
+
+        return back()->with('success', 'Profile updated successfully!');
+    }
+
+    public function profile()
+    {
+        return view('admin.profile');
+    }
 }

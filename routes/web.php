@@ -120,6 +120,12 @@ Route::middleware(['auth', 'admin'])
 
         Route::get('/orders/{id}/invoice', [OrderController::class, 'invoice'])
             ->name('orders.invoice');
+
+        Route::get('/profile', [AdminController::class, 'profile'])->name('profile');
+        Route::post('/profile/update', [AdminController::class, 'update'])->name('profile.update');
+
+        Route::get('/create', [AdminController::class, 'create'])->name('create');
+        Route::post('/store', [AdminController::class, 'store'])->name('store');    
     });
 
 
