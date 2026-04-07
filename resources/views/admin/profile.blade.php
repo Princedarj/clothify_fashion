@@ -20,7 +20,7 @@
 </div>
 
 <script>
-    // After 2.5 sec → redirect to dashboard
+    // After 1.5 sec → redirect to dashboard
     setTimeout(() => {
         window.location.href = "{{ route('admin.dashboard') }}";
     }, 1500);
