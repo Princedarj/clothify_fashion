@@ -125,7 +125,64 @@
     </div>
 
     <div class="mt-6 flex justify-center">
-        {{ $products->links() }}
+        @if ($products->lastPage() > 1)
+
+<div class="flex gap-4 items-center mt-6">
+
+    {{-- Pagination Buttons --}}
+    <div class="flex gap-2">
+
+        {{-- Prev --}}
+        @if ($products->onFirstPage())
+            <span class="px-3 py-1 bg-gray-200 rounded">Prev</span>
+        @else
+            <a href="{{ $products->previousPageUrl() }}" class="px-3 py-1 bg-gray-300 rounded">Prev</a>
+        @endif
+
+        {{-- Left dots --}}
+        @if ($products->currentPage() > 2)
+            <span>...</span>
+        @endif
+
+        {{-- Pages --}}
+        @for ($i = max(1, $products->currentPage()); $i <= min($products->lastPage(), $products->currentPage() + 2); $i++)
+            @if ($i == $products->currentPage())
+                <span class="px-3 py-1 bg-blue-500 text-white rounded">{{ $i }}</span>
+            @else
+                <a href="{{ $products->url($i) }}" class="px-3 py-1 bg-gray-300 rounded">{{ $i }}</a>
+            @endif
+        @endfor
+
+        {{-- Right dots --}}
+        @if ($products->currentPage() + 2 < $products->lastPage())
+            <span>...</span>
+        @endif
+
+        {{-- Next --}}
+        @if ($products->hasMorePages())
+            <a href="{{ $products->nextPageUrl() }}" class="px-3 py-1 bg-gray-300 rounded">Next</a>
+        @else
+            <span class="px-3 py-1 bg-gray-200 rounded">Next</span>
+        @endif
+
+    </div>
+
+    {{-- 🔹 Go to Page --}}
+    <form method="GET" action="{{ url()->current() }}" class="flex gap-2">
+        <input 
+            type="number" 
+            name="page" 
+            min="1" 
+            max="{{ $products->lastPage() }}" 
+            placeholder="Page"
+            class="border px-2 py-1 rounded w-20"
+        >
+        <button class="px-2 py-1 bg-blue-500 text-white rounded">Go</button>
+    </form>
+
+</div>
+
+@endif
     </div>
 
 </div>

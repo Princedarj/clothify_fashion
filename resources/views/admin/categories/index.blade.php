@@ -130,7 +130,64 @@
 
         <!-- Pagination -->
         <div class="mt-6">
-            {{ $categories->links() }}
+            @if ($categories->lastPage() > 1)
+
+<div class="flex gap-4 items-center mt-6">
+
+    {{-- Pagination Buttons --}}
+    <div class="flex gap-2">
+
+        {{-- Prev --}}
+        @if ($categories->onFirstPage())
+            <span class="px-3 py-1 bg-gray-200 rounded">Prev</span>
+        @else
+            <a href="{{ $categories->previousPageUrl() }}" class="px-3 py-1 bg-gray-300 rounded">Prev</a>
+        @endif
+
+        {{-- Left dots --}}
+        @if ($categories->currentPage() > 2)
+            <span>...</span>
+        @endif
+
+        {{-- Pages --}}
+        @for ($i = max(1, $categories->currentPage()); $i <= min($categories->lastPage(), $categories->currentPage() + 2); $i++)
+            @if ($i == $categories->currentPage())
+                <span class="px-3 py-1 bg-blue-500 text-white rounded">{{ $i }}</span>
+            @else
+                <a href="{{ $categories->url($i) }}" class="px-3 py-1 bg-gray-300 rounded">{{ $i }}</a>
+            @endif
+        @endfor
+
+        {{-- Right dots --}}
+        @if ($categories->currentPage() + 2 < $categories->lastPage())
+            <span>...</span>
+        @endif
+
+        {{-- Next --}}
+        @if ($categories->hasMorePages())
+            <a href="{{ $categories->nextPageUrl() }}" class="px-3 py-1 bg-gray-300 rounded">Next</a>
+        @else
+            <span class="px-3 py-1 bg-gray-200 rounded">Next</span>
+        @endif
+
+    </div>
+
+    {{-- 🔹 Go to Page --}}
+    <form method="GET" action="{{ url()->current() }}" class="flex gap-2">
+        <input 
+            type="number" 
+            name="page" 
+            min="1" 
+            max="{{ $categories->lastPage() }}" 
+            placeholder="Page"
+            class="border px-2 py-1 rounded w-20"
+        >
+        <button class="px-2 py-1 bg-blue-500 text-white rounded">Go</button>
+    </form>
+
+</div>
+
+@endif
         </div>
 
     </div>
