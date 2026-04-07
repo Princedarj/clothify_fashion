@@ -132,7 +132,7 @@
         <div class="mt-6">
             @if ($categories->lastPage() > 1)
 
-<div class="flex gap-4 items-center mt-6">
+<div class="flex justify-center items-center gap-4 mt-6">
 
     {{-- Pagination Buttons --}}
     <div class="flex gap-2">

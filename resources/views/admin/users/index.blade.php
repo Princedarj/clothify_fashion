@@ -100,6 +100,57 @@
     </div>
 </div>
 
+@if ($users->lastPage() > 1)
+
+<div class="flex justify-center items-center gap-4 mt-6">
+
+    <div class="flex gap-2">
+
+        {{-- Prev --}}
+        @if ($users->onFirstPage())
+            <span class="px-3 py-1 bg-gray-200 rounded">Prev</span>
+        @else
+            <a href="{{ $users->previousPageUrl() }}" class="px-3 py-1 bg-gray-300 rounded">Prev</a>
+        @endif
+
+        {{-- Left dots --}}
+        @if ($users->currentPage() > 2)
+            <span>...</span>
+        @endif
+
+        {{-- Pages --}}
+        @for ($i = max(1, $users->currentPage()); $i <= min($users->lastPage(), $users->currentPage() + 2); $i++)
+            @if ($i == $users->currentPage())
+                <span class="px-3 py-1 bg-blue-500 text-white rounded">{{ $i }}</span>
+            @else
+                <a href="{{ $users->url($i) }}" class="px-3 py-1 bg-gray-300 rounded">{{ $i }}</a>
+            @endif
+        @endfor
+
+        {{-- Right dots --}}
+        @if ($users->currentPage() + 2 < $users->lastPage())
+            <span>...</span>
+        @endif
+
+        {{-- Next --}}
+        @if ($users->hasMorePages())
+            <a href="{{ $users->nextPageUrl() }}" class="px-3 py-1 bg-gray-300 rounded">Next</a>
+        @else
+            <span class="px-3 py-1 bg-gray-200 rounded">Next</span>
+        @endif
+
+    </div>
+
+    {{-- Go to page --}}
+    <form method="GET" action="{{ url()->current() }}" class="flex gap-2">
+        <input type="number" name="page" min="1" max="{{ $users->lastPage() }}" class="border px-2 py-1 rounded w-20">
+        <button class="px-2 py-1 bg-blue-500 text-white rounded">Go</button>
+    </form>
+
+</div>
+
+@endif
+
 <script>
 function toggleLangDropdown() {
     document.getElementById('langDropdown').classList.toggle('hidden');

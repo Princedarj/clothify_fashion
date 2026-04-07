@@ -11,7 +11,8 @@ class UserController extends Controller
     {
         $users = User::where('role', 'user')
             ->withCount('orders')
-            ->get();
+            ->latest()
+            ->paginate(5);
 
         $totalUsers = User::where('role', 'user')->count();
 
