@@ -173,4 +173,25 @@ class AdminController extends Controller
     {
         return view('admin.profile');
     }
+
+    public function create()
+    {
+        return view('admin.create');
+    }
+
+    public function store(Request $request)
+    {
+        \App\Models\User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'city' => $request->city,
+            'password' => bcrypt($request->password),
+            'role' => 'admin',
+            'is_admin' => 1,
+        ]);
+
+        return redirect()->route('admin.profile')
+            ->with('success', 'Admin created successfully!');
+    }
 }
