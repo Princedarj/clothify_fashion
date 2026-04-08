@@ -27,35 +27,35 @@
                     $grandTotal += $total;
                 @endphp
 
-                <div class="flex flex-col md:flex-row justify-between items-center bg-white shadow-md rounded-xl p-4 border border-gray-200 hover:shadow-xl transition duration-300">
-                    
+                <div class="grid grid-cols-5 md:grid-cols-5 items-center bg-white shadow-md rounded-xl p-4 border border-gray-200 hover:shadow-xl transition duration-300">
+
                     <!-- Product Name -->
-                    <div class="flex-1 text-left mb-2 md:mb-0">
-                        <span class="font-semibold text-gray-800">{{ $item['name'] }}</span>
+                    <div class="col-span-2 font-semibold text-gray-800">
+                        {{ $item['name'] }}
                     </div>
 
                     <!-- Price -->
-                    <div class="w-24 text-center mb-2 md:mb-0">
+                    <div class="text-center">
                         ₹ {{ $item['price'] }}
                     </div>
 
                     <!-- Quantity -->
-                    <div class="flex justify-center items-center gap-2 mb-2 md:mb-0">
+                    <div class="flex justify-center items-center gap-2">
                         <form method="POST" action="{{ route('cart.decrease', $id) }}">
                             @csrf
-                            <button class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition">−</button>
+                            <button class="px-3 py-1 bg-red-600 text-white rounded">−</button>
                         </form>
 
-                        <span class="font-bold text-gray-800">{{ $item['quantity'] }}</span>
+                        <span class="font-bold">{{ $item['quantity'] }}</span>
 
                         <form method="POST" action="{{ route('cart.increase', $id) }}">
                             @csrf
-                            <button class="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition">+</button>
+                            <button class="px-3 py-1 bg-green-600 text-white rounded">+</button>
                         </form>
                     </div>
 
                     <!-- Total -->
-                    <div class="w-24 text-center font-bold text-gray-900">
+                    <div class="text-center font-bold text-gray-900">
                         ₹ {{ $total }}
                     </div>
 

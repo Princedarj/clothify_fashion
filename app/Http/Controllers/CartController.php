@@ -26,7 +26,7 @@ public function add($id)
     } else {
 
         $cart[$id] = [
-            "name"     => $product->name,
+            "name"     => $product->getname(),
             "price"    => $product->price,
             "quantity" => 1
         ];
@@ -91,7 +91,7 @@ public function buyNow($id)
     // Add only this product
     $cart = [];
     $cart[$id] = [
-        "name" => $product->name,
+        "name" => $product->getname(),
         "price" => $product->price,
         "quantity" => 1,
         "image" => $product->image,
