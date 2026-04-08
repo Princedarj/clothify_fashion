@@ -91,7 +91,9 @@ public function place(Request $request)
         'phone'        => $request->phone,
         'address'      => $request->address,
         'pincode'      => $request->pincode,
-        'total_amount' => $totalAmount,
+        'grand_total'  => $grand_total = $totalAmount * 1.18, // total + 18% tax 
+        'subtotal'     => $totalAmount,
+        'tax'          => $totalAmount * 0.18, // 18%
         // 'status'       => 'Pending',
         'status' => __('messages.Pending'),
     ]);

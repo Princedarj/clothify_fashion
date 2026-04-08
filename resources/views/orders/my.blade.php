@@ -22,7 +22,7 @@
                             {{ __('messages.Order ID') }}: #{{ $order->id }}
                         </span>
                         <span class="text-gray-800 font-bold">
-                            ₹{{ number_format($order->total_amount, 2) }}
+                            ₹{{ number_format($order->grand_total, 2) }}
                         </span>
                     </div>
 

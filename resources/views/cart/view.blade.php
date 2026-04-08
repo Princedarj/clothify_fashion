@@ -19,12 +19,14 @@
 
         <div class="space-y-6">
 
-            @php $grandTotal = 0; @endphp
+            @php 
+                $subtotal = 0; 
+            @endphp
 
             @foreach($cart as $id => $item)
                 @php
                     $total = $item['price'] * $item['quantity'];
-                    $grandTotal += $total;
+                    $subtotal += $total;
                 @endphp
 
                 <div class="grid grid-cols-5 md:grid-cols-5 items-center bg-white shadow-md rounded-xl p-4 border border-gray-200 hover:shadow-xl transition duration-300">
@@ -54,6 +56,11 @@
                         </form>
                     </div>
 
+                    @php
+                        $tax = $subtotal * 0.18;
+                        $grandTotal = $subtotal + $tax;
+                    @endphp
+
                     <!-- Total -->
                     <div class="text-center font-bold text-gray-900">
                         ₹ {{ $total }}
@@ -65,15 +72,32 @@
         </div>
 
         <!-- Grand Total & Checkout -->
-        <div class="mt-8 flex flex-col md:flex-row justify-between items-center bg-gray-100 p-4 rounded-lg">
-            <div class="text-lg font-semibold text-gray-800">
-                {{ __('messages.Grand Total') }}: ₹ {{ $grandTotal }}
+        <div class="mt-8 bg-gray-100 p-6 rounded-lg">
+
+            <div class="flex justify-between text-gray-700 mb-2">
+                <span>{{ __('messages.Sub_total') }}</span>
+                <span>₹ {{ number_format($subtotal, 2) }}</span>
             </div>
 
-            <a href="{{ route('checkout') }}"
-               class="mt-4 md:mt-0 px-6 py-2 bg-blue-700 text-white font-medium rounded-lg hover:bg-blue-800 transition">
-                {{ __('messages.Proceed to Checkout') }} →
-            </a>
+            <div class="flex justify-between text-gray-700 mb-2">
+                <span>{{ __('messages.Tax') }}</span>
+                <span>₹ {{ number_format($tax, 2) }}</span>
+            </div>
+
+            <hr class="my-3">
+
+            <div class="flex justify-between text-lg font-bold text-gray-900">
+                <span>{{ __('messages.Grand_Total') }}</span>
+                <span>₹ {{ number_format($grandTotal, 2) }}</span>
+            </div>
+
+            <div class="mt-4 text-right">
+                <a href="{{ route('checkout') }}"
+                class="px-6 py-2 bg-blue-700 text-white font-medium rounded-lg hover:bg-blue-800 transition">
+                    {{ __('messages.Proceed to Checkout') }} →
+                </a>
+            </div>
+
         </div>
 
     @endif

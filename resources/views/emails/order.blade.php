@@ -40,7 +40,7 @@
 
             <p>
                 <strong>Total Amount:</strong> 
-                ₹{{ number_format($order->total, 2) }}
+                ₹{{ number_format($order->grand_total, 2) }}
             </p>
 
             <hr style="margin:20px 0;">
@@ -69,7 +69,7 @@
                     @foreach($order->items as $item)
                     <tr style="border-bottom:1px solid #eee;">
                         <td>
-                            {{ $item->product->name ?? 'Product not available' }}
+                            {{ $item->product_name ?? 'Unknown Product' }}
                         </td>
                         <td align="center">
                             {{ $item->quantity }}
@@ -86,7 +86,12 @@
                     <!-- Subtotal -->
                     <tr>
                         <td colspan="3" align="right"><strong>Subtotal</strong></td>
-                        <td align="right">₹{{ number_format($order->total, 2) }}</td>
+                        <td align="right">₹{{ number_format($order->subtotal, 2) }}</td>
+                    </tr>
+                    <!-- Tax -->
+                    <tr>        
+                        <td colspan="3" align="right"><strong>Tax (18%)</strong></td>
+                        <td align="right">₹{{ number_format($order->tax, 2) }}</td>
                     </tr>
 
                 </tbody>
@@ -95,7 +100,7 @@
             <hr style="margin:20px 0;">
 
             <h3 style="text-align:right;">
-                Grand Total: ₹{{ number_format($order->total, 2) }}
+                Grand Total: ₹{{ number_format($order->grand_total, 2) }}
             </h3>
 
             <!-- Invoice Button -->

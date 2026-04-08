@@ -56,7 +56,7 @@ return [
     'total' => 'Total',
     'subtotal' => 'Subtotal',
     'gst' => 'GST',
-    'grand_total' => 'Grand Total',
+    'total_amount' => 'Grand Total',
     'thank_you' => 'Thank you for shopping with',
     'invoice_note' => 'This is a computer generated invoice and does not require signature.',
     'order' => 'Order',
@@ -279,5 +279,8 @@ return [
     'update_profile' => 'Update Profile',
     'create_admin' => 'Create Admin',
     //'back' => 'Back',
+    'Sub_total' => 'Subtotal',
+    'Tax' => 'Tax (18%)',
+    'Grand_Total' => 'Grand Total',
 
 ];

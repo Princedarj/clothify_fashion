@@ -13,9 +13,11 @@ class Order extends Model
         'email',
         'phone',
         'address',
-        'total_amount',
+        'grand_total',
         'status',
         'pincode',
+        'subtotal',
+        'tax'
     ];
 
     public function items()
