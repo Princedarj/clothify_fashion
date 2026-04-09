@@ -15,6 +15,7 @@ class CartController extends Controller
     
 public function add($id)
 {
+
     $product = Product::findOrFail($id);
 
     $cart = session()->get('cart', []);
@@ -26,8 +27,8 @@ public function add($id)
     } else {
 
         $cart[$id] = [
-            "name"     => $product->getname(),
-            "price"    => $product->price,
+            "name" => $product->{'name_' . app()->getLocale()},
+            "price" => $product->price,
             "quantity" => 1
         ];
     }
@@ -91,12 +92,11 @@ public function buyNow($id)
     // Add only this product
     $cart = [];
     $cart[$id] = [
-        "name" => $product->getname(),
-        "price" => $product->price,
-        "quantity" => 1,
-        "image" => $product->image,
-    ];
-
+    "name" => $product->{'name_' . app()->getLocale()}, 
+    "price" => $product->price,
+    "quantity" => 1,
+    "image" => $product->image,
+];
     session()->put('cart', $cart);
 
     // Redirect directly to checkout page
