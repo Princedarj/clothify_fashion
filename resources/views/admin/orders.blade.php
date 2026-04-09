@@ -100,7 +100,7 @@
                         <tr class="border-b hover:bg-gray-50 transition">
                             <td class="p-3">{{ $order->id }}</td>
                             <td class="p-3">{{ $order->user->name ?? __('messages.guest') }}</td>
-                            <td class="p-3">₹ {{ number_format($order->total_amount ?? 0) }}</td>
+                            <td class="p-3">₹ {{ number_format($order->grand_total ?? 0) }}</td>
                             <td class="p-3">
                                 <span class="px-3 py-1 rounded-full text-xs font-medium
                                     {{ $order->status == 'Delivered' ? 'bg-green-100 text-green-700' :

@@ -58,11 +58,23 @@
 
                 <div class="mt-6 pt-4 border-t">
 
-                    <div class="flex justify-between items-center mb-3">
-                        <span class="font-semibold">{{ __('messages.total') }}</span>
-                        <span class="text-lg font-bold text-gray-800">
-                            ₹{{ number_format($order->total_amount) }}
-                        </span>
+                    <div class="space-y-2 text-sm">
+
+                        <div class="flex justify-between">
+                            <span>{{ __('messages.subtotal') }}</span>
+                            <span>₹{{ number_format($order->subtotal ?? 0) }}</span>
+                        </div>
+
+                        <div class="flex justify-between">
+                            <span>GST (18%)</span>
+                            <span>₹{{ number_format($order->tax ?? 0, 2) }}</span>
+                        </div>
+
+                        <div class="flex justify-between font-bold text-lg border-t pt-2">
+                            <span>{{ __('messages.total') }}</span>
+                            <span>₹{{ number_format($order->grand_total ?? 0, 2) }}</span>
+                        </div>
+
                     </div>
 
                     <div class="mb-5">
@@ -116,7 +128,7 @@
 
                             <div>
                                 <p class="font-semibold text-gray-800">
-                                    {{ $item->product_name }}
+                                    {{ $item->product->{'name_' . app()->getLocale()} ?? $item->product_name }}
                                 </p>
                                 <p class="text-sm text-gray-500">
                                     ₹{{ number_format($item->price) }} × {{ $item->quantity }}

@@ -6,7 +6,7 @@
 
 <p><strong>{{ __('messages.order_id') }}:</strong> {{ $order->id }}</p>
 <p><strong>{{ __('messages.customer') }}:</strong> {{ $order->user->name ?? __('messages.guest') }}</p>
-<p><strong>{{ __('messages.total') }}:</strong> ₹{{ $order->total }}</p>
+<p><strong>{{ __('messages.total') }}:</strong> ₹{{ $order->grand_total }}</p>
 <p><strong>{{ __('messages.status') }}:</strong> {{ __('messages.' . strtolower($order->status)) }}</p>
 
 @endsection

@@ -24,12 +24,12 @@ class AdminController extends Controller
 
         // ===== TOTAL REVENUE =====
         $totalRevenue = Order::where('status', 'Delivered')
-            ->sum('total_amount');
+            ->sum('grand_total');
 
         // ===== LAST 6 MONTH SALES =====
         $monthlySalesCollection = Order::select(
                 DB::raw("DATE_FORMAT(created_at, '%b %Y') as month"),
-                DB::raw("SUM(total_amount) as total"),
+                DB::raw("SUM(grand_total) as total"),
                 DB::raw("MIN(created_at) as sort_date")
             )
             ->where('status', 'Delivered')
@@ -75,7 +75,7 @@ class AdminController extends Controller
             'totalRevenue',
             'growthPercentage',
             'monthlySales',
-            'recentOrders'
+            'recentOrders',
         ));
     }
 
@@ -125,7 +125,7 @@ class AdminController extends Controller
                 fputcsv($file, [
                     $order->id,
                     $order->user->name ?? 'Guest',
-                    $order->total_amount,
+                    $order->grand_total,
                     $order->status,
                     $order->created_at,
                 ]);
