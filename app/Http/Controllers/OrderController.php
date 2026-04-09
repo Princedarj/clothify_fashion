@@ -282,7 +282,8 @@ public function buyNow($id)
     // Add only this product to cart
     $cart = [];
     $cart[$id] = [
-        "name" => $product->name,
+        //"name" => $product->{'name_' . app()->getLocale()} ?? $product->name_en,
+        "product_id" => $product->id,
         "price" => $product->price,
         "quantity" => 1,
         "image" => $product->image,

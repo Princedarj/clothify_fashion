@@ -8,8 +8,8 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\CategoryController;
-use App\Models\Product;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Session;
 
 /*
@@ -18,10 +18,10 @@ use Illuminate\Support\Facades\Session;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Homepage (public)
+Route::get('/', [HomeController::class, 'index'])->name('dashboard');
 
+// Language
 Route::get('/lang/{locale}', function ($locale) {
     if (in_array($locale, ['en', 'hi', 'gu'])) {
         Session::put('locale', $locale);
@@ -29,9 +29,18 @@ Route::get('/lang/{locale}', function ($locale) {
     return redirect()->back();
 })->name('lang.switch');
 
-Route::get('/products', [ProductController::class, 'index'])
-    ->name('products.index');
+// Products
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 
+// Add to Cart (with middleware for login flow)
+Route::post('/add-to-cart', [CartController::class, 'add'])
+    ->middleware('store.action')
+    ->name('cart.add');
+
+// Buy Now
+Route::post('/buy-now/{id}', [OrderController::class, 'buyNow'])
+    ->middleware('store.action')
+    ->name('buy.now');
 
 /*
 |--------------------------------------------------------------------------
@@ -41,19 +50,12 @@ Route::get('/products', [ProductController::class, 'index'])
 
 Route::middleware(['auth'])->group(function () {
 
-    // Dashboard
-    Route::get('/dashboard', function () {
-        $products = Product::latest()->get();
-        return view('dashboard', compact('products'));
-    })->name('dashboard');
-
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Cart
-    Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
     Route::get('/cart', [CartController::class, 'view'])->name('cart.index');
     Route::post('/cart/increase/{id}', [CartController::class, 'increase'])->name('cart.increase');
     Route::post('/cart/decrease/{id}', [CartController::class, 'decrease'])->name('cart.decrease');
@@ -61,27 +63,15 @@ Route::middleware(['auth'])->group(function () {
     // Checkout
     Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
 
-    // Place Order
+    // Order
     Route::post('/order/place', [OrderController::class, 'place'])->name('order.place');
+    Route::get('/order-success/{id}', [OrderController::class, 'success'])->name('order.success');
 
-    // Order Success
-    Route::get('/order-success/{id}', [OrderController::class, 'success'])
-        ->name('order.success');
+    // Orders
+    Route::get('/my-orders', [OrderController::class, 'myOrders'])->name('orders.my');
+    Route::get('/my-orders/{id}/invoice', [OrderController::class, 'userInvoice'])->name('user.orders.invoice');
 
-    // My Orders
-    Route::get('/my-orders', [OrderController::class, 'myOrders'])
-        ->name('orders.my');
-
-    Route::get('/my-orders/{id}/invoice', [OrderController::class, 'userInvoice'])
-        ->name('user.orders.invoice');
-
-    // Buy Now
-    Route::post('/buy-now/{id}', [OrderController::class, 'buyNow'])->name('buy.now');
-
-    Route::get('/invoice/{id}', [OrderController::class, 'invoice'])
-    ->name('invoice.download');
-    
-    
+    Route::get('/invoice/{id}', [OrderController::class, 'invoice'])->name('invoice.download');
 });
 
 
@@ -96,30 +86,18 @@ Route::middleware(['auth', 'admin'])
     ->name('admin.')
     ->group(function () {
 
-        Route::get('/dashboard', [AdminController::class, 'dashboard'])
-            ->name('dashboard');
+        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
         Route::resource('products', AdminProductController::class);
-
         Route::resource('categories', CategoryController::class);
-        
-        Route::get('/users', [UserController::class, 'index'])
-            ->name('users.index');
 
-        Route::get('/orders', [OrderController::class, 'index'])
-            ->name('orders.index');
+        Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
-        Route::get('/orders/export', [OrderController::class, 'export'])
-            ->name('orders.export');
-
-        Route::get('/orders/{id}', [OrderController::class, 'show'])
-            ->name('orders.show');
-
-        Route::post('/orders/{id}/deliver', [OrderController::class, 'deliver'])
-            ->name('orders.deliver');
-
-        Route::get('/orders/{id}/invoice', [OrderController::class, 'invoice'])
-            ->name('orders.invoice');
+        Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders/export', [OrderController::class, 'export'])->name('orders.export');
+        Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
+        Route::post('/orders/{id}/deliver', [OrderController::class, 'deliver'])->name('orders.deliver');
+        Route::get('/orders/{id}/invoice', [OrderController::class, 'invoice'])->name('orders.invoice');
 
         Route::get('/profile', [AdminController::class, 'profile'])->name('profile');
         Route::post('/profile/update', [AdminController::class, 'update'])->name('profile.update');
@@ -127,7 +105,6 @@ Route::middleware(['auth', 'admin'])
         Route::get('/create', [AdminController::class, 'create'])->name('create');
         Route::post('/store', [AdminController::class, 'store'])->name('store');    
     });
-
 
 /*
 |--------------------------------------------------------------------------

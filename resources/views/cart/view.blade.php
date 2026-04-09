@@ -33,7 +33,16 @@
 
                     <!-- Product Name -->
                     <div class="col-span-2 font-semibold text-gray-800">
-                        {{ $item['name'] }}
+                        @php
+                            $productId = $item['product_id'] ?? null;
+                            $product = $productId && isset($products[$productId]) ? $products[$productId] : null;
+                        @endphp
+
+                        @if($product)
+                            {{ $product->{'name_' . app()->getLocale()} ?? $product->name_en }}
+                        @else
+                            {{ $item['name'] ?? 'Product' }}
+                        @endif
                     </div>
 
                     <!-- Price -->

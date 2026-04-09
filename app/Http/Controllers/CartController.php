@@ -12,39 +12,59 @@ class CartController extends Controller
         $cart = session()->get('cart', []);
         return view('cart.view', compact('cart'));
     }
-    
-public function add($id)
+
+    public function add(Request $request)
+    {
+        $product = Product::findOrFail($request->product_id);
+
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$product->id])) {
+            $cart[$product->id]['quantity']++;
+        } else {
+            $cart[$product->id] = [
+                "name" => $product->{'name_' . app()->getLocale()} ?? $product->name_en,
+                "price" => $product->price,
+                "quantity" => 1
+            ];
+        }
+
+        session()->put('cart', $cart);
+
+        return redirect()->back()->with('success', 'Product added to cart!');
+    }
+
+    public function addFromSession($action)
+    {
+        $product = \App\Models\Product::find($action['product_id']);
+
+        if (!$product) return;
+
+        $cart = session()->get('cart', []);
+
+        $cart[$product->id] = [
+            "name" => $product->name_en,
+            "price" => $product->price,
+            "quantity" => $action['quantity'],
+        ];
+
+        session()->put('cart', $cart);
+    }
+
+
+
+public function view()
 {
-
-    $product = Product::findOrFail($id);
-
     $cart = session()->get('cart', []);
 
-    if (isset($cart[$id])) {
+    // Get all product IDs from cart
+    $productIds = array_column($cart, 'product_id');
 
-        $cart[$id]['quantity']++;
+    // Fetch products in one query
+    $products = Product::whereIn('id', $productIds)->get()->keyBy('id');
 
-    } else {
-
-        $cart[$id] = [
-            "name" => $product->{'name_' . app()->getLocale()},
-            "price" => $product->price,
-            "quantity" => 1
-        ];
-    }
-
-    session()->put('cart', $cart);
-
-    return redirect()->back()->with('success', 'Product added to cart!');
+    return view('cart.view', compact('cart', 'products'));
 }
-
-
-
-    public function view()
-    {
-        $cart = session()->get('cart', []);
-        return view('cart.view', compact('cart'));
-    }
 
     public function increase($id)
 {

@@ -48,18 +48,21 @@
                     @endif
                 </a>
 
-                <!-- My Orders -->
+                <!-- My Orders (only for logged in users) -->
+                @auth
                 <a href="{{ route('orders.my') }}" 
                 class="px-3 py-2 rounded-md hover:text-black hover:bg-gray-100 transition duration-200 {{ request()->routeIs('orders.my') ? 'font-bold text-indigo-600 bg-gray-100' : '' }}">
                     {{ __('messages.My Orders') }}
                 </a>
+                @endauth
 
             </div>
 
             <!-- Right Side -->
             <div class="flex items-center space-x-6">
 
-               @auth
+                <!-- 👤 Logged In -->
+                @auth
                     <div x-data="{ open: false }" class="relative">
 
                         <!-- Button -->
@@ -123,7 +126,20 @@
 
                         </div>
                     </div>
-                    @endauth
+                @endauth
+
+                <!-- 👤 Guest -->
+                @guest
+                    <a href="{{ route('login') }}"
+                       class="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-black">
+                        {{ __('messages.Login') }}
+                    </a>
+
+                    <a href="{{ route('register') }}"
+                       class="px-4 py-2 text-sm font-semibold bg-black text-white rounded hover:bg-gray-800">
+                        {{ __('messages.Register') }}
+                    </a>
+                @endguest
 
             </div>
 

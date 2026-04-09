@@ -290,5 +290,9 @@ return [
     'Sub_total' => 'उप कुल',
     'Tax' => 'टैक्स (18%)',
     'Grand_Total' => 'कुल रकम',
+
     
-];
+    'users_management' => 'उपयोगकर्ता प्रबंधन',
+    'total_users' => 'कुल उपयोगकर्ता',
+    'user_id' => 'यूज़र आईडी',
+    ];

@@ -5,9 +5,9 @@
     <div class="flex justify-between items-center mb-6">
 
         <!-- Left: Title -->
-        <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+      <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
             <span>👥</span>
-            <span>Users Management</span>
+            <span>{{ __('messages.users_management') }}</span>
         </h2>
 
         <!-- Right: Language + Logout -->
@@ -59,7 +59,7 @@
     </div>
 
 <div class="bg-blue-500 text-white p-6 rounded shadow mb-6">
-    <h3 class="text-lg">Total Users</h3>
+    <h3 class="text-lg">{{ __('messages.total_users') }}</h3>
     <p class="text-3xl font-bold">{{ $totalUsers }}</p>
 </div>
 
@@ -68,12 +68,12 @@
         <table class="w-full border-collapse">
             <thead>
                 <tr class="bg-gray-100 text-left">
-                    <th class="p-3">User ID</th>
-                    <th class="p-3">Name</th>
-                    <th class="p-3">Email</th>
-                    <th class="p-3">Phone</th>
-                    <th class="p-3">City</th>
-                    <th class="p-3">Total Orders</th>
+                    <th class="p-3">{{ __('messages.user_id') }}</th>
+                    <th class="p-3">{{ __('messages.name') }}</th>
+                    <th class="p-3">{{ __('messages.email') }}</th>
+                    <th class="p-3">{{ __('messages.phone') }}</th>
+                    <th class="p-3">{{ __('messages.city') }}</th>
+                    <th class="p-3">{{ __('messages.total_orders') }}</th>
                 </tr>
             </thead>
             <tbody>

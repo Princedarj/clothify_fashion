@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
+
 class AuthenticatedSessionController extends Controller
 {
     /**
@@ -27,6 +28,17 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+
+        if (session()->has('intended_action')) {
+
+        $action = session('intended_action');
+
+        if ($action['type'] === 'add_to_cart') {
+            app(\App\Http\Controllers\CartController::class)->addFromSession($action);
+        }
+
+        session()->forget('intended_action');
+    }
 
         if (auth()->user()->role === 'admin') {
             return redirect()->route('admin.dashboard');

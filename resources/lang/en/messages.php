@@ -283,4 +283,9 @@ return [
     'Tax' => 'Tax (18%)',
     'Grand_Total' => 'Grand Total',
 
+    'users_management' => 'Users Management',
+    'total_users' => 'Total Users',
+
+    'user_id' => 'User ID',
+
 ];

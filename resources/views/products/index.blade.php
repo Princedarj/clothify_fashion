@@ -114,22 +114,32 @@
 
                             <div class="flex gap-2 mt-3">
 
-                                <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                                <!-- Add to Cart -->
+                                <form action="{{ route('cart.add') }}" method="POST" class="flex-1">
                                     @csrf
-                                    <button class="bg-gray-900 text-white px-3 py-1 rounded">
+                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                    
+                                    <button type="submit"
+                                        class="w-full h-10 text-sm bg-black text-white rounded flex items-center justify-center">
                                         {{ __('messages.Add to Cart') }}
                                     </button>
                                 </form>
 
-                                <form action="{{ route('buy.now', $product->id) }}" method="POST">
+                                <!-- Buy Now -->
+                                <form action="{{ route('buy.now', $product->id) }}" method="POST" class="flex-1">
                                     @csrf
-                                    <button class="bg-yellow-500 text-black px-3 py-1 rounded">
+                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                    <input type="hidden" name="buy_now" value="1">
+
+                                    <button type="submit"
+                                        class="w-full h-10 text-sm bg-yellow-500 text-black rounded flex items-center justify-center">
                                         {{ __('messages.Buy Now') }}
                                     </button>
                                 </form>
 
+                                <!-- Quick View -->
                                 <button onclick="openModal(...)"
-                                    class="border px-3 py-1 rounded">
+                                    class="flex-1 h-10 text-sm border rounded flex items-center justify-center">
                                     {{ __('messages.Quick View') }}
                                 </button>
 
