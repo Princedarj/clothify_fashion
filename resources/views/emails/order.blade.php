@@ -15,7 +15,7 @@
     <!-- Header -->
     <tr>
         <td style="background:#4CAF50; padding:20px; text-align:center; color:white;">
-            <h1 style="margin:0;">🛍️ Your Store</h1>
+            <h1 style="margin:0;">🛍️ Clothify Fashion</h1>
             <p style="margin:5px 0;">Order Confirmation</p>
         </td>
     </tr>
