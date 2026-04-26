@@ -13,7 +13,6 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderPlacedMail;
-use Razorpay\Api\Api;
 
 class OrderController extends Controller
 {
@@ -116,22 +115,9 @@ class OrderController extends Controller
         Mail::to($order->email)->send(new OrderPlacedMail($order));
 
 
-        session()->forget('cart');
+        // session()->forget('cart');
 
         //return redirect()->route('order.success', $order->id);
-        $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
-
-        $razorpayOrder = $api->order->create([
-            'receipt' => 'order_' . $order->id,
-            'amount' => (int) round($order->grand_total * 100),
-            'currency' => 'INR',
-        ]);
-
-        $order->update([
-            'razorpay_order_id' => $razorpayOrder['id'],
-            'payment_status' => 'Pending',
-            'payment_method' => 'Razorpay',
-        ]);
 
         session()->forget('cart');
 
@@ -269,7 +255,7 @@ class OrderController extends Controller
         }
 
         // ✅ IMPORTANT
-        $orders = $query->paginate(10)->withQueryString();
+        $orders = $query->paginate(20)->withQueryString();
 
         return view('admin.orders', compact('orders'));
     }
@@ -353,59 +339,27 @@ class OrderController extends Controller
 
     // Payement method
 
-    public function payment(Order $order)
+    public function paymentPage($id)
 {
-    if ($order->user_id !== Auth::id()) {
-        abort(403);
-    }
-
-    return view('orders.payment', [
-        'order' => $order,
-        'razorpayKey' => env('RAZORPAY_KEY'),
-    ]);
+    $order = Order::findOrFail($id);
+    return view('orders.payment', compact('order'));
 }
 
-    //ADD VERIFY PAYMENT METHOD
-
-    public function verifyPayment(Request $request)
+public function paymentSuccess(Request $request, $id)
 {
-    $request->validate([
-        'order_id' => 'required|exists:orders,id',
-        'razorpay_payment_id' => 'required',
-        'razorpay_order_id' => 'required',
-        'razorpay_signature' => 'required',
-    ]);
-
-    $order = Order::where('id', $request->order_id)
+    $order = Order::where('id', $id)
         ->where('user_id', Auth::id())
         ->firstOrFail();
 
-    $generatedSignature = hash_hmac(
-        'sha256',
-        $order->razorpay_order_id . '|' . $request->razorpay_payment_id,
-        env('RAZORPAY_SECRET')
-    );
-
-    if (hash_equals($generatedSignature, $request->razorpay_signature)) {
-        $order->update([
-            'payment_status' => 'Paid',
-            'razorpay_payment_id' => $request->razorpay_payment_id,
-            'razorpay_signature' => $request->razorpay_signature,
-            'status' => 'Pending',
-        ]);
-
-        return redirect()
-            ->route('order.success', $order->id)
-            ->with('success', 'Payment successful!');
-    }
-
     $order->update([
-        'payment_status' => 'Failed',
+        'payment_method' => $request->payment_method ?? 'UPI',
+        'payment_status' => 'Paid',
+        'razorpay_payment_id' => $request->transaction_code ?? 'Payment By QR',
     ]);
 
     return redirect()
-        ->route('payment.page', $order->id)
-        ->with('error', 'Payment verification failed.');
+        ->route('order.success', $order->id)
+        ->with('success', 'Payment Successful!');
 }
 
 }

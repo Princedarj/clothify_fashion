@@ -151,7 +151,7 @@
                 <tr class="border-b hover:bg-gray-50 transition duration-200">
                     <td class="p-4 font-semibold text-gray-700">{{ $order->id }}</td>
                     <td class="p-4">{{ $order->name }}</td>
-                    <td class="p-4 font-medium text-gray-800">₹{{ number_format($order->grand_total) }}</td>
+                    <td class="p-4 font-medium text-gray-800">₹{{ number_format($order->grand_total ?? $order->total_amount ?? 0) }}</td>
                     <td class="p-4">
                         @if($order->status == 'Delivered')
                             <span class="px-3 py-1 text-xs rounded-full bg-green-100 text-green-700">

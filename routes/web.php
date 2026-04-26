@@ -73,8 +73,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/invoice/{id}', [OrderController::class, 'invoice'])->name('invoice.download');
 
-    Route::get('/payment/{order}', [OrderController::class, 'payment'])->name('payment.page');
-    Route::post('/payment/verify', [OrderController::class, 'verifyPayment'])->name('payment.verify');
+    Route::get('/payment/{id}', [OrderController::class, 'paymentPage'])->name('payment.page');
+    Route::post('/payment/success/{id}', [OrderController::class, 'paymentSuccess'])->name('payment.success');
 });
 
 

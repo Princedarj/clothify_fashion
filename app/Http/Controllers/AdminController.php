@@ -62,8 +62,8 @@ class AdminController extends Controller
 
         // ===== RECENT ORDERS =====
         $recentOrders = Order::with('user')
-            ->latest()
-            ->take(5)
+            ->orderBy('id', 'desc')
+            ->take(10)
             ->get();
 
         return view('admin.dashboard', compact(
@@ -99,7 +99,7 @@ class AdminController extends Controller
         $direction = $request->direction ?? 'asc';
 
         $orders = $query->orderBy($sort, $direction)
-            ->paginate(10)
+            ->paginate(20)
             ->withQueryString();
 
         return view('admin.orders', compact('orders'));

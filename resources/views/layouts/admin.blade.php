@@ -10,7 +10,7 @@
 <div class="min-h-screen flex">
 
     <!-- Sidebar -->
-    <div class="w-64 bg-gray-900 text-white p-6 flex flex-col justify-between">
+    <div class="w-64 bg-gray-900 text-white p-6 flex flex-col justify-between fixed top-0 left-0 h-screen">
 
         <!-- Top Section -->
         <div>
@@ -74,7 +74,7 @@
     </div>
 
     <!-- Main Content -->
-    <div class="flex-1 p-8 bg-gray-100">
+    <div class="flex-1 p-8 bg-gray-100 ml-64">
         @yield('content')
     </div>
 
