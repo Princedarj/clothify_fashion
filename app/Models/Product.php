@@ -25,13 +25,13 @@ class Product extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
-   
-   public function getName()
+
+    public function getName()
     {
-        return match(app()->getLocale()) {
+        return match (app()->getLocale()) {
             'hi' => $this->name_hi ?: $this->name_en,
             'gu' => $this->name_gu ?: $this->name_en,
             default => $this->name_en,
@@ -39,12 +39,13 @@ class Product extends Model
     }
     public function getDescription()
     {
-        return match(app()->getLocale()) {
+        return match (app()->getLocale()) {
             'hi' => $this->description_hi ?: $this->description_en,
             'gu' => $this->description_gu ?: $this->description_en,
             default => $this->description_en,
         };
     }
+
 }
 
 

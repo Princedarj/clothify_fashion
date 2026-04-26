@@ -133,6 +133,22 @@
                                 <p class="text-sm text-gray-500">
                                     ₹{{ number_format($item->price) }} × {{ $item->quantity }}
                                 </p>
+                                <p>
+                                    <strong>Payment Status:</strong>
+                                    {{ $order->payment_status }}
+                                </p>
+
+                                <p>
+                                    <strong>Payment Method:</strong>
+                                    {{ $order->payment_method ?? 'N/A' }}
+                                </p>
+
+                                @if($order->razorpay_payment_id)
+                                <p>
+                                    <strong>Payment ID:</strong>
+                                    {{ $order->razorpay_payment_id }}
+                                </p>
+                                @endif
                             </div>
 
                             <div class="text-lg font-bold text-gray-800">

@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
-    'name_en',
-    'name_hi',
-    'name_gu',
+        'name_en',
+        'name_hi',
+        'name_gu',
     ];
 
     public function products()
@@ -22,7 +24,7 @@ class Category extends Model
     {
         $locale = app()->getLocale();
 
-        return match($locale) {
+        return match ($locale) {
             'hi' => $this->name_hi,
             'gu' => $this->name_gu,
             default => $this->name_en,

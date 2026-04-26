@@ -13,11 +13,12 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderPlacedMail;
+use Razorpay\Api\Api;
 
 class OrderController extends Controller
 {
 
-// ✅ ADMIN VIEW ALL ORDERS
+    // ✅ ADMIN VIEW ALL ORDERS
     public function index()
     {
         $orders = \App\Models\Order::query()
@@ -45,255 +46,366 @@ class OrderController extends Controller
     /////////////////////////////////////////////////////////////////////////////////////////
 
     // ✅ USER VIEW MY ORDERS
-public function myOrders()
-{
-    $orders = Order::where('user_id', auth()->user()->id)
-        ->with('items')
-        ->latest()
-        ->get();
+    public function myOrders()
+    {
+        $orders = Order::where('user_id', auth()->user()->id)
+            ->with('items')
+            ->latest()
+            ->get();
 
-    return view('orders.my', compact('orders'));
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-/// ✅ PLACE ORDER
-public function place(Request $request)
-{
-    App::setLocale(auth()->user()->language ?? 'en');
-    
-    $request->validate([
-        'name' => 'required',
-        'email' => 'required|email',
-        'phone' => 'required',
-        'address' => 'required',
-        'pincode' => 'required',
-    ]);
-
-    $cart = session()->get('cart', []);
-
-
-    if (empty($cart)) {
-        return redirect()->route('cart.index');
+        return view('orders.my', compact('orders'));
     }
 
-    // ✅ Calculate total
-    $totalAmount = 0;
-    foreach ($cart as $item) {
-        $totalAmount += $item['price'] * $item['quantity'];
-    }
+    /////////////////////////////////////////////////////////////////////////////////////////////
 
-    // ✅ Create order
-    $order = Order::create([
-        'user_id' => Auth::id(),
-        'name'         => $request->name,
-        'email'        => $request->email,
-        'phone'        => $request->phone,
-        'address'      => $request->address,
-        'pincode'      => $request->pincode,
-        'grand_total'  => $grand_total = $totalAmount * 1.18, // total + 18% tax 
-        'subtotal'     => $totalAmount,
-        'tax'          => $totalAmount * 0.18, // 18%
-        // 'status'       => 'Pending',
-        'status' => __('messages.Pending'),
-    ]);
+    /// ✅ PLACE ORDER
+    public function place(Request $request)
+    {
+        App::setLocale(auth()->user()->language ?? 'en');
 
-    // ✅ Save order items
-    foreach ($cart as $item) {
-    OrderItem::create([
-        'order_id'     => $order->id,
-        'product_name' => $item['name'] ?? 'Unknown Product',
-        'price'        => $item['price'] ?? 0,
-        'quantity'     => $item['quantity'] ?? 1,
-        'total'        => ($item['price'] ?? 0) * ($item['quantity'] ?? 1),
-    ]);
-    }
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'phone' => 'required',
+            'address' => 'required',
+            'pincode' => 'required',
+        ]);
+
+        $cart = session()->get('cart', []);
+
+
+        if (empty($cart)) {
+            return redirect()->route('cart.index');
+        }
+
+        // ✅ Calculate total
+        $totalAmount = 0;
+        foreach ($cart as $item) {
+            $totalAmount += $item['price'] * $item['quantity'];
+        }
+
+        // ✅ Create order
+        $order = Order::create([
+            'user_id' => Auth::id(),
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'pincode' => $request->pincode,
+            'grand_total' => $grand_total = $totalAmount * 1.18, // total + 18% tax 
+            'subtotal' => $totalAmount,
+            'tax' => $totalAmount * 0.18, // 18%
+            'status' => 'Pending',
+        ]);
+
+
+
+        // ✅ Save order items
+        foreach ($cart as $item) {
+            OrderItem::create([
+                'order_id' => $order->id,
+                'product_name' => $item['name'] ?? 'Unknown Product',
+                'price' => $item['price'] ?? 0,
+                'quantity' => $item['quantity'] ?? 1,
+                'total' => ($item['price'] ?? 0) * ($item['quantity'] ?? 1),
+            ]);
+        }
         $order->load('items.product', 'user');
         App::setLocale(auth()->user()->language ?? 'en');
         $order = Order::with('items.product')->find($order->id);
         Mail::to($order->email)->send(new OrderPlacedMail($order));
-        
 
-    session()->forget('cart');
 
-    //return redirect()->route('order.success', $order->id);
-    return redirect()
-    ->route('order.success', $order->id)
-    ->with('success', __('messages.Order Placed Successfully'));
+        session()->forget('cart');
 
-}
+        //return redirect()->route('order.success', $order->id);
+        $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
 
-/////////////////////////////////////////////////////////////////////////////////////////////
+        $razorpayOrder = $api->order->create([
+            'receipt' => 'order_' . $order->id,
+            'amount' => (int) round($order->grand_total * 100),
+            'currency' => 'INR',
+        ]);
 
-// ✅ ADMIN VIEW ORDER DETAILS
-public function show($id)
-{
-    $order = Order::with('items')->findOrFail($id);
+        $order->update([
+            'razorpay_order_id' => $razorpayOrder['id'],
+            'payment_status' => 'Pending',
+            'payment_method' => 'Razorpay',
+        ]);
 
-    return view('admin.order-details', compact('order'));
-}
+        session()->forget('cart');
 
-/////////////////////////////////////////////////////////////////////////////////////////////
+        return redirect()->route('payment.page', $order->id);
 
-// ✅ ADMIN INVOICE DOWNLOAD
-public function invoice($id)
-{
-    $order = Order::with('items')->findOrFail($id);
+    }
 
-    $subtotal = $order->items->sum('total');
-    $tax = $subtotal * 0.18; // 18% GST
-    $grandTotal = $subtotal + $tax;
+    /////////////////////////////////////////////////////////////////////////////////////////////
 
-    $pdf = Pdf::loadView('admin.invoice', compact(
-        'order',
-        'subtotal',
-        'tax',
-        'grandTotal'
-    ));
+    // ✅ ADMIN VIEW ORDER DETAILS
+    public function show($id)
+    {
+        $order = Order::with('items')->findOrFail($id);
 
-    return $pdf->download('invoice-'.$order->id.'.pdf');
-}
+        return view('admin.order-details', compact('order'));
+    }
 
-//////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////
 
-/// ✅ USER INVOICE DOWNLOAD
-public function userInvoice($id)
-{
-    $order = Order::with('items')
-        ->where('id', $id)
-        ->where('user_id', Auth::id()) // 🔐 security check
-        ->firstOrFail();
+    // ✅ ADMIN INVOICE DOWNLOAD
+    public function invoice($id)
+    {
+        $order = Order::with('items')->findOrFail($id);
 
-    $pdf = Pdf::loadView('admin.invoice', compact('order'));
+        $subtotal = $order->items->sum('total');
+        $tax = $subtotal * 0.18; // 18% GST
+        $grandTotal = $subtotal + $tax;
 
-    return $pdf->download('invoice-order-'.$order->id.'.pdf');
-}
+        $pdf = Pdf::loadView('admin.invoice', compact(
+            'order',
+            'subtotal',
+            'tax',
+            'grandTotal'
+        ));
 
-/////////////////////////////////////////////////////////////////////////////////////////////
+        return $pdf->download('invoice-' . $order->id . '.pdf');
+    }
 
-// ✅ ORDER SUCCESS PAGE
-public function success($id)
-{
-    $order = Order::where('id', $id)
-        ->where('user_id', Auth::id())
-        ->firstOrFail();
+    //////////////////////////////////////////////////////////////////////////////////////////////
+
+    /// ✅ USER INVOICE DOWNLOAD
+    public function userInvoice($id)
+    {
+        $order = Order::with('items')
+            ->where('id', $id)
+            ->where('user_id', Auth::id()) // 🔐 security check
+            ->firstOrFail();
+
+        $pdf = Pdf::loadView('admin.invoice', compact('order'));
+
+        return $pdf->download('invoice-order-' . $order->id . '.pdf');
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
+
+    // ✅ ORDER SUCCESS PAGE
+    public function success($id)
+    {
+        $order = Order::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        if ($order->payment_status !== 'Paid') {
+            return redirect()->route('payment.page', $order->id)
+                ->with('error', 'Please complete payment first.');
+        }
 
         $order->load('items.product');
 
-    return view('orders.success', compact('order'));
-}
+        return view('orders.success', compact('order'));
+    }
 
-////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////
 
-// ✅ ADMIN DASHBOARD WITH STATS & RECENT ORDERS
-public function adminDashboard()
-{
-    $totalOrders = Order::count();
+    // ✅ ADMIN DASHBOARD WITH STATS & RECENT ORDERS
+    public function adminDashboard()
+    {
+        $totalOrders = Order::count();
 
-    $totalRevenue = Order::where('status', 'Delivered')
-        ->sum('total_amount');
+        $totalRevenue = Order::where('status', 'Delivered')
+            ->sum('total_amount');
 
-    $totalUsers = \App\Models\User::count();
+        $totalUsers = \App\Models\User::count();
 
-    $pendingOrders = Order::where('status', 'Pending')->count();
+        $pendingOrders = Order::where('status', 'Pending')->count();
 
-    $monthlySales = Order::select(
+        $monthlySales = Order::select(
             DB::raw("MONTH(created_at) as month"),
             DB::raw("SUM(total_amount) as total")
         )
-        ->where('status', 'Delivered')
-        ->groupBy(DB::raw("MONTH(created_at)"))
-        ->pluck('total', 'month');
+            ->where('status', 'Delivered')
+            ->groupBy(DB::raw("MONTH(created_at)"))
+            ->pluck('total', 'month');
 
-    // ✅ ADD THIS
-    $recentOrders = Order::latest()->take(5)->get();
+        // ✅ ADD THIS
+        $recentOrders = Order::latest()->take(5)->get();
 
-    return view('admin.dashboard', compact(
-        'totalOrders',
-        'totalRevenue',
-        'totalUsers',
-        'pendingOrders',
-        'monthlySales',
-        'recentOrders' // add here
-    ));
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// ✅ ADMIN ORDERS WITH SEARCH & FILTER
-public function adminOrders(Request $request)
-{
-    $query = Order::query();
-
-    // Search by customer name
-    if ($request->filled('search')) {
-        $query->where('name', 'like', '%' . $request->search . '%');
+        return view('admin.dashboard', compact(
+            'totalOrders',
+            'totalRevenue',
+            'totalUsers',
+            'pendingOrders',
+            'monthlySales',
+            'recentOrders' // add here
+        ));
     }
 
-    // Filter by status
-    if ($request->filled('status')) {
-        $query->where('status', $request->status);
-    }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // Filter by date
-    if ($request->filled('date')) {
-        if ($request->date == 'today') {
-            $query->whereDate('created_at', now());
-        } elseif ($request->date == 'month') {
-            $query->whereMonth('created_at', now()->month);
+    // ✅ ADMIN ORDERS WITH SEARCH & FILTER
+    public function adminOrders(Request $request)
+    {
+        $query = Order::with('user')->orderBy('id', 'asc');
+
+        // 🔍 Search (Customer Name OR Order ID)
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('id', $request->search)
+                    ->orWhere('name', 'like', '%' . $request->search . '%');
+            });
         }
+
+        // 📦 Status Filter
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // 📅 Date Filter (optional)
+        if ($request->filled('date')) {
+            if ($request->date == 'today') {
+                $query->whereDate('created_at', now());
+            } elseif ($request->date == 'month') {
+                $query->whereMonth('created_at', now()->month);
+            }
+        }
+
+        // ✅ IMPORTANT
+        $orders = $query->paginate(10)->withQueryString();
+
+        return view('admin.orders', compact('orders'));
     }
 
-    $orders = Order::query()
-    ->reorder()
-    ->orderBy('id', 'asc')
-    ->paginate(10);
+    //////////////////////////////////////////////////////////////////////////////////////////////
 
-    return view('admin.orders', compact('orders'));
-}   
+    // ✅ EXPORT FILTERED ORDERS (EXCEL)
 
-//////////////////////////////////////////////////////////////////////////////////////////////
+    public function export(Request $request)
+    {
+        $query = Order::with('user');
 
-// ✅ EXPORT ORDERS TO EXCEL
-public function export(Request $request)
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('id', $search)
+                    ->orWhere('name', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $orders = $query->orderBy('id', 'asc')->get();
+
+        $data[] = ['Order ID', 'Customer Name', 'Email', 'Phone', 'Total Amount', 'Status', 'Date'];
+
+        foreach ($orders as $order) {
+            $data[] = [
+                $order->id,
+                $order->name ?? ($order->user->name ?? 'Guest'),
+                $order->email ?? '',
+                $order->phone ?? '',
+                '₹ ' . ($order->total_amount ?? $order->grand_total ?? 0), // ✅ FIXED
+                $order->status,
+                $order->created_at ? $order->created_at->format('d-m-Y') : '',
+            ];
+        }
+
+        return Excel::download(
+            new class ($data) implements \Maatwebsite\Excel\Concerns\FromArray {
+            protected $data;
+
+            public function __construct($data)
+            {
+                $this->data = $data;
+            }
+
+            public function array(): array
+            {
+                return $this->data;
+            }
+            },
+            'orders.xlsx'
+        );
+    }
+    public function buyNow($id)
+    {
+        $product = \App\Models\Product::findOrFail($id);
+
+        // Clear old cart (optional but recommended)
+        session()->forget('cart');
+
+        // Add only this product to cart
+        $cart = [];
+        $cart[$id] = [
+            //"name" => $product->{'name_' . app()->getLocale()} ?? $product->name_en,
+            "product_id" => $product->id,
+            "price" => $product->price,
+            "quantity" => 1,
+            "image" => $product->image,
+        ];
+
+        session()->put('cart', $cart);
+
+        // Redirect DIRECTLY to checkout page
+        return redirect()->route('checkout');
+    }
+
+    // Payement method
+
+    public function payment(Order $order)
 {
-    $query = Order::query();
-
-    if ($request->filled('search')) {
-        $query->where('name', 'like', '%' . $request->search . '%');
+    if ($order->user_id !== Auth::id()) {
+        abort(403);
     }
 
-    if ($request->filled('status')) {
-        $query->where('status', $request->status);
-    }
-
-    $orders = $query->latest()->get();
-
-    return Excel::download(new OrdersExport($orders), 'orders.xlsx');
+    return view('orders.payment', [
+        'order' => $order,
+        'razorpayKey' => env('RAZORPAY_KEY'),
+    ]);
 }
 
-public function buyNow($id)
+    //ADD VERIFY PAYMENT METHOD
+
+    public function verifyPayment(Request $request)
 {
-    $product = \App\Models\Product::findOrFail($id);
+    $request->validate([
+        'order_id' => 'required|exists:orders,id',
+        'razorpay_payment_id' => 'required',
+        'razorpay_order_id' => 'required',
+        'razorpay_signature' => 'required',
+    ]);
 
-    // Clear old cart (optional but recommended)
-    session()->forget('cart');
+    $order = Order::where('id', $request->order_id)
+        ->where('user_id', Auth::id())
+        ->firstOrFail();
 
-    // Add only this product to cart
-    $cart = [];
-    $cart[$id] = [
-        //"name" => $product->{'name_' . app()->getLocale()} ?? $product->name_en,
-        "product_id" => $product->id,
-        "price" => $product->price,
-        "quantity" => 1,
-        "image" => $product->image,
-    ];
+    $generatedSignature = hash_hmac(
+        'sha256',
+        $order->razorpay_order_id . '|' . $request->razorpay_payment_id,
+        env('RAZORPAY_SECRET')
+    );
 
-    session()->put('cart', $cart);
+    if (hash_equals($generatedSignature, $request->razorpay_signature)) {
+        $order->update([
+            'payment_status' => 'Paid',
+            'razorpay_payment_id' => $request->razorpay_payment_id,
+            'razorpay_signature' => $request->razorpay_signature,
+            'status' => 'Pending',
+        ]);
 
-    // Redirect DIRECTLY to checkout page
-    return redirect()->route('checkout');
+        return redirect()
+            ->route('order.success', $order->id)
+            ->with('success', 'Payment successful!');
+    }
+
+    $order->update([
+        'payment_status' => 'Failed',
+    ]);
+
+    return redirect()
+        ->route('payment.page', $order->id)
+        ->with('error', 'Payment verification failed.');
 }
-
 
 }

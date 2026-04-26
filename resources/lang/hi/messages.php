@@ -295,4 +295,12 @@ return [
     'users_management' => 'उपयोगकर्ता प्रबंधन',
     'total_users' => 'कुल उपयोगकर्ता',
     'user_id' => 'यूज़र आईडी',
+
+    'image' => 'छवि',
+
+    'products_management' => 'उत्पाद प्रबंधन',
+
+    'id' => 'पहचान',
+
+    'payment' => 'भुगतान',
     ];

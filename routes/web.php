@@ -72,6 +72,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/my-orders/{id}/invoice', [OrderController::class, 'userInvoice'])->name('user.orders.invoice');
 
     Route::get('/invoice/{id}', [OrderController::class, 'invoice'])->name('invoice.download');
+
+    Route::get('/payment/{order}', [OrderController::class, 'payment'])->name('payment.page');
+    Route::post('/payment/verify', [OrderController::class, 'verifyPayment'])->name('payment.verify');
 });
 
 
@@ -93,7 +96,7 @@ Route::middleware(['auth', 'admin'])
 
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
-        Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders', [OrderController::class, 'adminOrders'])->name('orders.index');
         Route::get('/orders/export', [OrderController::class, 'export'])->name('orders.export');
         Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
         Route::post('/orders/{id}/deliver', [OrderController::class, 'deliver'])->name('orders.deliver');

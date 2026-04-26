@@ -17,7 +17,12 @@ class Order extends Model
         'status',
         'pincode',
         'subtotal',
-        'tax'
+        'tax',
+        'payment_status',
+        'payment_method',
+        'razorpay_order_id',
+        'razorpay_payment_id',
+        'razorpay_signature',
     ];
 
     public function items()

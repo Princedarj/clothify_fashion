@@ -273,7 +273,7 @@ return [
     // 'name' => 'Name',
     // 'email' => 'Email',
     // 'phone' => 'Phone',
-     'city' => 'City',
+    'city' => 'City',
     // 'password' => 'Password',
     'add_admin' => 'Add Admin',
     'update_profile' => 'Update Profile',
@@ -288,4 +288,12 @@ return [
 
     'user_id' => 'User ID',
 
-];
+    'image' => 'Image',
+
+    'products_management' => 'Products Management',
+    
+    'id' =>  'ID',
+    
+    'payment' =>  'Payment',
+
+    ];

@@ -12,13 +12,40 @@ use Stichoza\GoogleTranslate\GoogleTranslate;
 class AdminProductController extends Controller
 {
     // 🔹 Show all products (✅ FIXED PAGINATION)
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with('category')
-                        ->latest()
-                        ->paginate(10); // ✅ IMPORTANT
+        $query = Product::with('category');
 
-        return view('admin.products.index', compact('products'));
+        // Search product name + category name
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('name_en', 'like', "%{$search}%")
+                    ->orWhere('name_hi', 'like', "%{$search}%")
+                    ->orWhere('name_gu', 'like', "%{$search}%")
+                    ->orWhereHas('category', function ($cat) use ($search) {
+                        $cat->where('name_en', 'like', "%{$search}%")
+                            ->orWhere('name_hi', 'like', "%{$search}%")
+                            ->orWhere('name_gu', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        // Category filter
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->category);
+        }
+
+        $products = $query->latest()->paginate(10)->withQueryString();
+
+        $categories = Category::all();
+
+        if ($request->ajax()) {
+            return view('admin.products.partials.table', compact('products'))->render();
+        }
+
+        return view('admin.products.index', compact('products', 'categories'));
     }
 
     // 🔹 Show create form
