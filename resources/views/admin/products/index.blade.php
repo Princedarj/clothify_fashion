@@ -2,67 +2,94 @@
 
 @section('content')
 
-    <div class="bg-white p-6 rounded-xl shadow-sm">
+<div class="space-y-8">
 
-        <!-- Header -->
-        <div class="flex justify-between items-center mb-6">
+    <!-- Header Card -->
+    <div class="relative rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-900 to-purple-900 p-8 shadow-2xl overflow-visible">
+
+        <div class="absolute top-0 right-0 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
+
+        <div class="relative flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
 
             <div>
-                <h2 class="text-2xl font-semibold text-gray-800">
+                <p class="text-indigo-200 text-sm font-semibold uppercase tracking-widest mb-2">
+                    {{ __('messages.Admin Panel') }}
+                </p>
+
+                <h2 class="text-4xl font-extrabold text-white">
                     {{ __('messages.products_management') ?? 'Products Management' }}
                 </h2>
 
-                <p class="text-sm text-gray-500 mt-1">
+                <p class="text-slate-300 mt-2">
                     Total Products: {{ $products->total() }}
                 </p>
             </div>
 
-            <div class="flex items-center gap-3">
+            <div class="flex flex-wrap items-center gap-3">
 
-                <a href="{{ route('admin.products.create') }}" class="px-5 py-2 rounded-lg text-white font-medium shadow-md 
-                          bg-gradient-to-r from-indigo-500 to-purple-600 
-                          hover:from-indigo-600 hover:to-purple-700 
-                          transition duration-200 flex items-center gap-2">
-                    <span class="text-lg">+</span>
+                <a href="{{ route('admin.products.create') }}"
+                   class="bg-white text-indigo-700 px-5 py-3 rounded-2xl shadow-lg hover:bg-indigo-50 transition font-bold flex items-center gap-2">
+                    <span class="text-xl">+</span>
                     <span>{{ __('messages.add_product') }}</span>
                 </a>
 
                 <!-- Language -->
-                <div class="relative flex items-center">
+                <div class="relative">
                     <button onclick="toggleLangDropdown()"
-                        class="bg-gray-100 px-4 py-2 flex items-center rounded-lg shadow hover:bg-gray-200">
-                        <span class="flex items-center gap-2 leading-none">
-                            <span>🌐</span>
-                            <span>{{ __('messages.language') }}</span>
-                        </span>
+                        class="bg-white/15 backdrop-blur-md border border-white/20 text-white px-5 py-3 rounded-2xl shadow-lg flex items-center gap-2 hover:bg-white/25 transition">
+                        🌐 {{ __('messages.language') }}
                     </button>
 
-                    <div id="langDropdown" class="hidden absolute right-0 mt-2 bg-white shadow-lg rounded-lg w-32 z-50">
-                        <a href="{{ route('lang.switch', 'en') }}" class="block px-4 py-2 hover:bg-gray-100">English</a>
-                        <a href="{{ route('lang.switch', 'hi') }}" class="block px-4 py-2 hover:bg-gray-100">हिंदी</a>
-                        <a href="{{ route('lang.switch', 'gu') }}" class="block px-4 py-2 hover:bg-gray-100">ગુજરાતી</a>
+                    <div id="langDropdown"
+                        class="hidden absolute right-0 mt-3 bg-white shadow-2xl rounded-2xl w-40 z-[999] border overflow-hidden">
+
+                        <a href="{{ route('lang.switch', 'en') }}"
+                           class="block px-5 py-3 hover:bg-indigo-50 text-gray-700">
+                            English
+                        </a>
+
+                        <a href="{{ route('lang.switch', 'hi') }}"
+                           class="block px-5 py-3 hover:bg-indigo-50 text-gray-700">
+                            हिंदी
+                        </a>
+
+                        <a href="{{ route('lang.switch', 'gu') }}"
+                           class="block px-5 py-3 hover:bg-indigo-50 text-gray-700">
+                            ગુજરાતી
+                        </a>
                     </div>
                 </div>
 
                 <!-- Logout -->
-                <form method="POST" action="{{ route('logout') }}" class="inline-flex items-center">
+                <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit"
-                        class="bg-red-500 text-white px-4 py-2 flex items-center rounded-lg hover:bg-red-600 leading-none">
+                        class="bg-red-500/90 text-white px-5 py-3 rounded-2xl shadow-lg hover:bg-red-600 transition font-semibold">
                         {{ __('messages.logout') }}
                     </button>
                 </form>
 
             </div>
+
         </div>
+    </div>
+
+
+    <!-- Main Card -->
+    <div class="bg-white rounded-3xl shadow-xl border p-8">
 
         <!-- Search + Filter -->
-        <form id="filterForm" class="flex flex-wrap gap-3 mb-5">
+        <form id="filterForm" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
 
-            <input type="text" name="search" value="{{ request('search') }}" placeholder="Search product or category..."
-                class="border px-3 py-2 rounded-lg w-72">
+            <input type="text"
+                   name="search"
+                   value="{{ request('search') }}"
+                   placeholder="Search product or category..."
+                   class="xl:col-span-2 border border-gray-200 bg-gray-50 px-5 py-3 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
 
-            <select name="category" class="border px-3 py-2 rounded-lg w-56">
+            <select name="category"
+                    class="border border-gray-200 bg-gray-50 px-5 py-3 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+
                 <option value="">All Categories</option>
 
                 @foreach($categories as $category)
@@ -70,80 +97,83 @@
                         {{ $category->{'name_' . app()->getLocale()} ?? $category->name_en }}
                     </option>
                 @endforeach
+
             </select>
 
-            <a href="{{ route('admin.products.index') }}" class="bg-gray-200 px-4 py-2 rounded-lg hover:bg-gray-300">
+            <a href="{{ route('admin.products.index') }}"
+               class="flex items-center justify-center bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-lg hover:bg-indigo-700 transition font-semibold">
                 Reset
             </a>
 
         </form>
 
         <!-- Table Wrapper -->
-        <div id="productTableWrapper">
+        <div id="productTableWrapper" class="rounded-2xl overflow-hidden">
             @include('admin.products.partials.table')
         </div>
 
     </div>
 
-    <script>
-        function toggleLangDropdown() {
-            document.getElementById('langDropdown').classList.toggle('hidden');
-        }
+</div>
 
-        const filterForm = document.getElementById('filterForm');
 
-        if (filterForm) {
-            const searchInput = filterForm.querySelector('input[name="search"]');
-            const categorySelect = filterForm.querySelector('select[name="category"]');
+<script>
+    function toggleLangDropdown() {
+        document.getElementById('langDropdown').classList.toggle('hidden');
+    }
 
-            let typingTimer;
+    const filterForm = document.getElementById('filterForm');
 
-            searchInput.addEventListener('keyup', function () {
-                clearTimeout(typingTimer);
-                typingTimer = setTimeout(function () {
-                    fetchProducts();
-                }, 400);
-            });
+    if (filterForm) {
+        const searchInput = filterForm.querySelector('input[name="search"]');
+        const categorySelect = filterForm.querySelector('select[name="category"]');
 
-            categorySelect.addEventListener('change', function () {
+        let typingTimer;
+
+        searchInput.addEventListener('keyup', function () {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(function () {
                 fetchProducts();
-            });
+            }, 400);
+        });
 
-            function fetchProducts(pageUrl = null) {
-                const formData = new FormData(filterForm);
-                const params = new URLSearchParams(formData).toString();
+        categorySelect.addEventListener('change', function () {
+            fetchProducts();
+        });
 
-                let url = pageUrl ?? "{{ route('admin.products.index') }}?" + params;
+        function fetchProducts(pageUrl = null) {
+            const formData = new FormData(filterForm);
+            const params = new URLSearchParams(formData).toString();
 
-                fetch(url, {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
+            let url = pageUrl ?? "{{ route('admin.products.index') }}?" + params;
+
+            fetch(url, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('productTableWrapper').innerHTML = data;
+
+                    if (!pageUrl) {
+                        window.history.pushState({}, '', "{{ route('admin.products.index') }}?" + params);
+                    } else {
+                        window.history.pushState({}, '', pageUrl);
                     }
                 })
-                    .then(response => response.text())
-                    .then(data => {
-                        document.getElementById('productTableWrapper').innerHTML = data;
-
-                        // update browser URL without reload
-                        if (!pageUrl) {
-                            window.history.pushState({}, '', "{{ route('admin.products.index') }}?" + params);
-                        } else {
-                            window.history.pushState({}, '', pageUrl);
-                        }
-                    })
-                    .catch(error => console.log(error));
-            }
-
-            // AJAX pagination
-            document.addEventListener('click', function (e) {
-                const link = e.target.closest('.ajax-pagination a');
-
-                if (link) {
-                    e.preventDefault();
-                    fetchProducts(link.getAttribute('href'));
-                }
-            });
+                .catch(error => console.log(error));
         }
-    </script>
+
+        document.addEventListener('click', function (e) {
+            const link = e.target.closest('.ajax-pagination a');
+
+            if (link) {
+                e.preventDefault();
+                fetchProducts(link.getAttribute('href'));
+            }
+        });
+    }
+</script>
 
 @endsection

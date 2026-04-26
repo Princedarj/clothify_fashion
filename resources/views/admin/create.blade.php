@@ -2,47 +2,119 @@
 
 @section('content')
 
-<div class="max-w-3xl mx-auto bg-white p-6 rounded-xl shadow">
+<div class="space-y-8">
 
     <!-- Header -->
-    <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold">
-            {{ __('messages.add_admin') }}
-        </h2>
+    <div class="relative rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-900 to-purple-900 p-8 shadow-2xl overflow-hidden">
+        <div class="absolute top-0 right-0 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
 
-        <a href="{{ route('admin.profile') }}"
-           class="text-blue-600 hover:underline">
-            ← {{ __('messages.back') }}
-        </a>
+        <div class="relative flex justify-between items-center gap-4">
+            <div>
+                <p class="text-indigo-200 text-sm font-semibold uppercase tracking-widest mb-2">
+                    {{ __('messages.Admin Panel') }}
+                </p>
+
+                <h2 class="text-4xl font-extrabold text-white">
+                    {{ __('messages.add_admin') }}
+                </h2>
+
+                <p class="text-slate-300 mt-2">
+                    Create a new admin account
+                </p>
+            </div>
+
+            <a href="{{ route('admin.profile') }}"
+               class="bg-white text-indigo-700 px-5 py-3 rounded-2xl shadow-lg hover:bg-indigo-50 transition font-bold">
+                ← {{ __('messages.back') }}
+            </a>
+        </div>
     </div>
 
-    <form action="{{ route('admin.store') }}" method="POST">
-        @csrf
 
-        <div class="space-y-4">
+    <!-- Form Card -->
+    <div class="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl border p-8">
 
-            <input type="text" name="name" placeholder="{{ __('messages.name') }}"
-                class="w-full border px-3 py-2 rounded">
+        <form action="{{ route('admin.store') }}" method="POST" class="space-y-6">
+            @csrf
 
-            <input type="email" name="email" placeholder="{{ __('messages.email') }}"
-                class="w-full border px-3 py-2 rounded">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-            <input type="text" name="phone" placeholder="{{ __('messages.phone') }}"
-                class="w-full border px-3 py-2 rounded">
+                <div>
+                    <label class="block mb-2 font-bold text-gray-700">
+                        {{ __('messages.name') }}
+                    </label>
+                    <input type="text"
+                           name="name"
+                           placeholder="{{ __('messages.name') }}"
+                           required
+                           class="w-full border border-gray-200 bg-gray-50 px-5 py-3 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+                </div>
 
-            <input type="text" name="city" placeholder="{{ __('messages.city') }}"
-                class="w-full border px-3 py-2 rounded">
+                <div>
+                    <label class="block mb-2 font-bold text-gray-700">
+                        {{ __('messages.email') }}
+                    </label>
+                    <input type="email"
+                           name="email"
+                           placeholder="{{ __('messages.email') }}"
+                           required
+                           class="w-full border border-gray-200 bg-gray-50 px-5 py-3 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+                </div>
 
-            <input type="password" name="password" placeholder="{{ __('messages.password') }}"
-                class="w-full border px-3 py-2 rounded">
+                <div>
+                    <label class="block mb-2 font-bold text-gray-700">
+                        {{ __('messages.phone') }}
+                    </label>
+                    <input type="text"
+                           name="phone"
+                           placeholder="{{ __('messages.phone') }}"
+                           maxlength="10"
+                           pattern="[0-9]{10}"
+                           inputmode="numeric"
+                           oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,10)"
+                           class="w-full border border-gray-200 bg-gray-50 px-5 py-3 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+                </div>
 
-        </div>
+                <div>
+                    <label class="block mb-2 font-bold text-gray-700">
+                        {{ __('messages.city') }}
+                    </label>
+                    <input type="text"
+                           name="city"
+                           placeholder="{{ __('messages.city') }}"
+                           class="w-full border border-gray-200 bg-gray-50 px-5 py-3 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+                </div>
 
-        <button class="mt-6 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">
-            {{ __('messages.create_admin') }}
-        </button>
+                <div class="md:col-span-2">
+                    <label class="block mb-2 font-bold text-gray-700">
+                        {{ __('messages.password') }}
+                    </label>
+                    <input type="password"
+                           name="password"
+                           placeholder="{{ __('messages.password') }}"
+                           required
+                           class="w-full border border-gray-200 bg-gray-50 px-5 py-3 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+                </div>
 
-    </form>
+            </div>
+
+            <div class="flex flex-col sm:flex-row justify-between gap-4 pt-6 border-t">
+
+                <a href="{{ route('admin.profile') }}"
+                   class="flex items-center justify-center px-6 py-3 bg-gray-100 text-gray-700 rounded-2xl hover:bg-gray-200 transition font-semibold">
+                    ← {{ __('messages.back') }}
+                </a>
+
+                <button type="submit"
+                        class="flex items-center justify-center px-6 py-3 bg-emerald-600 text-white rounded-2xl shadow-lg hover:bg-emerald-700 transition font-semibold">
+                    {{ __('messages.create_admin') }}
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
 
 </div>
 

@@ -303,4 +303,10 @@ return [
     'id' => 'पहचान',
 
     'payment' => 'भुगतान',
+
+    'failed' => 'असफल',
+
+    'Manage, filter, export, and view customer orders' => 'कस्टमर ऑर्डर मैनेज करें, फ़िल्टर करें, एक्सपोर्ट करें और देखें',
+
+    'All Payment' => 'सभी भुगतान',
     ];

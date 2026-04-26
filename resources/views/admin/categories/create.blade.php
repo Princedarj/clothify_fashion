@@ -2,39 +2,63 @@
 
 @section('content')
 
-<div class="max-w-xl mx-auto bg-white shadow-lg rounded-xl p-8">
+<div class="space-y-8">
 
-    <h2 class="text-xl font-bold mb-6 text-gray-800">
-        ➕ {{ __('messages.add_category') }}
-    </h2>
+    <!-- Header -->
+    <div class="relative rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-900 to-purple-900 p-8 shadow-2xl overflow-hidden">
+        <div class="absolute top-0 right-0 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
 
-    <form action="{{ route('admin.categories.store') }}" method="POST">
-        @csrf
+        <div class="relative">
+            <p class="text-indigo-200 text-sm font-semibold uppercase tracking-widest mb-2">
+                {{ __('messages.Admin Panel') }}
+            </p>
 
-        <div class="mb-4">
-            <label class="block mb-2 font-semibold text-gray-700">
-                {{ __('messages.category_name') }}
-            </label>
+            <h2 class="text-4xl font-extrabold text-white">
+                ➕ {{ __('messages.add_category') }}
+            </h2>
 
-            <input type="text"
-                   name="name"
-                   class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500"
-                   required>
+            <p class="text-slate-300 mt-2">
+                Create a new product category
+            </p>
         </div>
+    </div>
 
-        <div class="flex justify-between">
-            <a href="{{ route('admin.categories.index') }}"
-               class="px-5 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition">
-                ← {{ __('messages.back') }}
-            </a>
 
-            <button type="submit"
-                    class="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                {{ __('messages.save_category') }}
-            </button>
-        </div>
+    <!-- Form Card -->
+    <div class="max-w-2xl mx-auto bg-white rounded-3xl shadow-xl border p-8">
 
-    </form>
+        <form action="{{ route('admin.categories.store') }}" method="POST" class="space-y-6">
+            @csrf
+
+            <div>
+                <label class="block mb-2 font-bold text-gray-700">
+                    {{ __('messages.category_name') }}
+                </label>
+
+                <input type="text"
+                       name="name"
+                       placeholder="Enter category name"
+                       required
+                       class="w-full border border-gray-200 bg-gray-50 px-5 py-3 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+            </div>
+
+            <div class="flex flex-col sm:flex-row justify-between gap-4 pt-6 border-t">
+
+                <a href="{{ route('admin.categories.index') }}"
+                   class="flex items-center justify-center px-6 py-3 bg-gray-100 text-gray-700 rounded-2xl hover:bg-gray-200 transition font-semibold">
+                    ← {{ __('messages.back') }}
+                </a>
+
+                <button type="submit"
+                        class="flex items-center justify-center px-6 py-3 bg-indigo-600 text-white rounded-2xl shadow-lg hover:bg-indigo-700 transition font-semibold">
+                    {{ __('messages.save_category') }}
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
 
 </div>
 

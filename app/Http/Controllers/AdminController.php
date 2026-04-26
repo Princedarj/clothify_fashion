@@ -28,10 +28,10 @@ class AdminController extends Controller
 
         // ===== LAST 6 MONTH SALES =====
         $monthlySalesCollection = Order::select(
-                DB::raw("DATE_FORMAT(created_at, '%b %Y') as month"),
-                DB::raw("SUM(grand_total) as total"),
-                DB::raw("MIN(created_at) as sort_date")
-            )
+            DB::raw("DATE_FORMAT(created_at, '%b %Y') as month"),
+            DB::raw("SUM(grand_total) as total"),
+            DB::raw("MIN(created_at) as sort_date")
+        )
             ->where('status', 'Delivered')
             ->where('created_at', '>=', Carbon::now()->subMonths(5)->startOfMonth())
             ->groupBy('month')
@@ -55,7 +55,7 @@ class AdminController extends Controller
 
         $growthPercentage = round($growthPercentage, 2);
 
-       // Cap growth at 100% for display purposes
+        // Cap growth at 100% for display purposes
         // if ($growthPercentage > 100) {
         //     $growthPercentage = 100;
         // }
@@ -84,21 +84,27 @@ class AdminController extends Controller
     {
         $query = Order::with('user');
 
-        if ($request->search) {
-            $query->where('id', $request->search)
-                ->orWhereHas('user', function ($q) use ($request) {
-                    $q->where('name', 'like', '%' . $request->search . '%');
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('id', $request->search)
+                ->orWhere('name', 'like', '%' . $request->search . '%')
+                ->orWhere('email', 'like', '%' . $request->search . '%')
+                ->orWhereHas('user', function ($userQuery) use ($request) {
+                    $userQuery->where('name', 'like', '%' . $request->search . '%')
+                                ->orWhere('email', 'like', '%' . $request->search . '%');
                 });
+            });
         }
 
-        if ($request->status) {
+        if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
-        $sort = $request->sort ?? 'id';
-        $direction = $request->direction ?? 'asc';
+        if ($request->filled('payment_status')) {
+            $query->where('payment_status', $request->payment_status);
+        }
 
-        $orders = $query->orderBy($sort, $direction)
+        $orders = $query->orderBy('id', 'desc')
             ->paginate(20)
             ->withQueryString();
 
@@ -106,36 +112,68 @@ class AdminController extends Controller
     }
 
     // ===== EXPORT CSV =====
-    public function export()
-    {
-        $orders = Order::with('user')->orderBy('id', 'asc')->get();
+    public function export(Request $request)
+{
+    $query = Order::with('user');
 
-        $filename = "orders.csv";
-
-        $headers = [
-            "Content-Type" => "text/csv",
-            "Content-Disposition" => "attachment; filename=$filename",
-        ];
-
-        $callback = function () use ($orders) {
-            $file = fopen('php://output', 'w');
-            fputcsv($file, ['ID', 'Customer', 'Total', 'Status', 'Date']);
-
-            foreach ($orders as $order) {
-                fputcsv($file, [
-                    $order->id,
-                    $order->user->name ?? 'Guest',
-                    $order->grand_total,
-                    $order->status,
-                    $order->created_at,
-                ]);
-            }
-
-            fclose($file);
-        };
-
-        return response()->stream($callback, 200, $headers);
+    if ($request->filled('search')) {
+        $query->where(function ($q) use ($request) {
+            $q->where('id', $request->search)
+              ->orWhere('name', 'like', '%' . $request->search . '%')
+              ->orWhere('email', 'like', '%' . $request->search . '%')
+              ->orWhereHas('user', function ($userQuery) use ($request) {
+                  $userQuery->where('name', 'like', '%' . $request->search . '%');
+              });
+        });
     }
+
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    }
+
+    if ($request->filled('payment_status')) {
+        $query->where('payment_status', $request->payment_status);
+    }
+
+    $orders = $query->orderBy('id', 'asc')->get();
+
+    $filename = "orders.csv";
+
+    $headers = [
+        "Content-Type" => "text/csv",
+        "Content-Disposition" => "attachment; filename=$filename",
+    ];
+
+    $callback = function () use ($orders) {
+        $file = fopen('php://output', 'w');
+
+        fputcsv($file, [
+            'ID',
+            'Customer Name',
+            'Email',
+            'Total',
+            'Status',
+            'Payment Status',
+            'Date'
+        ]);
+
+        foreach ($orders as $order) {
+            fputcsv($file, [
+                $order->id,
+                $order->name ?? 'Guest',
+                $order->email ?? '',
+                $order->grand_total,
+                $order->status,
+                $order->payment_status,
+                $order->created_at->format('d M Y'),
+            ]);
+        }
+
+        fclose($file);
+    };
+
+    return response()->stream($callback, 200, $headers);
+}
 
     // ===== USERS PAGE =====
     public function users()

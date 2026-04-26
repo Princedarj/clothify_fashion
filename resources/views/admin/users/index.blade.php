@@ -2,158 +2,201 @@
 
 @section('content')
 
-    <div class="flex justify-between items-center mb-6">
+<div class="space-y-8">
 
-        <!-- Left: Title -->
-      <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
-            <span>👥</span>
-            <span>{{ __('messages.users_management') }}</span>
-        </h2>
+    <!-- Header -->
+    <div class="relative rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-900 to-purple-900 p-8 shadow-2xl overflow-visible">
+        <div class="absolute top-0 right-0 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
 
-        <!-- Right: Language + Logout -->
-        <div class="flex items-center gap-3">
+        <div class="relative flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+            <div>
+                <p class="text-indigo-200 text-sm font-semibold uppercase tracking-widest mb-2">
+                    {{ __('messages.Admin Panel') }}
+                </p>
 
-            <!-- 🌐 Language -->
-            <div class="relative flex items-center">
+                <h2 class="text-4xl font-extrabold text-white flex items-center gap-3">
+                    👥 {{ __('messages.users_management') }}
+                </h2>
 
-                <button onclick="toggleLangDropdown()" 
-                    class="bg-gray-100 px-4 py-2 flex items-center rounded-lg shadow hover:bg-gray-200">
+                <p class="text-slate-300 mt-2">
+                    Manage registered customers and search users instantly
+                </p>
 
-                    <span class="flex items-center gap-2 leading-none">
-                        <span>🌐</span>
-                        <span>{{ __('messages.language') }}</span>
-                    </span>
-
-                </button>
-
-                <div id="langDropdown" 
-                    class="hidden absolute right-0 mt-2 bg-white shadow-lg rounded-lg w-32 z-50">
-
-                    <a href="{{ route('lang.switch', 'en') }}" 
-                    class="block px-4 py-2 hover:bg-gray-100">English</a>
-
-                    <a href="{{ route('lang.switch', 'hi') }}" 
-                    class="block px-4 py-2 hover:bg-gray-100">हिंदी</a>
-
-                    <a href="{{ route('lang.switch', 'gu') }}" 
-                    class="block px-4 py-2 hover:bg-gray-100">ગુજરાતી</a>
-                </div>
+                <p class="text-slate-300 mt-2">
+                    Total Users: {{ $totalUsers }}
+                </p>
 
             </div>
 
-            <!--  Logout -->
-            <form method="POST" action="{{ route('logout') }}" class="inline-flex items-center">
-                @csrf
-                <button type="submit"
-                    class="bg-red-500 text-white px-4 py-2 flex items-center rounded-lg hover:bg-red-600 leading-none">
+            <div class="flex items-center gap-3">
 
-                    <span class="flex items-center gap-2">
-                        <span>{{ __('messages.logout') }}</span>
-                    </span>
+                <!-- Language -->
+                <div class="relative">
+                    <button onclick="toggleLangDropdown()"
+                        class="bg-white/15 backdrop-blur-md border border-white/20 text-white px-5 py-3 rounded-2xl shadow-lg flex items-center gap-2 hover:bg-white/25 transition">
+                        🌐 {{ __('messages.language') }}
+                    </button>
 
-                </button>
-            </form>
+                    <div id="langDropdown"
+                        class="hidden absolute right-0 mt-3 bg-white shadow-2xl rounded-2xl w-40 z-[999] border overflow-hidden">
 
+                        <a href="{{ route('lang.switch', 'en') }}" class="block px-5 py-3 hover:bg-indigo-50 text-gray-700">
+                            English
+                        </a>
+
+                        <a href="{{ route('lang.switch', 'hi') }}" class="block px-5 py-3 hover:bg-indigo-50 text-gray-700">
+                            हिंदी
+                        </a>
+
+                        <a href="{{ route('lang.switch', 'gu') }}" class="block px-5 py-3 hover:bg-indigo-50 text-gray-700">
+                            ગુજરાતી
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Logout -->
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit"
+                        class="bg-red-500/90 text-white px-5 py-3 rounded-2xl shadow-lg hover:bg-red-600 transition font-semibold">
+                        {{ __('messages.logout') }}
+                    </button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Card -->
+    <div class="bg-white rounded-3xl shadow-xl border p-8">
+
+        <form id="userSearchForm" class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+
+        <!-- Search Type -->
+        <select name="search_type"
+            class="border border-gray-200 bg-gray-50 px-5 py-3 rounded-2xl">
+
+            <option value="">Search By</option>
+
+            <option value="id" {{ request('search_type') == 'id' ? 'selected' : '' }}>
+                User ID
+            </option>
+
+            <option value="name" {{ request('search_type') == 'name' ? 'selected' : '' }}>
+                Name
+            </option>
+
+            <option value="email" {{ request('search_type') == 'email' ? 'selected' : '' }}>
+                Email
+            </option>
+
+            <option value="phone" {{ request('search_type') == 'phone' ? 'selected' : '' }}>
+                Phone
+            </option>
+
+            <option value="city" {{ request('search_type') == 'city' ? 'selected' : '' }}>
+                City
+            </option>
+
+        </select>
+
+
+        <!-- Search Input -->
+        <input type="text"
+            name="search"
+            value="{{ request('search') }}"
+            placeholder="Enter search value..."
+            class="md:col-span-2 border border-gray-200 bg-gray-50 px-5 py-3 rounded-2xl">
+
+
+        <!-- Order Filter -->
+        <select name="min_orders"
+            class="border border-gray-200 bg-gray-50 px-5 py-3 rounded-2xl">
+
+            <option value="">All Order Count</option>
+
+            <option value="1">1+ Orders</option>
+            <option value="5">5+ Orders</option>
+            <option value="10">10+ Orders</option>
+            <option value="20">20+ Orders</option>
+
+        </select>
+
+    </form>
+
+        <div id="usersTableWrapper">
+            @include('admin.users.partials.table')
         </div>
 
     </div>
 
-<div class="bg-blue-500 text-white p-6 rounded shadow mb-6">
-    <h3 class="text-lg">{{ __('messages.total_users') }}</h3>
-    <p class="text-3xl font-bold">{{ $totalUsers }}</p>
 </div>
 
-<div class="bg-white p-6 rounded shadow">
-    <div class="overflow-x-auto">
-        <table class="w-full border-collapse">
-            <thead>
-                <tr class="bg-gray-100 text-left">
-                    <th class="p-3">{{ __('messages.user_id') }}</th>
-                    <th class="p-3">{{ __('messages.name') }}</th>
-                    <th class="p-3">{{ __('messages.email') }}</th>
-                    <th class="p-3">{{ __('messages.phone') }}</th>
-                    <th class="p-3">{{ __('messages.city') }}</th>
-                    <th class="p-3">{{ __('messages.total_orders') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($users as $user)
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="p-3">{{ $user->id }}</td>
-                        <td class="p-3">{{ $user->name }}</td>
-                        <td class="p-3">{{ $user->email }}</td>
-                        <td class="p-3">{{ $user->phone ?? 'N/A' }}</td>
-                        <td class="p-3">{{ $user->city ?? 'N/A' }}</td>
-                        <td class="p-3 font-bold">
-                            {{ $user->orders_count }}
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="6" class="p-3 text-center text-gray-500">
-                            No users found
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
-</div>
-
-@if ($users->lastPage() > 1)
-
-<div class="flex justify-center items-center gap-4 mt-6">
-
-    <div class="flex gap-2">
-
-        {{-- Prev --}}
-        @if ($users->onFirstPage())
-            <span class="px-3 py-1 bg-gray-200 rounded">Prev</span>
-        @else
-            <a href="{{ $users->previousPageUrl() }}" class="px-3 py-1 bg-gray-300 rounded">Prev</a>
-        @endif
-
-        {{-- Left dots --}}
-        @if ($users->currentPage() > 2)
-            <span>...</span>
-        @endif
-
-        {{-- Pages --}}
-        @for ($i = max(1, $users->currentPage()); $i <= min($users->lastPage(), $users->currentPage() + 2); $i++)
-            @if ($i == $users->currentPage())
-                <span class="px-3 py-1 bg-blue-500 text-white rounded">{{ $i }}</span>
-            @else
-                <a href="{{ $users->url($i) }}" class="px-3 py-1 bg-gray-300 rounded">{{ $i }}</a>
-            @endif
-        @endfor
-
-        {{-- Right dots --}}
-        @if ($users->currentPage() + 2 < $users->lastPage())
-            <span>...</span>
-        @endif
-
-        {{-- Next --}}
-        @if ($users->hasMorePages())
-            <a href="{{ $users->nextPageUrl() }}" class="px-3 py-1 bg-gray-300 rounded">Next</a>
-        @else
-            <span class="px-3 py-1 bg-gray-200 rounded">Next</span>
-        @endif
-
-    </div>
-
-    {{-- Go to page --}}
-    <form method="GET" action="{{ url()->current() }}" class="flex gap-2">
-        <input type="number" name="page" min="1" max="{{ $users->lastPage() }}" class="border px-2 py-1 rounded w-20">
-        <button class="px-2 py-1 bg-blue-500 text-white rounded">Go</button>
-    </form>
-
-</div>
-
-@endif
 
 <script>
 function toggleLangDropdown() {
     document.getElementById('langDropdown').classList.toggle('hidden');
 }
+
+const userSearchForm = document.getElementById('userSearchForm');
+
+if (userSearchForm) {
+    const searchInput = userSearchForm.querySelector('input[name="search"]');
+    const minOrdersSelect = userSearchForm.querySelector('select[name="min_orders"]');
+
+    let typingTimer;
+
+    searchInput.addEventListener('keyup', function () {
+        clearTimeout(typingTimer);
+
+        typingTimer = setTimeout(function () {
+            fetchUsers();
+        }, 350);
+    });
+
+    minOrdersSelect.addEventListener('change', function () {
+        fetchUsers();
+    });
+
+    function fetchUsers(pageUrl = null) {
+        const formData = new FormData(userSearchForm);
+        const params = new URLSearchParams(formData).toString();
+
+        let url = pageUrl ?? "{{ route('admin.users.index') }}?" + params;
+
+        fetch(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('usersTableWrapper').innerHTML = data;
+
+            if (!pageUrl) {
+                window.history.pushState({}, '', "{{ route('admin.users.index') }}?" + params);
+            } else {
+                window.history.pushState({}, '', pageUrl);
+            }
+        })
+        .catch(error => console.log(error));
+    }
+
+    document.addEventListener('click', function (e) {
+        const link = e.target.closest('.ajax-pagination a');
+
+        if (link) {
+            e.preventDefault();
+            fetchUsers(link.getAttribute('href'));
+        }
+    });
+
+    const searchType = userSearchForm.querySelector('select[name="search_type"]');
+
+    searchType.addEventListener('change', function () {
+        fetchUsers();
+    });
+}
 </script>
+
 @endsection

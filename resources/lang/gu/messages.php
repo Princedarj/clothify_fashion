@@ -303,4 +303,9 @@ return [
 
     'payment' => 'ચુકવણી',
 
+    'failed' => 'નિષ્ફળ',
+
+    'Manage, filter, export, and view customer orders' => 'ગ્રાહક ઓર્ડર મેનેજ કરો, ફિલ્ટર કરો, નિકાસ કરો અને જુઓ',
+
+    'All Payment' => 'બધી ચુકવણી',
 ];

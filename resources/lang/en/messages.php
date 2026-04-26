@@ -48,7 +48,7 @@ return [
     'delete_product_confirm' => 'Are you sure you want to delete this product?',
     'no_products' => 'No products found.',
     'invoice' => 'Invoice',
-    'paid' => 'PAID',
+    'paid' => 'Paid',
     'invoice_no' => 'Invoice No',
     'billing_to' => 'Billing To',
     'product' => 'Product',
@@ -295,5 +295,11 @@ return [
     'id' =>  'ID',
     
     'payment' =>  'Payment',
+
+    'failed' => 'Failed',
+
+    'Manage, filter, export, and view customer orders' => 'Manage, filter, export, and view customer orders',
+
+    'All Payment' => 'All Payment',
 
     ];

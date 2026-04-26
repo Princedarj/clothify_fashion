@@ -78,44 +78,70 @@
 </div>
 
 <!-- Pagination same style -->
-<div class="mt-6 flex justify-center ajax-pagination">
+<!-- Pagination premium style -->
+<div class="mt-8 flex justify-center ajax-pagination">
+
     @if ($products->lastPage() > 1)
 
-        <div class="flex gap-4 items-center mt-6">
+        <div class="flex flex-col lg:flex-row justify-center items-center gap-5">
 
-            <div class="flex gap-2">
+            <div class="flex flex-wrap justify-center gap-2">
 
+                {{-- Prev --}}
                 @if ($products->onFirstPage())
-                    <span class="px-3 py-1 bg-gray-200 rounded">Prev</span>
+                    <span class="px-4 py-2 bg-gray-100 text-gray-400 rounded-xl font-semibold">
+                        Prev
+                    </span>
                 @else
-                    <a href="{{ $products->previousPageUrl() }}" class="px-3 py-1 bg-gray-300 rounded">Prev</a>
+                    <a href="{{ $products->previousPageUrl() }}"
+                       class="px-4 py-2 bg-gray-200 text-gray-700 rounded-xl hover:bg-indigo-600 hover:text-white transition font-semibold">
+                        Prev
+                    </a>
                 @endif
 
+                {{-- Left dots --}}
                 @if ($products->currentPage() > 2)
-                    <span>...</span>
+                    <span class="px-3 py-2 text-gray-400">...</span>
                 @endif
 
+                {{-- Pages --}}
                 @for ($i = max(1, $products->currentPage()); $i <= min($products->lastPage(), $products->currentPage() + 2); $i++)
+
                     @if ($i == $products->currentPage())
-                        <span class="px-3 py-1 bg-blue-500 text-white rounded">{{ $i }}</span>
+                        <span class="px-4 py-2 bg-indigo-600 text-white rounded-xl font-bold shadow">
+                            {{ $i }}
+                        </span>
                     @else
-                        <a href="{{ $products->url($i) }}" class="px-3 py-1 bg-gray-300 rounded">{{ $i }}</a>
+                        <a href="{{ $products->url($i) }}"
+                           class="px-4 py-2 bg-gray-200 text-gray-700 rounded-xl hover:bg-indigo-600 hover:text-white transition font-semibold">
+                            {{ $i }}
+                        </a>
                     @endif
+
                 @endfor
 
+                {{-- Right dots --}}
                 @if ($products->currentPage() + 2 < $products->lastPage())
-                    <span>...</span>
+                    <span class="px-3 py-2 text-gray-400">...</span>
                 @endif
 
+                {{-- Next --}}
                 @if ($products->hasMorePages())
-                    <a href="{{ $products->nextPageUrl() }}" class="px-3 py-1 bg-gray-300 rounded">Next</a>
+                    <a href="{{ $products->nextPageUrl() }}"
+                       class="px-4 py-2 bg-gray-200 text-gray-700 rounded-xl hover:bg-indigo-600 hover:text-white transition font-semibold">
+                        Next
+                    </a>
                 @else
-                    <span class="px-3 py-1 bg-gray-200 rounded">Next</span>
+                    <span class="px-4 py-2 bg-gray-100 text-gray-400 rounded-xl font-semibold">
+                        Next
+                    </span>
                 @endif
 
             </div>
 
+            <!-- Go to Page -->
             <form method="GET" action="{{ url()->current() }}" class="flex gap-2">
+
                 <input type="hidden" name="search" value="{{ request('search') }}">
                 <input type="hidden" name="category" value="{{ request('category') }}">
 
@@ -124,12 +150,17 @@
                        min="1"
                        max="{{ $products->lastPage() }}"
                        placeholder="Page"
-                       class="border px-2 py-1 rounded w-20">
+                       class="border border-gray-200 bg-gray-50 px-3 py-2 rounded-xl w-24 focus:ring-2 focus:ring-indigo-500 outline-none">
 
-                <button class="px-2 py-1 bg-blue-500 text-white rounded">Go</button>
+                <button type="submit"
+                        class="px-4 py-2 bg-slate-900 text-white rounded-xl hover:bg-indigo-700 transition font-semibold">
+                    Go
+                </button>
+
             </form>
 
         </div>
 
     @endif
+
 </div>
