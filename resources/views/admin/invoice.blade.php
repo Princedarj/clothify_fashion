@@ -1,222 +1,433 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>{{ __('messages.invoice') }}</title>
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset="utf-8">
+    <title>{{ __('messages.invoice') }}</title>
 
-<style>
-    body {
-        font-family: DejaVu Sans, sans-serif;
-        background: #f4f6f9;
-        padding: 20px;
-        color: #333;
-    }
+    <style>
+        body {
+            font-family: DejaVu Sans, sans-serif;
+            background: #eef1f5;
+            padding: 22px;
+            color: #1f2937;
+        }
 
-    .invoice-box {
-        max-width: 900px;
-        margin: auto;
-        background: #fff;
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-        position: relative;
-    }
+        .invoice-box {
+            max-width: 900px;
+            margin: auto;
+            background: #ffffff;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+            position: relative;
+        }
 
-    /* Watermark */
-    .watermark {
-        position: absolute;
-        top: 40%;
-        left: 25%;
-        font-size: 80px;
-        color: rgba(0, 200, 0, 0.1);
-        transform: rotate(-30deg);
-        font-weight: bold;
-        z-index: 0;
-    }
+        .watermark {
+            position: absolute;
+            top: 42%;
+            left: 18%;
+            font-size: 95px;
+            color: rgba(34, 197, 94, 0.10);
+            transform: rotate(-30deg);
+            font-weight: bold;
+            z-index: 0;
+        }
 
-    /* Header */
-    .header {
-        display: flex;
-        justify-content: space-between;
-        border-bottom: 2px solid #eee;
-        padding-bottom: 15px;
-        margin-bottom: 20px;
-    }
+        .brand-watermark {
+            position: absolute;
+            top: 235px;
+            left: 60px;
+            font-size: 78px;
+            font-weight: bold;
+            letter-spacing: 6px;
+            color: rgba(17,24,39,0.035);
+            z-index: 0;
+        }
 
-    .logo {
-        width: 120px;
-        margin-bottom: 10px;
-        border-radius: 70px;
+        .top-header {
+            background: #111827;
+            color: #ffffff;
+            padding: 30px;
+            position: relative;
+        }
 
-    }
+        .top-header::after {
+            content: "";
+            position: absolute;
+            right: -80px;
+            top: -80px;
+            width: 230px;
+            height: 230px;
+            background: #4f46e5;
+            border-radius: 50%;
+            opacity: 0.35;
+        }
 
-    .invoice-details h2 {
-        margin: 0;
-        color: #4f46e5;
-    }
+        .header-table {
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
 
-    .invoice-details p {
-        margin: 4px 0;
-        font-size: 14px;
-    }
+        .logo {
+            width: 82px;
+            height: 82px;
+            border-radius: 50%;
+            background: #ffffff;
+            padding: 6px;
+        }
 
-    /* Sections */
-    .section {
-        margin-bottom: 25px;
-    }
+        .brand-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 0;
+            letter-spacing: 1px;
+        }
 
-    .section h3 {
-        margin-bottom: 8px;
-        color: #111827;
-    }
+        .brand-subtitle {
+            margin: 5px 0 0;
+            font-size: 13px;
+            color: #d1d5db;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
 
-    /* Table */
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
+        .invoice-title {
+            font-size: 38px;
+            font-weight: bold;
+            margin: 0;
+            text-align: right;
+        }
 
-    table thead {
-        background: #4f46e5;
-        color: #fff;
-    }
+        .invoice-number {
+            margin-top: 6px;
+            color: #d1d5db;
+            font-size: 14px;
+            text-align: right;
+        }
 
-    table th, table td {
-        padding: 12px;
-        border-bottom: 1px solid #eee;
-        font-size: 14px;
-    }
+        .content {
+            padding: 30px;
+            position: relative;
+            z-index: 1;
+        }
 
-    table th {
-        text-align: left;
-    }
+        .info-table {
+            width: 100%;
+            margin-bottom: 25px;
+        }
 
-    .text-right {
-        text-align: right;
-    }
+        .info-card {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 18px;
+            vertical-align: top;
+        }
 
-    /* Totals */
-    .totals {
-        width: 40%;
-        float: right;
-        margin-top: 20px;
-    }
+        .info-card h3 {
+            margin: 0 0 10px;
+            color: #111827;
+            font-size: 16px;
+        }
 
-    .totals td {
-        padding: 10px;
-    }
+        .info-card p {
+            margin: 0;
+            color: #4b5563;
+            font-size: 13px;
+            line-height: 1.7;
+        }
 
-    .totals tr {
-        border-bottom: 1px solid #eee;
-    }
+        .meta-table {
+            width: 100%;
+            margin-bottom: 28px;
+            border-spacing: 10px;
+            border-collapse: separate;
+        }
 
-    .grand-total {
-        font-weight: bold;
-        font-size: 18px;
-        background: #f9fafb;
-    }
+        .meta-box {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 14px;
+        }
 
-    /* Footer */
-    .footer {
-        margin-top: 40px;
-        text-align: center;
-        font-size: 13px;
-        color: #666;
-        border-top: 1px solid #eee;
-        padding-top: 15px;
-    }
+        .meta-label {
+            font-size: 11px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
 
-</style>
-</head>
+        .meta-value {
+            font-size: 15px;
+            font-weight: bold;
+            color: #111827;
+        }
 
-<body>
+        .status-paid {
+            color: #059669;
+        }
 
-<div class="invoice-box">
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            overflow: hidden;
+        }
 
-@if($order->status == 'Delivered')
-<div class="watermark">{{ __('messages.paid') }}</div>
-@endif
+        .items-table thead {
+            background: #111827;
+            color: #ffffff;
+        }
 
-<!-- Header -->
-<div class="header">
-    <div>
-        <img src="{{ public_path('uploads/Image/clothify.png') }}" class="logo">
-        <p>
-            <strong>Clothify Fashions</strong><br>
-            123 Fashion Street<br>
-            Mumbai, India<br>
-            support@clothify.com
-        </p>
+        .items-table th {
+            padding: 13px;
+            font-size: 13px;
+            text-align: left;
+        }
+
+        .items-table td {
+            padding: 13px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 13px;
+            color: #374151;
+        }
+
+        .items-table tbody tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .product-name {
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .summary-wrap {
+            width: 100%;
+            margin-top: 25px;
+        }
+
+        .summary-table {
+            width: 340px;
+            float: right;
+            border-collapse: collapse;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .summary-table td {
+            padding: 12px 15px;
+            font-size: 14px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .summary-label {
+            color: #4b5563;
+        }
+
+        .summary-value {
+            text-align: right;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .grand-row td {
+            background: #111827;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            border-bottom: none;
+        }
+
+        .note-box {
+            clear: both;
+            display: block;
+            margin-top: 160px;
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            color: #9a3412;
+            padding: 14px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .footer {
+            background: #111827;
+            color: #d1d5db;
+            text-align: center;
+            padding: 20px;
+            font-size: 13px;
+        }
+
+        .footer small {
+            display: block;
+            margin-top: 6px;
+            color: #9ca3af;
+        }
+    </style>
+    </head>
+
+    <body>
+
+    <div class="invoice-box">
+
+    @if($order->status == 'Delivered')
+        <div class="watermark">{{ __('messages.paid') }}</div>
+    @endif
+
+    <div class="brand-watermark">CLOTHIFY</div>
+
+    <!-- Header -->
+    <div class="top-header">
+        <table class="header-table">
+            <tr>
+                <td width="70">
+                    <img src="{{ public_path('uploads/Image/clothify.png') }}" class="logo">
+                </td>
+                <td>
+                    <h1 class="brand-title">Clothify Fashions</h1>
+                    <p class="brand-subtitle">Premium Men’s Fashion</p>
+                </td>
+                <td>
+                    <h2 class="invoice-title">{{ __('messages.invoice') }}</h2>
+                    <p class="invoice-number">
+                        INV-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}
+                    </p>
+                </td>
+            </tr>
+        </table>
     </div>
 
-    <div class="invoice-details">
-        <h2>{{ __('messages.invoice') }}</h2>
-        <p><strong>{{ __('messages.invoice_no') }}:</strong> INV-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</p>
-        <p><strong>{{ __('messages.date') }}:</strong> {{ $order->created_at->format('d M Y') }}</p>
-        <p><strong>{{ __('messages.status') }}:</strong> {{ __('messages.' . strtolower($order->status)) }}</p>
+    <div class="content">
+
+        <!-- From / Billing -->
+        <table class="info-table" cellpadding="0" cellspacing="0">
+            <tr>
+                <td width="48%" class="info-card">
+                    <h3>{{ __('messages.from') ?? 'From' }}</h3>
+                    <p>
+                        <strong>Clothify Fashions</strong><br>
+                        123 Fashion Street<br>
+                        Mumbai, India<br>
+                        support@clothify.com
+                    </p>
+                </td>
+
+                <td width="4%"></td>
+
+                <td width="48%" class="info-card">
+                    <h3>{{ __('messages.billing_to') }}</h3>
+                    <p>
+                        <strong>{{ $order->name }}</strong><br>
+                        {{ $order->address }}<br>
+                        {{ $order->email }}<br>
+                        {{ $order->phone }}
+                    </p>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Meta -->
+        <table class="meta-table">
+            <tr>
+                <td class="meta-box">
+                    <div class="meta-label">{{ __('messages.invoice_no') }}</div>
+                    <div class="meta-value">
+                        INV-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}
+                    </div>
+                </td>
+
+                <td class="meta-box">
+                    <div class="meta-label">{{ __('messages.date') }}</div>
+                    <div class="meta-value">
+                        {{ $order->created_at->format('d M Y') }}
+                    </div>
+                </td>
+
+                <td class="meta-box">
+                    <div class="meta-label">{{ __('messages.status') }}</div>
+                    <div class="meta-value status-paid">
+                        {{ __('messages.' . strtolower($order->status)) }}
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Products -->
+        <table class="items-table">
+            <thead>
+                <tr>
+                    <th>{{ __('messages.product') }}</th>
+                    <th class="text-right">{{ __('messages.price') }}</th>
+                    <th class="text-right">{{ __('messages.qty') }}</th>
+                    <th class="text-right">{{ __('messages.total') }}</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach($order->items as $item)
+                    <tr>
+                        <td class="product-name">{{ $item->product_name }}</td>
+                        <td class="text-right">₹{{ number_format($item->price, 2) }}</td>
+                        <td class="text-right">{{ $item->quantity }}</td>
+                        <td class="text-right">
+                            ₹{{ number_format($item->total, 2) }}
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        <!-- Summary -->
+        <div class="summary-wrap">
+            <table class="summary-table">
+                <tr>
+                    <td class="summary-label">{{ __('messages.subtotal') }}</td>
+                    <td class="summary-value">
+                        ₹{{ number_format($order->subtotal, 2) }}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="summary-label">{{ __('messages.gst') }} (18%)</td>
+                    <td class="summary-value">
+                        ₹{{ number_format($order->tax, 2) }}
+                    </td>
+                </tr>
+
+                <tr class="grand-row">
+                    <td>{{ __('messages.total_amount') }}</td>
+                    <td class="text-right">
+                        ₹{{ number_format($order->grand_total, 2) }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="note-box">
+            {{ __('messages.invoice_note') }}
+        </div>
+
     </div>
-</div>
 
-<!-- Billing Info -->
-<div class="section">
-    <h3>{{ __('messages.billing_to') }}</h3>
-    <p>
-        <strong>{{ $order->name }}</strong><br>
-        {{ $order->address }}<br>
-        {{ $order->email }}<br>
-        {{ $order->phone }}
-    </p>
-</div>
+    <!-- Footer -->
+    <div class="footer">
+        {{ __('messages.thank_you') }} <strong>Clothify Fashions</strong> ❤️
+        <small>© {{ date('Y') }} Clothify Fashions. {{ __('messages.All Rights Reserved') }}</small>
+    </div>
 
-<!-- Products -->
-<div class="section">
-    <table>
-        <thead>
-            <tr>
-                <th>{{ __('messages.product') }}</th>
-                <th class="text-right">{{ __('messages.price') }}</th>
-                <th class="text-right">{{ __('messages.qty') }}</th>
-                <th class="text-right">{{ __('messages.total') }}</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($order->items as $item)
-            <tr>
-                <td>{{ $item->product_name }}</td>
-                <td class="text-right">₹{{ number_format($item->price, 2) }}</td>
-                <td class="text-right">{{ $item->quantity }}</td>
-                <td class="text-right">₹{{ number_format($item->total, 2) }}</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
+    </div>
 
-<!-- Totals -->
-<table class="totals">
-    <tr>
-        <td>{{ __('messages.subtotal') }}:</td>
-        <td class="text-right">₹{{ number_format($order->subtotal, 2) }}</td>
-    </tr>
-    <tr>
-        <td>{{ __('messages.gst') }} (18%):</td>
-        <td class="text-right">₹{{ number_format($order->tax, 2) }}</td>
-    </tr>
-    <tr class="grand-total">
-        <td>{{ __('messages.total_amount') }}:</td>
-        <td class="text-right">₹{{ number_format($order->grand_total, 2) }}</td>
-    </tr>
-</table>
-
-<div style="clear: both;"></div>
-
-<!-- Footer -->
-<div class="footer">
-    {{ __('messages.thank_you') }} <strong>Clothify Fashions</strong> ❤️ <br>
-    {{ __('messages.invoice_note') }}
-</div>
-
-</div>
-
-</body>
-</html>
+    </body>
+    </html>

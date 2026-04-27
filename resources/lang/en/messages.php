@@ -291,10 +291,10 @@ return [
     'image' => 'Image',
 
     'products_management' => 'Products Management',
-    
-    'id' =>  'ID',
-    
-    'payment' =>  'Payment',
+
+    'id' => 'ID',
+
+    'payment' => 'Payment',
 
     'failed' => 'Failed',
 
@@ -302,4 +302,122 @@ return [
 
     'All Payment' => 'All Payment',
 
-    ];
+    'account_center' => 'Account Center',
+    // 'profile_settings' => 'Profile Settings',
+    'profile_settings_desc' => 'Manage your personal details, password, and account security.',
+    'profile_overview' => 'Profile Overview',
+    // 'name' => 'Name',
+    // 'email' => 'Email',
+    'account' => 'Account',
+    'active' => 'Active',
+    'security_tip' => 'Security Tip',
+    'security_tip_desc' => 'Keep your password strong and update it regularly to protect your shopping account.',
+    // 'update_profile' => 'Update Profile',
+    'update_profile_desc' => 'Edit your name and email address.',
+    // 'update_password' => 'Update Password',
+    'update_password_desc' => 'Change your current password securely.',
+    // 'delete_account' => 'Delete Account',
+    // 'delete_account_desc' => 'Permanently remove your account and data.',
+
+    'premium_mens_fashion' => 'Premium Men’s Fashion',
+    'premium_fabric' => 'Premium Fabric',
+    'fast' => 'Fast',
+    'delivery' => 'Delivery',
+    'secure' => 'Secure',
+    // 'payment' => 'Payment',
+    'new_collection' => 'New Collection',
+    'new' => 'New',
+    'view_all_products' => 'View All Products',
+
+    'secure_checkout' => 'Secure Checkout',
+    'delivery_details' => 'Delivery Details',
+    'delivery_details_desc' => 'Enter your shipping information',
+    'safe_secure' => 'Safe & Secure',
+    'safe_secure_desc' => 'Your order details are protected. We provide secure checkout and reliable delivery.',
+    'why_shop_with_us' => 'Why shop with us?',
+    'fast_delivery' => 'Fast delivery',
+    'premium_mens_wear' => 'Premium men’s wear',
+    'easy_return_policy' => 'Easy return policy',
+
+    'find_your_style' => 'Find your perfect style',
+    'clear_filter' => 'Clear Filter',
+    'sort_by' => 'Sort By',
+    'no_category' => 'No Category',
+    'no_products_found' => 'No products found',
+    'try_different_filter' => 'Try a different category or price filter.',
+
+    'previous' => 'Previous',
+    'next' => 'Next',
+
+    'order_confirmed' => 'Order Confirmed',
+    'what_happens_next' => 'What happens next?',
+    'order_email_sent' => 'Confirmation Email',
+    'order_email_sent_desc' => 'Your order confirmation has been sent to your email.',
+    'order_packed' => 'Order Packing',
+    'order_packed_desc' => 'We will prepare your products carefully.',
+    'order_delivery' => 'Fast Delivery',
+    'order_delivery_desc' => 'Your order will be delivered as soon as possible.',
+
+    'payment_options' => 'Payment Options',
+    'payment_options_desc' => 'Choose your preferred payment method to complete your order.',
+    'scan_qr' => 'Scan QR',
+    'scan_qr_desc' => 'Scan using Google Pay / PhonePe / Paytm.',
+    'payment_completed' => 'Payment Completed',
+    'pay_using_upi' => 'Pay Using UPI ID',
+    'upi_id' => 'UPI ID',
+    'copy' => 'Copy',
+    'transaction_code' => 'Transaction Code',
+    'enter_transaction_code' => 'Enter transaction code',
+    'confirm_payment' => 'Confirm Payment',
+
+    'order_history' => 'Order History',
+    'order_history_desc' => 'Track all your purchases and download invoices anytime.',
+    // 'total_orders' => 'Total Orders',
+    'no_orders_desc' => 'You haven’t placed any orders yet.',
+    'start_shopping' => 'Start Shopping',
+    // 'total' => 'Total',
+
+    'shopping_cart' => 'Shopping Cart',
+    'cart_desc' => 'Review your selected items before checkout.',
+    'empty_cart_desc' => 'Looks like you have not added anything to your cart yet.',
+    'continue_shopping' => 'Continue Shopping',
+    // 'product' => 'Product',
+// 'price' => 'Price',
+    'quantity' => 'Quantity',
+    'order_summary' => 'Order Summary',
+
+    'forgot_password' => 'Forgot Password',
+
+    'forgot_current_password_hint' => 'If you forgot your current password, please logout and use Forgot Password on the login page.',
+
+    'account_deleted_successfully' => 'Your account has been deleted successfully.',
+
+    'support_center' => 'Support Center',
+'contact_desc' => 'We are here to help you with your orders, payments, and delivery questions.',
+'email_support' => 'Email Support',
+'call_us' => 'Call Us',
+'store_address' => 'Store Address',
+
+'help_center' => 'Help Center',
+'faq_desc' => 'Find quick answers to common questions.',
+'faq_q1' => 'How can I place an order?',
+'faq_a1' => 'Choose your product, add it to cart, and complete checkout.',
+'faq_q2' => 'Can I download my invoice?',
+'faq_a2' => 'Yes, you can download invoice from My Orders page.',
+'faq_q3' => 'Which payment methods are available?',
+'faq_a3' => 'You can pay using QR payment or UPI ID.',
+'faq_q4' => 'Can I change my language?',
+'faq_a4' => 'Yes, you can switch language from the navbar.',
+
+'shipping_desc' => 'We deliver your fashion products safely and quickly.',
+'shipping_point_1' => 'Orders are usually delivered within 3 to 7 working days.',
+'order_tracking' => 'Order Tracking',
+'shipping_point_2' => 'You can track your order status from My Orders page.',
+
+'customer_care' => 'Customer Care',
+'return_desc' => 'Simple and customer-friendly return policy.',
+'return_point_1' => 'You can request return for eligible products within the allowed return period.',
+'return_condition' => 'Return Condition',
+'return_point_2' => 'Product must be unused, undamaged, and in original packaging.',
+
+];

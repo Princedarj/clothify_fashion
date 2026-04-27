@@ -66,6 +66,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/payment/{id}', [OrderController::class, 'paymentPage'])->name('payment.page');
     Route::post('/payment/success/{id}', [OrderController::class, 'paymentSuccess'])->name('payment.success');
+
+    Route::view('/contact-us', 'pages.contact')->name('contact');
+    Route::view('/faqs', 'pages.faqs')->name('faqs');
+    Route::view('/shipping-policy', 'pages.shipping')->name('shipping.policy');
+    Route::view('/return-policy', 'pages.returns')->name('return.policy');
 });
 
 

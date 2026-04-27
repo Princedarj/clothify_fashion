@@ -1,70 +1,142 @@
 @extends('layouts.user')
 
 @section('content')
-<div class="max-w-3xl mx-auto py-12 px-4">
 
-    <div class="bg-white shadow-lg rounded-xl p-8">
-        <h2 class="text-3xl font-bold text-gray-900 mb-6">
-            {{ __('messages.Checkout') }} 🛒
-        </h2>
+<div class="min-h-screen bg-gray-100 dark:bg-gray-950 py-14 px-4 transition-colors">
+
+    <div class="max-w-5xl mx-auto">
+
+        <div class="mb-8 text-center">
+            <p class="text-sm uppercase tracking-[0.3em] text-gray-500 dark:text-gray-400 mb-2">
+                {{ __('messages.secure_checkout') }}
+            </p>
+            <h2 class="text-4xl font-extrabold text-gray-900 dark:text-white">
+                {{ __('messages.Checkout') }} 🛒
+            </h2>
+        </div>
 
         @if(session('success'))
-            <div class="bg-green-100 text-green-800 p-4 mb-6 rounded-lg border border-green-200">
+            <div class="mb-6 bg-green-100 dark:bg-green-950 text-green-800 dark:text-green-300 px-5 py-4 rounded-2xl border border-green-200 dark:border-green-800 shadow-sm">
                 {{ __(session('success')) }}
             </div>
         @endif
 
-        <form method="POST" action="{{ route('order.place') }}" class="space-y-5">
-            @csrf
+        <div class="grid lg:grid-cols-3 gap-8">
 
-            <!-- Name -->
-            <div>
-                <label class="block text-gray-700 font-medium mb-1">
-                    {{ __('messages.Full Name') }}
-                </label>
-                <input type="text" name="name" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" required>
+            {{-- Checkout Form --}}
+            <div class="lg:col-span-2 bg-white dark:bg-gray-900 rounded-[2rem] shadow-xl border border-gray-100 dark:border-gray-800 p-8">
+
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-12 h-12 rounded-full bg-black dark:bg-indigo-600 text-white flex items-center justify-center text-xl">
+                        📦
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">
+                            {{ __('messages.delivery_details') }}
+                        </h3>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                            {{ __('messages.delivery_details_desc') }}
+                        </p>
+                    </div>
+                </div>
+
+                <form method="POST" action="{{ route('order.place') }}" class="space-y-6">
+                    @csrf
+
+                    <div class="grid md:grid-cols-2 gap-5">
+
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+                                {{ __('messages.Full Name') }}
+                            </label>
+                            <input type="text" name="name" required
+                                value="{{ auth()->user()->name ?? '' }}"
+                                class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white rounded-2xl px-5 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+                                {{ __('messages.Email') }}
+                            </label>
+                            <input type="email" name="email" required
+                                value="{{ auth()->user()->email ?? '' }}"
+                                class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white rounded-2xl px-5 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+                                {{ __('messages.Phone') }}
+                            </label>
+                            <input type="text" name="phone" required
+                                class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white rounded-2xl px-5 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+                                {{ __('messages.Pincode') }}
+                            </label>
+                            <input type="text" name="pincode" required
+                                class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white rounded-2xl px-5 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                        </div>
+
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+                            {{ __('messages.Address') }}
+                        </label>
+                        <textarea name="address" rows="4" required
+                            class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white rounded-2xl px-5 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"></textarea>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full bg-black dark:bg-indigo-600 text-white py-4 rounded-2xl font-bold text-lg hover:bg-indigo-600 dark:hover:bg-indigo-700 hover:shadow-xl transition duration-300">
+                        {{ __('messages.Place Order') }} →
+                    </button>
+                </form>
             </div>
 
-            <!-- Email -->
-            <div>
-                <label class="block text-gray-700 font-medium mb-1">
-                    {{ __('messages.Email') }}
-                </label>
-                <input type="email" name="email" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" required>
+            {{-- Side Info --}}
+            <div class="space-y-5">
+
+                <div class="bg-black dark:bg-indigo-600 text-white rounded-[2rem] p-7 shadow-xl">
+                    <h3 class="text-xl font-bold mb-4">
+                        🛡️ {{ __('messages.safe_secure') }}
+                    </h3>
+                    <p class="text-gray-300 dark:text-indigo-100 text-sm leading-relaxed">
+                        {{ __('messages.safe_secure_desc') }}
+                    </p>
+                </div>
+
+                <div class="bg-white dark:bg-gray-900 rounded-[2rem] p-7 shadow-lg border border-gray-100 dark:border-gray-800">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-5">
+                        {{ __('messages.why_shop_with_us') }}
+                    </h3>
+
+                    <div class="space-y-4 text-sm text-gray-600 dark:text-gray-300">
+                        <div class="flex items-center gap-3">
+                            <span class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">🚚</span>
+                            <span>{{ __('messages.fast_delivery') }}</span>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <span class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">💎</span>
+                            <span>{{ __('messages.premium_mens_wear') }}</span>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <span class="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">🔁</span>
+                            <span>{{ __('messages.easy_return_policy') }}</span>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
-            <!-- Phone -->
-            <div>
-                <label class="block text-gray-700 font-medium mb-1">
-                    {{ __('messages.Phone') }}
-                </label>
-                <input type="text" name="phone" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" required>
-            </div>
+        </div>
 
-            <!-- Address -->
-            <div>
-                <label class="block text-gray-700 font-medium mb-1">
-                    {{ __('messages.Address') }}
-                </label>
-                <textarea name="address" rows="3" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" required></textarea>
-            </div>
-
-            <!-- Pincode -->
-            <div>
-                <label class="block text-gray-700 font-medium mb-1">
-                    {{ __('messages.Pincode') }}
-                </label>
-                <input type="text" name="pincode" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" required>
-            </div>
-
-            <!-- Submit Button -->
-            <div class="flex justify-end">
-                <button type="submit" class="bg-blue-700 hover:bg-blue-800 text-white font-semibold px-6 py-2 rounded-lg transition duration-200">
-                    {{ __('messages.Place Order') }}
-                </button>
-            </div>
-        </form>
     </div>
 
 </div>
+
 @endsection
