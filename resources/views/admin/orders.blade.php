@@ -247,12 +247,12 @@
                         {{-- Prev --}}
                         @if ($orders->onFirstPage())
                             <span class="px-4 py-2 bg-gray-100 text-gray-400 rounded-xl font-semibold">
-                                Prev
+                                {{__('messages.previous')}}
                             </span>
                         @else
                             <a href="{{ $orders->previousPageUrl() }}"
                                class="px-4 py-2 bg-gray-200 text-gray-700 rounded-xl hover:bg-indigo-600 hover:text-white transition font-semibold">
-                                Prev
+                                {{__('messages.previous')}}
                             </a>
                         @endif
 
@@ -286,11 +286,11 @@
                         @if ($orders->hasMorePages())
                             <a href="{{ $orders->nextPageUrl() }}"
                                class="px-4 py-2 bg-gray-200 text-gray-700 rounded-xl hover:bg-indigo-600 hover:text-white transition font-semibold">
-                                Next
+                                {{__('messages.next')}}
                             </a>
                         @else
                             <span class="px-4 py-2 bg-gray-100 text-gray-400 rounded-xl font-semibold">
-                                Next
+                                {{__('messages.next')}}
                             </span>
                         @endif
 
@@ -307,11 +307,11 @@
                                name="page"
                                min="1"
                                max="{{ $orders->lastPage() }}"
-                               placeholder="Page"
+                               placeholder="{{ __('messages.page') }}"
                                class="border border-gray-200 bg-gray-50 px-3 py-2 rounded-xl w-24 focus:ring-2 focus:ring-indigo-500 outline-none">
 
                         <button class="px-4 py-2 bg-slate-900 text-white rounded-xl hover:bg-indigo-700 transition font-semibold">
-                            Go
+                            {{__('messages.go')}}
                         </button>
 
                     </form>

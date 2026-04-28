@@ -19,11 +19,11 @@
                 </h2>
 
                 <p class="text-slate-300 mt-2">
-                    Manage registered customers and search users instantly
+                    {{ __('messages.manage_registered_users') }}
                 </p>
 
                 <p class="text-slate-300 mt-2">
-                    Total Users: {{ $totalUsers }}
+                    {{ __('messages.total_users') }}: {{ $totalUsers }}
                 </p>
 
             </div>
@@ -41,15 +41,15 @@
                         class="hidden absolute right-0 mt-3 bg-white shadow-2xl rounded-2xl w-40 z-[999] border overflow-hidden">
 
                         <a href="{{ route('lang.switch', 'en') }}" class="block px-5 py-3 hover:bg-indigo-50 text-gray-700">
-                            English
+                            {{ __('messages.english') }}
                         </a>
 
                         <a href="{{ route('lang.switch', 'hi') }}" class="block px-5 py-3 hover:bg-indigo-50 text-gray-700">
-                            हिंदी
+                            {{ __('messages.hindi') }}  
                         </a>
 
                         <a href="{{ route('lang.switch', 'gu') }}" class="block px-5 py-3 hover:bg-indigo-50 text-gray-700">
-                            ગુજરાતી
+                            {{ __('messages.gujarati') }}
                         </a>
                     </div>
                 </div>
@@ -76,27 +76,12 @@
         <select name="search_type"
             class="border border-gray-200 bg-gray-50 px-5 py-3 rounded-2xl">
 
-            <option value="">Search By</option>
-
-            <option value="id" {{ request('search_type') == 'id' ? 'selected' : '' }}>
-                User ID
-            </option>
-
-            <option value="name" {{ request('search_type') == 'name' ? 'selected' : '' }}>
-                Name
-            </option>
-
-            <option value="email" {{ request('search_type') == 'email' ? 'selected' : '' }}>
-                Email
-            </option>
-
-            <option value="phone" {{ request('search_type') == 'phone' ? 'selected' : '' }}>
-                Phone
-            </option>
-
-            <option value="city" {{ request('search_type') == 'city' ? 'selected' : '' }}>
-                City
-            </option>
+            <option value="">{{ __('messages.search_by') }}</option>
+            <option value="id">{{ __('messages.user_id') }}</option>
+            <option value="name">{{ __('messages.name') }}</option>
+            <option value="email">{{ __('messages.email') }}</option>
+            <option value="phone">{{ __('messages.phone') }}</option>
+            <option value="city">{{ __('messages.city') }}</option>
 
         </select>
 
@@ -105,7 +90,7 @@
         <input type="text"
             name="search"
             value="{{ request('search') }}"
-            placeholder="Enter search value..."
+            placeholder="{{ __('messages.enter_search_value') }}"
             class="md:col-span-2 border border-gray-200 bg-gray-50 px-5 py-3 rounded-2xl">
 
 
@@ -113,12 +98,11 @@
         <select name="min_orders"
             class="border border-gray-200 bg-gray-50 px-5 py-3 rounded-2xl">
 
-            <option value="">All Order Count</option>
-
-            <option value="1">1+ Orders</option>
-            <option value="5">5+ Orders</option>
-            <option value="10">10+ Orders</option>
-            <option value="20">20+ Orders</option>
+            <option value="">{{ __('messages.all_order_count') }}</option>
+            <option value="1">{{ __('messages.orders_1_plus') }}</option>
+            <option value="5">{{ __('messages.orders_5_plus') }}</option>
+            <option value="10">{{ __('messages.orders_10_plus') }}</option>
+            <option value="20">{{ __('messages.orders_20_plus') }}</option>
 
         </select>
 

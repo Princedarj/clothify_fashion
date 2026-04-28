@@ -19,7 +19,9 @@
                 </h2>
 
                 <p class="text-slate-300 mt-2">
-                    Update product details, category, price and image
+                    <p class="text-slate-300 mt-2">
+                        {{ __('messages.edit_product_subtitle') }}
+                    </p>
                 </p>
             </div>
         </div>
@@ -29,10 +31,11 @@
     <!-- Form Card -->
     <div class="max-w-4xl mx-auto bg-white rounded-3xl shadow-xl border p-8">
 
-        <form action="{{ route('admin.products.update', $product->id) }}"
-              method="POST"
-              enctype="multipart/form-data"
-              class="space-y-6">
+        <form id="productUpdateForm"
+            action="{{ route('admin.products.update', $product->id) }}"
+            method="POST"
+            enctype="multipart/form-data"
+            class="space-y-6">
 
             @csrf
             @method('PUT')
@@ -113,7 +116,9 @@
                                  class="h-40 w-40 object-contain rounded-xl">
                         </div>
                     @else
-                        <p class="text-gray-500 mb-4">No image uploaded</p>
+                        <p class="text-gray-500 mb-4">
+                            {{ __('messages.no_image_uploaded') }}
+                        </p>
                     @endif
 
                     <input type="file"
@@ -123,7 +128,7 @@
                 </div>
 
                 <p class="text-xs text-gray-500 mt-2">
-                    Upload new image only if you want to replace current image.
+                    {{ __('messages.replace_image_note') }}
                 </p>
             </div>
 
@@ -137,8 +142,12 @@
                 </a>
 
                 <button type="submit"
+                        id="updateBtn"
                         class="flex items-center justify-center px-6 py-3 bg-indigo-600 text-white rounded-2xl shadow-lg hover:bg-indigo-700 transition font-semibold">
-                    {{ __('messages.update_product') }}
+                    <span id="updateText">🔄 {{ __('messages.update_product') }}</span>
+                    <span id="updateLoader" class="hidden">
+                        ⏳ {{ __('messages.updating') ?? 'Updating...' }}
+                    </span>
                 </button>
 
             </div>
@@ -148,5 +157,19 @@
     </div>
 
 </div>
+
+<script>
+document.getElementById('productUpdateForm').addEventListener('submit', function () {
+    const btn = document.getElementById('updateBtn');
+    const text = document.getElementById('updateText');
+    const loader = document.getElementById('updateLoader');
+
+    btn.disabled = true;
+    btn.classList.add('opacity-70', 'cursor-not-allowed');
+
+    text.classList.add('hidden');
+    loader.classList.remove('hidden');
+});
+</script>
 
 @endsection

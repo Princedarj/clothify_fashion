@@ -18,7 +18,7 @@
             </h2>
 
             <p class="text-slate-300 mt-2">
-                Create a new product category
+                {{ __('messages.create_category_subtitle') }}
             </p>
         </div>
     </div>
@@ -37,7 +37,7 @@
 
                 <input type="text"
                        name="name"
-                       placeholder="Enter category name"
+                       placeholder="{{ __('messages.enter_category_name') }}"   
                        required
                        class="w-full border border-gray-200 bg-gray-50 px-5 py-3 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
             </div>

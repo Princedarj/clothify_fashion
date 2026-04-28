@@ -19,14 +19,9 @@
                 </h2>
 
                 <p class="text-slate-300 mt-2">
-                    Create a new admin account
+                    {{ __('messages.create_admin_subtitle') }}
                 </p>
             </div>
-
-            <a href="{{ route('admin.profile') }}"
-               class="bg-white text-indigo-700 px-5 py-3 rounded-2xl shadow-lg hover:bg-indigo-50 transition font-bold">
-                ← {{ __('messages.back') }}
-            </a>
         </div>
     </div>
 

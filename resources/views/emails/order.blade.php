@@ -72,7 +72,7 @@
                                     @foreach($order->items as $item)
                                         <tr style="border-bottom:1px solid #eee;">
                                             <td>
-                                                {{ $item->product_name ?? 'Unknown Product' }}
+                                                {{ {{ $product->getName() }} ?? 'Unknown Product' }}
                                             </td>
                                             <td align="center">
                                                 {{ $item->quantity }}

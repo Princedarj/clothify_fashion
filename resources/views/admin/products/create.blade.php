@@ -18,7 +18,7 @@
             </h2>
 
             <p class="text-slate-300 mt-2">
-                Add a new product to your store
+                {{ __('messages.add_product_subtitle') }}
             </p>
         </div>
     </div>
@@ -48,12 +48,12 @@
             <!-- Product Name -->
             <div>
                 <label class="block mb-2 font-bold text-gray-700">
-                    Product Name
+                    {{ __('messages.product_name') }}
                 </label>
 
                 <input type="text"
                        name="name"
-                       placeholder="Enter product name"
+                       placeholder="{{ __('messages.enter_product_name') }}"
                        required
                        class="w-full border border-gray-200 bg-gray-50 px-5 py-3 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
             </div>
@@ -90,7 +90,7 @@
                     </label>
 
                     <input type="number"
-                           name="price"
+                           placeholder="{{ __('messages.enter_price') }}"
                            required
                            placeholder="Enter price"
                            class="w-full border border-gray-200 bg-gray-50 px-5 py-3 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
@@ -102,13 +102,13 @@
             <!-- Description -->
             <div>
                 <label class="block mb-2 font-bold text-gray-700">
-                    Description
+                    {{ __('messages.description') }}
                 </label>
 
                 <textarea name="description"
                           rows="5"
                           required
-                          placeholder="Write product description..."
+                          placeholder="{{ __('messages.write_product_description') }}"
                           class="w-full border border-gray-200 bg-gray-50 px-5 py-3 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"></textarea>
             </div>
 

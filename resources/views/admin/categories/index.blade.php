@@ -21,7 +21,7 @@
                 </h2>
 
                 <p class="text-slate-300 mt-2">
-                    Total Categories: {{ $categories->total() }}
+                    {{ __('messages.total_categories') }}: {{ $categories->total() }}
                 </p>
             </div>
 
@@ -46,17 +46,17 @@
 
                         <a href="{{ route('lang.switch', 'en') }}"
                            class="block px-5 py-3 hover:bg-indigo-50 text-gray-700">
-                            English
+                            {{ __('messages.english') }}
                         </a>
 
                         <a href="{{ route('lang.switch', 'hi') }}"
                            class="block px-5 py-3 hover:bg-indigo-50 text-gray-700">
-                            हिंदी
+                            {{ __('messages.hindi') }}
                         </a>
 
                         <a href="{{ route('lang.switch', 'gu') }}"
                            class="block px-5 py-3 hover:bg-indigo-50 text-gray-700">
-                            ગુજરાતી
+                            {{ __('messages.gujarati') }}
                         </a>
                     </div>
                 </div>
@@ -110,7 +110,7 @@
                             <td class="p-5">
                                 <div class="flex items-center gap-3">
                                     <div class="w-10 h-10 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white flex items-center justify-center font-bold">
-                                        {{ strtoupper(substr($category->getName(), 0, 1)) }}
+                                        {{ mb_strtoupper(mb_substr($category->getName(), 0, 1, 'UTF-8'), 'UTF-8') }}
                                     </div>
 
                                     <span class="font-semibold text-gray-700">
@@ -145,7 +145,7 @@
                     @empty
                         <tr>
                             <td colspan="4" class="p-10 text-center text-gray-500">
-                                No categories found
+                                {{ __('messages.no_categories_found') }}
                             </td>
                         </tr>
                     @endforelse
@@ -166,12 +166,12 @@
                     {{-- Prev --}}
                     @if ($categories->onFirstPage())
                         <span class="px-4 py-2 bg-gray-100 text-gray-400 rounded-xl font-semibold">
-                            Prev
+                            {{ __('messages.previous') }}
                         </span>
                     @else
                         <a href="{{ $categories->previousPageUrl() }}"
                            class="px-4 py-2 bg-gray-200 text-gray-700 rounded-xl hover:bg-indigo-600 hover:text-white transition font-semibold">
-                            Prev
+                            {{ __('messages.previous') }}
                         </a>
                     @endif
 
@@ -205,11 +205,11 @@
                     @if ($categories->hasMorePages())
                         <a href="{{ $categories->nextPageUrl() }}"
                            class="px-4 py-2 bg-gray-200 text-gray-700 rounded-xl hover:bg-indigo-600 hover:text-white transition font-semibold">
-                            Next
+                            {{ __('messages.next') }}
                         </a>
                     @else
                         <span class="px-4 py-2 bg-gray-100 text-gray-400 rounded-xl font-semibold">
-                            Next
+                            {{ __('messages.next') }}
                         </span>
                     @endif
 
@@ -221,12 +221,12 @@
                            name="page"
                            min="1"
                            max="{{ $categories->lastPage() }}"
-                           placeholder="Page"
+                           placeholder="{{ __('messages.page') }}"
                            class="border border-gray-200 bg-gray-50 px-3 py-2 rounded-xl w-24 focus:ring-2 focus:ring-indigo-500 outline-none">
 
                     <button type="submit"
                             class="px-4 py-2 bg-slate-900 text-white rounded-xl hover:bg-indigo-700 transition font-semibold">
-                        Go
+                        {{ __('messages.go') }}
                     </button>
                 </form>
 

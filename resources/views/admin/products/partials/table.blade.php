@@ -29,7 +29,7 @@
                             <img src="{{ asset('storage/' . $product->image) }}"
                                  class="w-14 h-14 object-cover rounded-lg border hover:scale-110 transition">
                         @else
-                            <span class="text-gray-400 text-xs">No Image</span>
+                            <span class="text-gray-400 text-xs">{{ __('messages.no image') }}</span>
                         @endif
                     </td>
 
@@ -77,7 +77,6 @@
     </table>
 </div>
 
-<!-- Pagination same style -->
 <!-- Pagination premium style -->
 <div class="mt-8 flex justify-center ajax-pagination">
 
@@ -90,12 +89,12 @@
                 {{-- Prev --}}
                 @if ($products->onFirstPage())
                     <span class="px-4 py-2 bg-gray-100 text-gray-400 rounded-xl font-semibold">
-                        Prev
+                        {{ __('messages.previous') }}
                     </span>
                 @else
                     <a href="{{ $products->previousPageUrl() }}"
                        class="px-4 py-2 bg-gray-200 text-gray-700 rounded-xl hover:bg-indigo-600 hover:text-white transition font-semibold">
-                        Prev
+                        {{ __('messages.previous') }}
                     </a>
                 @endif
 
@@ -129,11 +128,11 @@
                 @if ($products->hasMorePages())
                     <a href="{{ $products->nextPageUrl() }}"
                        class="px-4 py-2 bg-gray-200 text-gray-700 rounded-xl hover:bg-indigo-600 hover:text-white transition font-semibold">
-                        Next
+                        {{ __('messages.next') }}
                     </a>
                 @else
                     <span class="px-4 py-2 bg-gray-100 text-gray-400 rounded-xl font-semibold">
-                        Next
+                        {{ __('messages.next') }}
                     </span>
                 @endif
 
@@ -146,7 +145,7 @@
                 <input type="hidden" name="category" value="{{ request('category') }}">
 
                 <input type="number"
-                       name="page"
+                       placeholder="{{ __('messages.page') }}"
                        min="1"
                        max="{{ $products->lastPage() }}"
                        placeholder="Page"
@@ -154,7 +153,7 @@
 
                 <button type="submit"
                         class="px-4 py-2 bg-slate-900 text-white rounded-xl hover:bg-indigo-700 transition font-semibold">
-                    Go
+                    {{ __('messages.go') }}
                 </button>
 
             </form>

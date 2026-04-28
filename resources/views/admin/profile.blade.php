@@ -10,7 +10,7 @@
         </div>
 
         <h3 class="text-xl font-extrabold text-gray-800 mb-2">
-            Success
+            {{ __('messages.success') }}
         </h3>
 
         <p class="text-gray-500">
@@ -45,7 +45,7 @@
                 </h2>
 
                 <p class="text-slate-300 mt-2">
-                    Manage your admin account information
+                    {{ __('messages.manage_admin_profile') }}
                 </p>
             </div>
 
@@ -56,19 +56,19 @@
                     <a href="{{ route('lang.switch', 'en') }}"
                        class="px-4 py-2 rounded-xl text-sm font-bold transition
                        {{ app()->getLocale() == 'en' ? 'bg-white text-indigo-700' : 'text-white hover:bg-white/20' }}">
-                        EN
+                        {{ __('messages.EN') }}
                     </a>
 
                     <a href="{{ route('lang.switch', 'hi') }}"
                        class="px-4 py-2 rounded-xl text-sm font-bold transition
                        {{ app()->getLocale() == 'hi' ? 'bg-white text-indigo-700' : 'text-white hover:bg-white/20' }}">
-                        HI
+                        {{ __('messages.HI') }}
                     </a>
 
                     <a href="{{ route('lang.switch', 'gu') }}"
                        class="px-4 py-2 rounded-xl text-sm font-bold transition
                        {{ app()->getLocale() == 'gu' ? 'bg-white text-indigo-700' : 'text-white hover:bg-white/20' }}">
-                        GU
+                        {{ __('messages.GU') }}
                     </a>
                 </div>
 
@@ -90,10 +90,11 @@
     <!-- Profile Card -->
     <div class="max-w-5xl mx-auto bg-white rounded-3xl shadow-xl border p-8">
 
-        <form action="{{ route('admin.profile.update') }}"
-              method="POST"
-              enctype="multipart/form-data"
-              class="space-y-8">
+        <form id="adminProfileForm"
+                action="{{ route('admin.profile.update') }}"
+                method="POST"
+                enctype="multipart/form-data"
+                class="space-y-8">
 
             @csrf
 
@@ -106,7 +107,7 @@
                              class="h-36 w-36 rounded-full mx-auto object-cover border-4 border-white shadow-xl ring-4 ring-indigo-100">
                     @else
                         <div class="h-36 w-36 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white flex items-center justify-center text-5xl font-extrabold shadow-xl ring-4 ring-indigo-100">
-                            {{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}
+                            {{ mb_strtoupper(mb_substr(auth()->user()->name ?? 'A', 0, 1, 'UTF-8'), 'UTF-8') }}
                         </div>
                     @endif
                 </div>
@@ -174,7 +175,7 @@
                            pattern="[0-9]{10}"
                            inputmode="numeric"
                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,10)"
-                           placeholder="Enter 10 digit number"
+                           placeholder="{{ __('messages.enter_10_digit_number') }}"
                            class="w-full border border-gray-200 bg-gray-50 px-5 py-3 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
                 </div>
 
@@ -198,7 +199,7 @@
 
                     <input type="password"
                            name="password"
-                           placeholder="Leave blank if you do not want to change password"
+                           placeholder="{{ __('messages.password_leave_blank') }}"
                            class="w-full border border-gray-200 bg-gray-50 px-5 py-3 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
                 </div>
 
@@ -214,8 +215,15 @@
                 </a>
 
                 <button type="submit"
+                        id="profileUpdateBtn"
                         class="flex items-center justify-center bg-indigo-600 text-white px-6 py-3 rounded-2xl shadow-lg hover:bg-indigo-700 transition font-semibold">
-                    {{ __('messages.update_profile') }}
+                    <span id="profileUpdateText">
+                        {{ __('messages.update_profile') }}
+                    </span>
+
+                    <span id="profileUpdateLoader" class="hidden">
+                        ⏳ {{ __('messages.updating') ?? 'Updating...' }}
+                    </span>
                 </button>
 
             </div>
@@ -225,5 +233,19 @@
     </div>
 
 </div>
+
+<script>
+document.getElementById('adminProfileForm').addEventListener('submit', function () {
+    const btn = document.getElementById('profileUpdateBtn');
+    const text = document.getElementById('profileUpdateText');
+    const loader = document.getElementById('profileUpdateLoader');
+
+    btn.disabled = true;
+    btn.classList.add('opacity-70', 'cursor-not-allowed');
+
+    text.classList.add('hidden');
+    loader.classList.remove('hidden');
+});
+</script>
 
 @endsection

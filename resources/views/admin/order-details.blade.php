@@ -66,7 +66,7 @@
                         </div>
 
                         <div class="flex justify-between">
-                            <span>GST (18%)</span>
+                            <span>{{ __('messages.gst') }} (18%)</span>
                             <span>₹{{ number_format($order->tax ?? 0, 2) }}</span>
                         </div>
 
@@ -134,18 +134,18 @@
                                     ₹{{ number_format($item->price) }} × {{ $item->quantity }}
                                 </p>
                                 <p>
-                                    <strong>Payment Status:</strong>
+                                    <strong>{{ __('messages.payment_status') }}:</strong>
                                     {{ $order->payment_status }}
                                 </p>
 
                                 <p>
-                                    <strong>Payment Method:</strong>
-                                    {{ $order->payment_method ?? 'N/A' }}
+                                    <strong>{{ __('messages.payment_method') }}:</strong>
+                                    {{ $order->payment_method ?? __('messages.not_available') }}
                                 </p>
 
                                 @if($order->razorpay_payment_id)
                                 <p>
-                                    <strong>Payment ID:</strong>
+                                    <strong>{{ __('messages.payment_id') }}:</strong>   
                                     {{ $order->razorpay_payment_id }}
                                 </p>
                                 @endif

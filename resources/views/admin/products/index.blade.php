@@ -21,7 +21,7 @@
                 </h2>
 
                 <p class="text-slate-300 mt-2">
-                    Total Products: {{ $products->total() }}
+                    {{ __('messages.total_products') }}: {{ $products->total() }}
                 </p>
             </div>
 
@@ -45,17 +45,23 @@
 
                         <a href="{{ route('lang.switch', 'en') }}"
                            class="block px-5 py-3 hover:bg-indigo-50 text-gray-700">
-                            English
+                            <a href="{{ route('lang.switch', 'en') }}" class="block px-5 py-3 hover:bg-indigo-50 text-gray-700">
+                                {{ __('messages.english') }}
+                            </a>
                         </a>
 
                         <a href="{{ route('lang.switch', 'hi') }}"
                            class="block px-5 py-3 hover:bg-indigo-50 text-gray-700">
-                            हिंदी
+                            <a href="{{ route('lang.switch', 'hi') }}" class="block px-5 py-3 hover:bg-indigo-50 text-gray-700">
+                                {{ __('messages.hindi') }}
+                            </a>
                         </a>
 
                         <a href="{{ route('lang.switch', 'gu') }}"
                            class="block px-5 py-3 hover:bg-indigo-50 text-gray-700">
-                            ગુજરાતી
+                            <a href="{{ route('lang.switch', 'gu') }}" class="block px-5 py-3 hover:bg-indigo-50 text-gray-700">
+                                {{ __('messages.gujarati') }}
+                            </a>
                         </a>
                     </div>
                 </div>
@@ -84,13 +90,13 @@
             <input type="text"
                    name="search"
                    value="{{ request('search') }}"
-                   placeholder="Search product or category..."
+                   placeholder="{{ __('messages.search_product_category') }}"
                    class="xl:col-span-2 border border-gray-200 bg-gray-50 px-5 py-3 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
 
             <select name="category"
                     class="border border-gray-200 bg-gray-50 px-5 py-3 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
 
-                <option value="">All Categories</option>
+                <option value="">{{ __('messages.all_categories') }}</option>   
 
                 @foreach($categories as $category)
                     <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
@@ -102,7 +108,7 @@
 
             <a href="{{ route('admin.products.index') }}"
                class="flex items-center justify-center bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-lg hover:bg-indigo-700 transition font-semibold">
-                Reset
+                {{ __('messages.reset') }}
             </a>
 
         </form>

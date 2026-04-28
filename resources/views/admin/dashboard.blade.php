@@ -23,7 +23,8 @@
                 </h2>
 
                 <p class="text-slate-300 mt-2">
-                    Welcome back, Admin 👋
+                    {{ __('messages.welcome_back') }},
+                    {{ auth()->user()->name }} 👋
                 </p>
             </div>
 
@@ -36,7 +37,9 @@
                         class="bg-white/15 backdrop-blur-md border border-white/20 text-white px-5 py-3 rounded-2xl shadow-lg flex items-center gap-2 hover:bg-white/25 transition">
 
                         <span>🌐</span>
-                        <span class="text-sm font-semibold">Language</span>
+                        <span class="text-sm font-semibold">
+                            {{ __('messages.language') }}
+                        </span>
                     </button>
 
                     <div id="langDropdown"
@@ -44,17 +47,17 @@
 
                         <a href="{{ route('lang.switch', 'en') }}"
                            class="block px-5 py-3 text-sm hover:bg-indigo-50 text-gray-700 rounded-2xl">
-                            English
+                            {{ __('messages.english') }}
                         </a>
 
                         <a href="{{ route('lang.switch', 'gu') }}"
                            class="block px-5 py-3 text-sm hover:bg-indigo-50 text-gray-700 rounded-2xl">
-                            Gujarati
+                            {{ __('messages.gujarati') }}
                         </a>
 
                         <a href="{{ route('lang.switch', 'hi') }}"
                            class="block px-5 py-3 text-sm hover:bg-indigo-50 text-gray-700 rounded-2xl">
-                            Hindi
+                            {{ __('messages.hindi') }}
                         </a>
                     </div>
                 </div>
@@ -64,7 +67,7 @@
                     @csrf
                     <button type="submit"
                         class="bg-red-500/90 text-white px-5 py-3 rounded-2xl shadow-lg hover:bg-red-600 transition font-semibold">
-                        Logout
+                        {{ __('messages.logout') }}
                     </button>
                 </form>
 
@@ -219,7 +222,7 @@
                 </h3>
 
                 <p class="text-sm text-gray-500 mt-1">
-                    Monthly revenue performance overview
+                    {{ __('messages.monthly_revenue_overview') }}
                 </p>
             </div>
 
@@ -244,7 +247,7 @@
                 </h3>
 
                 <p class="text-sm text-gray-500 mt-1">
-                    Latest customer order details
+                    {{ __('messages.latest_customer_orders') }}
                 </p>
             </div>
         </div>
