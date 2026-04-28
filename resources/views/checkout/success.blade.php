@@ -1,5 +1,5 @@
 <x-app-layout>
-<div class="py-8 max-w-3xl mx-auto text-center">
+<div class="py-8 max-w-3xl mx-auto text-center mt-20">
 
     <h2 class="text-2xl font-bold text-green-600">
         🎉 {{ __('messages.Order Placed Successfully') }}

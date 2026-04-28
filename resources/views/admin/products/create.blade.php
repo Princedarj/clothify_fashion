@@ -90,10 +90,12 @@
                     </label>
 
                     <input type="number"
-                           placeholder="{{ __('messages.enter_price') }}"
-                           required
-                           placeholder="Enter price"
-                           class="w-full border border-gray-200 bg-gray-50 px-5 py-3 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+                            name="price"
+                            placeholder="{{ __('messages.enter_price') }}"
+                            required
+                            min="1"
+                            step="0.01"
+                            class="w-full border border-gray-200 bg-gray-50 px-5 py-3 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
                 </div>
 
             </div>

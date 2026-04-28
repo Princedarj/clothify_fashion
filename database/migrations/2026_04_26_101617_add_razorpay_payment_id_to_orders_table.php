@@ -9,10 +9,22 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+ public function up(): void
 {
     Schema::table('orders', function (Blueprint $table) {
-        $table->string('razorpay_payment_id')->nullable();
+
+        if (!Schema::hasColumn('orders', 'razorpay_payment_id')) {
+            $table->string('razorpay_payment_id')->nullable();
+        }
+
+        if (!Schema::hasColumn('orders', 'payment_method')) {
+            $table->string('payment_method')->nullable();
+        }
+
+        if (!Schema::hasColumn('orders', 'payment_status')) {
+            $table->string('payment_status')->default('Pending');
+        }
+
     });
 }
 

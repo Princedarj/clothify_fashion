@@ -72,7 +72,10 @@
                                     @foreach($order->items as $item)
                                         <tr style="border-bottom:1px solid #eee;">
                                             <td>
-                                                {{ {{ $product->getName() }} ?? 'Unknown Product' }}
+                                                {{ optional($item->product)->{'name_' . app()->getLocale()}
+                                                    ?? optional($item->product)->name_en
+                                                    ?? $item->product_name
+                                                    ?? __('messages.unknown_product') }}
                                             </td>
                                             <td align="center">
                                                 {{ $item->quantity }}

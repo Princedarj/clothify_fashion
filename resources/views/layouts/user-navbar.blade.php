@@ -3,7 +3,7 @@
     $cartCount = array_sum(array_column($cart, 'quantity'));
 @endphp
 
-<nav class="fixed top-0 left-0 w-full z-50 bg-white/95 dark:bg-gray-950/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-sm transition-colors">
+<nav class="fixed top-0 left-0 w-full z-50 bg-white/95 dark:bg-gray-950/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-sm transition-colors mb-20">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
         <div class="flex justify-between items-center h-20">
 

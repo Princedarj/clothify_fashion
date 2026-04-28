@@ -10,7 +10,17 @@ class CartController extends Controller
     public function index()
     {
         $cart = session()->get('cart', []);
-        return view('cart.view', compact('cart'));
+
+        $productIds = collect($cart)
+            ->pluck('product_id')
+            ->filter()
+            ->values();
+
+        $products = Product::whereIn('id', $productIds)
+            ->get()
+            ->keyBy('id');
+
+        return view('cart.view', compact('cart', 'products'));
     }
 
     public function add(Request $request)
@@ -23,9 +33,11 @@ class CartController extends Controller
             $cart[$product->id]['quantity']++;
         } else {
             $cart[$product->id] = [
-                "name" => $product->{'name_' . app()->getLocale()} ?? $product->name_en,
+                "product_id" => $product->id,
+                "name" => $product->name_en,
                 "price" => $product->price,
-                "quantity" => 1
+                "quantity" => 1,
+                "image" => $product->image,
             ];
         }
 
@@ -43,10 +55,12 @@ class CartController extends Controller
         $cart = session()->get('cart', []);
 
         $cart[$product->id] = [
-            "name" => $product->name_en,
-            "price" => $product->price,
-            "quantity" => $action['quantity'],
-        ];
+                    "product_id" => $product->id,
+                    "name" => $product->name_en,
+                    "price" => $product->price,
+                    "quantity" => $action['quantity'],
+                    "image" => $product->image,
+                ];
 
         session()->put('cart', $cart);
     }
@@ -112,11 +126,12 @@ public function buyNow($id)
     // Add only this product
     $cart = [];
     $cart[$id] = [
-    "name" => $product->{'name_' . app()->getLocale()}, 
-    "price" => $product->price,
-    "quantity" => 1,
-    "image" => $product->image,
-];
+            "product_id" => $product->id,
+            "name" => $product->name_en,
+            "price" => $product->price,
+            "quantity" => 1,
+            "image" => $product->image,
+        ];
     session()->put('cart', $cart);
 
     // Redirect directly to checkout page
