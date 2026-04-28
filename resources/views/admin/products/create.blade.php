@@ -37,7 +37,8 @@
             </div>
         @endif
 
-        <form action="{{ route('admin.products.store') }}"
+        <form id="productForm"
+              action="{{ route('admin.products.store') }}"
               method="POST"
               enctype="multipart/form-data"
               class="space-y-6">
@@ -138,8 +139,12 @@
                 </a>
 
                 <button type="submit"
+                        id="submitBtn"
                         class="flex items-center justify-center px-6 py-3 bg-indigo-600 text-white rounded-2xl shadow-lg hover:bg-indigo-700 transition font-semibold">
-                    💾 {{ __('messages.save_product') }}
+                    <span id="submitText">💾 {{ __('messages.save_product') }}</span>
+                    <span id="submitLoader" class="hidden">
+                        ⏳ {{ __('messages.saving') ?? 'Saving...' }}
+                    </span>
                 </button>
 
             </div>
@@ -150,4 +155,18 @@
 
 </div>
 
+
+<script>
+document.getElementById('productForm').addEventListener('submit', function () {
+    const btn = document.getElementById('submitBtn');
+    const text = document.getElementById('submitText');
+    const loader = document.getElementById('submitLoader');
+
+    btn.disabled = true;
+    btn.classList.add('opacity-70', 'cursor-not-allowed');
+
+    text.classList.add('hidden');
+    loader.classList.remove('hidden');
+});
+</script>
 @endsection

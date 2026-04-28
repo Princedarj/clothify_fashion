@@ -174,6 +174,11 @@
                                 </p>
                             </div>
 
+                            <a href="{{ route('products.show', $product->id) }}"
+                                class="mt-4 inline-flex items-center justify-center w-full px-5 py-3 rounded-full bg-gray-900 text-white font-bold hover:bg-yellow-400 hover:text-black transition dark:bg-white dark:text-black">
+                                    👁 {{ __('messages.view_product') }}
+                            </a>
+
                             <div class="grid grid-cols-2 gap-3 mt-5">
 
                                 <form action="{{ route('cart.add') }}" method="POST">

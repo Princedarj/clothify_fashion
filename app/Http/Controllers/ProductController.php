@@ -169,9 +169,13 @@ class ProductController extends Controller
     }
 
     // ✅ SHOW SINGLE
-    public function show($id)
+    public function show(Product $product)
     {
-        $product = Product::findOrFail($id);
-        return view('products.show', compact('product'));
+        $relatedProducts = Product::where('id', '!=', $product->id)
+            ->inRandomOrder()
+            ->take(5)
+            ->get();
+
+        return view('products.show', compact('product', 'relatedProducts'));
     }
 }

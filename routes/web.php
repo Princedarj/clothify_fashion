@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Session;
 
+
 /*
 |--------------------------------------------------------------------------
 | Public Routes
@@ -71,6 +72,9 @@ Route::middleware(['auth'])->group(function () {
     Route::view('/faqs', 'pages.faqs')->name('faqs');
     Route::view('/shipping-policy', 'pages.shipping')->name('shipping.policy');
     Route::view('/return-policy', 'pages.returns')->name('return.policy');
+
+
+    Route::get('/product/{product}', [ProductController::class, 'show'])->name('products.show');
 });
 
 
