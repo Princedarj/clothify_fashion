@@ -6,7 +6,7 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Models\OrderItem;
 use Barryvdh\DomPDF\Facade\Pdf;
-use App\Models\Product;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Exports\OrdersExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -59,34 +59,31 @@ class OrderController extends Controller
 
     /// ✅ PLACE ORDER
     public function place(Request $request)
-{
-    try {
+    {
         App::setLocale(auth()->user()->language ?? 'en');
 
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required',
             'email' => 'required|email',
-            'phone' => 'required|digits:10',
-            'pincode' => 'required|digits:6',
-            'address' => 'required|string',
+            'phone' => 'required',
+            'address' => 'required',
+            'pincode' => 'required',
         ]);
 
         $cart = session()->get('cart', []);
 
+
         if (empty($cart)) {
-            return redirect()->route('cart.index')
-                ->with('error', 'Cart is empty.');
+            return redirect()->route('cart.index');
         }
 
+        // ✅ Calculate total
         $totalAmount = 0;
-
         foreach ($cart as $item) {
-            $totalAmount += ($item['price'] ?? 0) * ($item['quantity'] ?? 1);
+            $totalAmount += $item['price'] * $item['quantity'];
         }
 
-        $tax = $totalAmount * 0.18;
-        $grandTotal = $totalAmount + $tax;
-
+        // ✅ Create order
         $order = Order::create([
             'user_id' => Auth::id(),
             'name' => $request->name,
@@ -94,42 +91,46 @@ class OrderController extends Controller
             'phone' => $request->phone,
             'address' => $request->address,
             'pincode' => $request->pincode,
+            'grand_total' => $grand_total = $totalAmount * 1.18, // total + 18% tax 
             'subtotal' => $totalAmount,
-            'tax' => $tax,
-            'grand_total' => $grandTotal,
+            'tax' => $totalAmount * 0.18, // 18%
             'status' => 'Pending',
-            'payment_status' => 'Pending',
         ]);
 
-        foreach ($cart as $item) {
-            $product = Product::find($item['product_id'] ?? null);
 
+
+        // ✅ Save order items
+        foreach ($cart as $item) {
             OrderItem::create([
                 'order_id' => $order->id,
-                'product_id' => $product?->id,
-                'product_name' => $product?->name_en ?? $item['name'] ?? 'Unknown Product',
+                'product_name' => $item['name'] ?? 'Unknown Product',
                 'price' => $item['price'] ?? 0,
                 'quantity' => $item['quantity'] ?? 1,
                 'total' => ($item['price'] ?? 0) * ($item['quantity'] ?? 1),
             ]);
         }
+        $order->load('items.product', 'user');
+        App::setLocale(auth()->user()->language ?? 'en');
+        $order = Order::with('items.product')->find($order->id);
+        Mail::to($order->email)->send(new OrderPlacedMail($order));
+
+
+        // session()->forget('cart');
+
+        //return redirect()->route('order.success', $order->id);
 
         session()->forget('cart');
 
         return redirect()->route('payment.page', $order->id);
 
-    } catch (\Exception $e) {
-        return back()->withErrors([
-            'error' => $e->getMessage()
-        ])->withInput();
     }
-}
+
     /////////////////////////////////////////////////////////////////////////////////////////////
 
     // ✅ ADMIN VIEW ORDER DETAILS
     public function show($id)
     {
-        $order = Order::with('items.product')->findOrFail($id);
+        $order = Order::with('items')->findOrFail($id);
 
         return view('admin.order-details', compact('order'));
     }
@@ -139,7 +140,7 @@ class OrderController extends Controller
     // ✅ ADMIN INVOICE DOWNLOAD
     public function invoice($id)
     {
-        $order = Order::with('items.product')->findOrFail($id);
+        $order = Order::with('items')->findOrFail($id);
 
         $subtotal = $order->items->sum('total');
         $tax = $subtotal * 0.18; // 18% GST
@@ -160,7 +161,7 @@ class OrderController extends Controller
     /// ✅ USER INVOICE DOWNLOAD
     public function userInvoice($id)
     {
-        $order = Order::with('items.product')
+        $order = Order::with('items')
             ->where('id', $id)
             ->where('user_id', Auth::id()) // 🔐 security check
             ->firstOrFail();
@@ -339,26 +340,26 @@ class OrderController extends Controller
     // Payement method
 
     public function paymentPage($id)
-    {
-        $order = Order::findOrFail($id);
-        return view('orders.payment', compact('order'));
-    }
+{
+    $order = Order::findOrFail($id);
+    return view('orders.payment', compact('order'));
+}
 
-    public function paymentSuccess(Request $request, $id)
-    {
-        $order = Order::where('id', $id)
-            ->where('user_id', Auth::id())
-            ->firstOrFail();
+public function paymentSuccess(Request $request, $id)
+{
+    $order = Order::where('id', $id)
+        ->where('user_id', Auth::id())
+        ->firstOrFail();
 
-        $order->update([
-            'payment_method' => $request->payment_method ?? 'UPI',
-            'payment_status' => 'Paid',
-            'razorpay_payment_id' => $request->transaction_code ?? 'Payment By QR',
-        ]);
+    $order->update([
+        'payment_method' => $request->payment_method ?? 'UPI',
+        'payment_status' => 'Paid',
+        'razorpay_payment_id' => $request->transaction_code ?? 'Payment By QR',
+    ]);
 
-        return redirect()
-            ->route('order.success', $order->id)
-            ->with('success', 'Payment Successful!');
-    }
+    return redirect()
+        ->route('order.success', $order->id)
+        ->with('success', 'Payment Successful!');
+}
 
 }

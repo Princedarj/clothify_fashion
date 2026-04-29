@@ -3,18 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Product;
 
 class OrderItem extends Model
 {
     //
     protected $fillable = [
     'order_id',
-    'product_id',
     'product_name',
     'price',
     'quantity',
-    'total',
+    'total'
 ];
 
 public function product()

@@ -84,18 +84,24 @@
                 {{-- Buttons --}}
                 <div class="flex flex-col sm:flex-row gap-4">
 
-                    <form action="{{ route('cart.add', $product->id) }}" method="POST" class="w-full">
+                    <form action="{{ route('cart.add') }}" method="POST" class="w-full">
                         @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+
                         <button type="submit"
                             class="w-full px-8 py-4 rounded-full bg-black text-white font-bold text-lg hover:bg-gray-800 transition dark:bg-white dark:text-black">
                             🛒 {{ __('messages.add_to_cart') }}
                         </button>
                     </form>
 
-                    <a href="{{ route('buy.now', $product->id) }}"
-                       class="w-full text-center px-8 py-4 rounded-full bg-yellow-400 text-black font-bold text-lg hover:bg-yellow-300 transition">
-                        ⚡ {{ __('messages.buy_now') }}
-                    </a>
+                    <form action="{{ route('buy.now', $product->id) }}" method="POST" class="w-full">
+                        @csrf
+
+                        <button type="submit"
+                            class="w-full text-center px-8 py-4 rounded-full bg-yellow-400 text-black font-bold text-lg hover:bg-yellow-300 transition">
+                            ⚡ {{ __('messages.buy_now') }}
+                        </button>
+                    </form>
 
                 </div>
 

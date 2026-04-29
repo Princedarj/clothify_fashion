@@ -6,9 +6,9 @@
     $cart = session()->get('cart', []);
 @endphp
 
-<div class="min-h-screen bg-gray-100 dark:bg-gray-950 py-14 px-4 transition-colors">
+<div class="min-h-screen bg-gray-100 dark:bg-gray-950 py-14 px-4 transition-colors mt-20">
 
-    <div class="max-w-7xl mx-auto mt-20">
+    <div class="max-w-7xl mx-auto">
 
         {{-- Header --}}
         <div class="mb-10 bg-gradient-to-r from-black via-indigo-800 to-purple-900 dark:from-gray-900 dark:via-indigo-900 dark:to-black text-white rounded-[2rem] p-8 shadow-xl">
