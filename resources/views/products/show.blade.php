@@ -26,7 +26,7 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 p-10 mb-10 mt-20 bg-white dark:bg-gray-900 rounded-[2rem] shadow-2xl overflow-hidden border border-gray-100 dark:border-gray-800">
             {{-- Product Image --}}
-            <div class="relative overflow-hidden rounded-[2rem] bg-gray-100 dark:bg-gray-800">
+            <div class="relative overflow-hidden rounded-[2rem] bg-gray-100 dark:bg-gray-800 self-start">
                 @if($product->created_at && $product->created_at->gt(now()->subDays(10)))
                     <span class="absolute top-4 left-4 z-30 bg-black text-white text-xs font-bold px-4 py-2 rounded-full shadow-lg dark:text-black dark:bg-white">
                         {{ __('messages.new') }}
@@ -35,7 +35,7 @@
 
                 <img src="{{ asset('storage/' . $product->image) }}"
                     alt="{{ $name }}"
-                    class="w-full h-[560px] object-cover rounded-[2rem]">
+                    class="w-full h-[700px] object-cover rounded-[2rem]">
             </div>
 
             {{-- Product Details --}}

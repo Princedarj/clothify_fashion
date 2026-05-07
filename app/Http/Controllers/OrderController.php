@@ -63,11 +63,11 @@ class OrderController extends Controller
         App::setLocale(auth()->user()->language ?? 'en');
 
         $request->validate([
-            'name' => 'required',
+            'name' => 'required|string|max:255',
             'email' => 'required|email',
-            'phone' => 'required',
-            'address' => 'required',
-            'pincode' => 'required',
+            'phone' => 'required|digits:10',
+            'address' => 'required|string',
+            'pincode' => 'required|digits:6',
         ]);
 
         $cart = session()->get('cart', []);
@@ -324,8 +324,8 @@ class OrderController extends Controller
         // Add only this product to cart
         $cart = [];
         $cart[$id] = [
-            //"name" => $product->{'name_' . app()->getLocale()} ?? $product->name_en,
             "product_id" => $product->id,
+            "name" => $product->{'name_' . app()->getLocale()} ?? $product->name_en,
             "price" => $product->price,
             "quantity" => 1,
             "image" => $product->image,
